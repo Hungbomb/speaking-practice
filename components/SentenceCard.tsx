@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Sentence } from "@/lib/demoData";
-import { addRecording, putTweak, Recording } from "@/lib/supabase";
+import { addRecording, deleteRecording, putTweak, Recording } from "@/lib/supabase";
 
 interface Props {
   sentence: Sentence;
@@ -16,6 +16,7 @@ interface Props {
   onPauseToggle: () => void;
   onTimeAdjust: (field: "start" | "end", delta: number) => void;
   onRecordingAdded: (rec: Recording, blobUrl: string) => void;
+  onRecordingDeleted: (recId: string) => void;
   onToast: (msg: string) => void;
 }
 
@@ -36,10 +37,12 @@ export default function SentenceCard({
   onPauseToggle,
   onTimeAdjust,
   onRecordingAdded,
+  onRecordingDeleted,
   onToast,
 }: Props) {
   const [showZh, setShowZh] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
@@ -67,7 +70,10 @@ export default function SentenceCard({
       return;
     }
 
-    const mr = new MediaRecorder(stream);
+    // Pick a MIME type supported by the current browser (iOS only supports mp4/aac)
+    const preferredTypes = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm", "audio/ogg"];
+    const mimeType = preferredTypes.find((t) => MediaRecorder.isTypeSupported(t)) ?? "";
+    const mr = new MediaRecorder(stream, mimeType ? { mimeType } : {});
     const chunks: BlobPart[] = [];
     mr.ondataavailable = (e) => chunks.push(e.data);
     mr.onstop = async () => {
@@ -90,6 +96,18 @@ export default function SentenceCard({
     mediaRecorderRef.current = mr;
     mr.start();
     setIsRecording(true);
+  }
+
+  async function handleDelete(rec: Recording) {
+    setDeletingId(rec.id);
+    try {
+      await deleteRecording(rec.id, rec.storage_path);
+      onRecordingDeleted(rec.id);
+    } catch {
+      onToast("刪除失敗，請稍後再試");
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   async function handleTimeAdjust(field: "start" | "end", delta: number) {
@@ -356,6 +374,7 @@ export default function SentenceCard({
             ).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(
               d.getMinutes()
             ).padStart(2, "0")}`;
+            const isDeleting = deletingId === rec.id;
             return (
               <div
                 key={rec.id}
@@ -366,6 +385,7 @@ export default function SentenceCard({
                   padding: "7px 0",
                   borderTop: "1px solid var(--line)",
                   flexWrap: "wrap",
+                  opacity: isDeleting ? 0.4 : 1,
                 }}
               >
                 <span
@@ -378,13 +398,35 @@ export default function SentenceCard({
                 >
                   {label}
                 </span>
-                {rec.signedUrl && (
+                {rec.signedUrl ? (
                   <audio
                     controls
                     src={rec.signedUrl}
-                    style={{ height: 32, maxWidth: 280, flex: 1, minWidth: 170 }}
+                    style={{ height: 32, maxWidth: 260, flex: 1, minWidth: 170 }}
                   />
+                ) : (
+                  <span style={{ fontSize: 12, color: "#B65E1F" }}>
+                    無法載入（請重新整理頁面）
+                  </span>
                 )}
+                <button
+                  onClick={() => handleDelete(rec)}
+                  disabled={isDeleting}
+                  title="刪除錄音"
+                  style={{
+                    border: "none",
+                    background: "none",
+                    cursor: isDeleting ? "default" : "pointer",
+                    color: "var(--ink-soft)",
+                    padding: "4px 6px",
+                    borderRadius: 6,
+                    fontSize: 15,
+                    lineHeight: 1,
+                    flexShrink: 0,
+                  }}
+                >
+                  🗑
+                </button>
               </div>
             );
           })}

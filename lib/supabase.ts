@@ -21,7 +21,7 @@ export interface Recording {
   storage_path: string;
   duration_sec: number | null;
   created_at: string;
-  signedUrl?: string;
+  signedUrl?: string | null;
 }
 
 export interface Tweak {
@@ -85,13 +85,24 @@ export async function putCheckin(
 
 // ── Recordings ──
 
+export async function deleteRecording(id: string, storagePath: string): Promise<void> {
+  const { error: storageError } = await supabase.storage
+    .from("recordings")
+    .remove([storagePath]);
+  if (storageError) throw storageError;
+  const { error: dbError } = await supabase.from("recordings").delete().eq("id", id);
+  if (dbError) throw dbError;
+}
+
 export async function addRecording(
   date: string,
   sentenceIdx: number,
   blob: Blob
 ): Promise<Recording> {
   const timestamp = Date.now();
-  const ext = blob.type.includes("ogg") ? "ogg" : "webm";
+  const ext = blob.type.includes("mp4") ? "m4a"
+    : blob.type.includes("ogg") ? "ogg"
+    : "webm";
   const storagePath = `${date}/${sentenceIdx}/${timestamp}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
@@ -134,8 +145,8 @@ export async function getRecordingsForDate(
       data.map(async (rec: Recording) => {
         const { data: signedData } = await supabase.storage
           .from("recordings")
-          .createSignedUrl(rec.storage_path, 3600);
-        return { ...rec, signedUrl: signedData?.signedUrl };
+          .createSignedUrl(rec.storage_path, 60 * 60 * 24 * 7); // 7 days
+        return { ...rec, signedUrl: signedData?.signedUrl ?? null };
       })
     );
 

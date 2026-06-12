@@ -1,28 +1,22 @@
 #!/usr/bin/env python3
 """
-每日口說挑戰 — 內容自動生成腳本
+每日口說挑戰 — 內容自動生成腳本（Gemini 原生 YouTube 理解）
 用法：
-  python generate_challenges.py --videos "arj7oStGLkU eIho2S0ZahI iCvmsMzlF7o" --start 2026-07-01 --count 30
+  python generate_challenges.py --videos "videoId1 videoId2 ..." --start 2026-06-01 --count 30
 
 參數：
-  --videos   YouTube 影片 ID，空格分隔（可省略 → 互動輸入）
-  --start    起始日期，格式 YYYY-MM-DD（預設：明天）
-  --count    要填充的天數（預設：30）
-  --dry-run  只印出結果，不寫入 Supabase
+  --videos      YouTube 影片 ID，空格分隔（可省略 → 讀 video_ids.txt）
+  --start       起始日期 YYYY-MM-DD（預設：明天）
+  --count       要填充的天數（預設：30）
+  --dry-run     只印出，不寫入 Supabase
+  --skip-existing  跳過 Supabase 已有資料的日期
 """
 
-import os, sys, json, argparse, textwrap, re
+import os, sys, json, argparse, textwrap, re, time, random
 from datetime import date, timedelta
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
-
-# ── 依賴確認 ──────────────────────────────────────────────────────────────────
-try:
-    from youtube_transcript_api import YouTubeTranscriptApi
-    from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
-except ImportError:
-    sys.exit("請先安裝依賴：pip install -r scripts/requirements.txt")
 
 try:
     from google import genai
@@ -36,38 +30,10 @@ except ImportError:
     sys.exit("請先安裝依賴：pip install -r scripts/requirements.txt")
 
 
-# ── YouTube 工具 ──────────────────────────────────────────────────────────────
-
-def get_transcript(video_id: str) -> list[dict]:
-    """取得字幕，優先英文。回傳 [{text, start, duration}, ...]"""
-    try:
-        ytt = YouTubeTranscriptApi()
-        fetched = ytt.fetch(video_id, languages=["en", "en-US", "en-GB"])
-        return [{"text": s.text, "start": s.start, "duration": s.duration} for s in fetched]
-    except (TranscriptsDisabled, NoTranscriptFound) as e:
-        raise RuntimeError(f"影片 {video_id} 無英文字幕：{e}")
-    except Exception as e:
-        raise RuntimeError(f"影片 {video_id} 字幕取得失敗：{e}")
-
-
-def transcript_to_text(entries: list[dict], max_chars=8000) -> str:
-    """把字幕轉成帶時間戳的純文字，截斷在 max_chars"""
-    lines = []
-    for e in entries:
-        t = e["start"]
-        mins = int(t // 60)
-        secs = t % 60
-        lines.append(f"[{mins:02d}:{secs:05.2f}] {e['text'].strip()}")
-    full = "\n".join(lines)
-    return full[:max_chars]
-
+# ── YouTube oEmbed（取標題，不需 API key） ──────────────────────────────────
 
 def get_video_title(video_id: str) -> tuple[str, str]:
-    """
-    用 YouTube oEmbed API 取得標題（不需要 API key）。
-    回傳 (title, channel)。
-    """
-    import urllib.request, urllib.error
+    import urllib.request
     url = f"https://www.youtube.com/oembed?url=https://youtu.be/{video_id}&format=json"
     try:
         with urllib.request.urlopen(url, timeout=10) as r:
@@ -77,26 +43,33 @@ def get_video_title(video_id: str) -> tuple[str, str]:
         return video_id, "YouTube"
 
 
-# ── Gemini 工具 ────────────────────────────────────────────────────────────────
+# ── Gemini 直接讀 YouTube 影片 ─────────────────────────────────────────────
 
 GEMINI_PROMPT = """\
-你是英語口說練習教材設計師。以下是一段 YouTube 影片的英文字幕（含時間戳）。
+你是英語口說練習教材設計師。請仔細觀看這段 YouTube 影片。
 
-請從中挑選 **3 個** 適合中等英語學習者（B2 程度）練習口說的句子，標準：
+從影片中挑選 **3 個** 適合中等英語學習者（B2 程度）練習口說的句子，標準：
 1. 句子完整、語意清楚，不依賴前後文也能理解
 2. 包含一個以上值得學習的片語或用法
-3. 長度適中（10–25 字）
-4. 分布在影片不同段落
+3. **長度：35–50 個英文單字**（這點非常重要，太短的句子不適合練習）
+4. 分布在影片不同段落（開頭、中段、後段各一）
+5. 如果原文句子太短，可以把相鄰的兩句合併成一個練習句
 
-對每個句子，請輸出以下 JSON（只輸出 JSON，不要任何說明文字）：
+**時間戳格式（非常重要）**：
+- 單位是「秒」，不是分鐘
+- 例如：第 2 分 15 秒 = 135.0（不是 2.25）
+- 例如：第 45 秒 = 45.0
+- end 必須比 start 多至少 3 秒（一句話至少說 3 秒）
+
+只輸出以下 JSON，不要任何說明文字：
 
 ```json
 [
   {{
     "idx": 1,
-    "start": <開始秒數，精確到小數點一位>,
-    "end": <結束秒數，精確到小數點一位>,
-    "text": "<完整英文句子>",
+    "start": <開始秒數，例如 45.0>,
+    "end": <結束秒數，例如 52.5>,
+    "text": "<完整英文句子，字數 10–25 字>",
     "zh": "<自然流暢的繁體中文翻譯>",
     "kw": [
       {{"w": "<關鍵片語>", "zh": "<中文解釋>"}},
@@ -106,91 +79,96 @@ GEMINI_PROMPT = """\
   ...
 ]
 ```
-
-字幕如下：
----
-{transcript}
----
 """
 
 
-def ask_gemini(transcript_text: str, api_key: str, retries: int = 3) -> list[dict]:
-    import time
+def analyze_video(video_id: str, api_key: str, retries: int = 3) -> list[dict]:
+    """讓 Gemini 直接觀看 YouTube 影片，回傳 3 個練習句子"""
     client = genai.Client(api_key=api_key)
-    prompt = GEMINI_PROMPT.format(transcript=transcript_text)
+
     for attempt in range(retries):
         try:
             response = client.models.generate_content(
                 model="gemini-2.5-flash",
-                contents=prompt,
+                contents=[
+                    genai_types.Content(parts=[
+                        genai_types.Part(file_data=genai_types.FileData(
+                            file_uri=f"https://www.youtube.com/watch?v={video_id}",
+                            mime_type="video/mp4",
+                        )),
+                        genai_types.Part(text=GEMINI_PROMPT),
+                    ])
+                ],
             )
+            raw = response.text.strip()
             break
         except Exception as e:
-            if attempt < retries - 1 and ("503" in str(e) or "UNAVAILABLE" in str(e)):
-                wait = 10 * (attempt + 1)
-                print(f"    ⏳ 暫時無法連線，{wait}s 後重試…")
+            err = str(e)
+            if attempt < retries - 1 and any(x in err for x in ["503", "UNAVAILABLE", "429", "quota"]):
+                wait = 15 * (attempt + 1)
+                print(f"    ⏳ Gemini 暫時無法回應，{wait}s 後重試（{attempt+1}/{retries}）…")
                 time.sleep(wait)
             else:
                 raise
-    raw = response.text.strip()
 
-    # 抓出 JSON block
+    # 解析 JSON
     match = re.search(r"```json\s*([\s\S]+?)```", raw)
-    if match:
-        raw = match.group(1).strip()
-    else:
-        # 嘗試直接解析
-        raw = raw.strip("`").strip()
-
-    sentences = json.loads(raw)
-    # 確保 idx 正確
+    raw_json = match.group(1).strip() if match else raw.strip("`").strip()
+    sentences = json.loads(raw_json)
     for i, s in enumerate(sentences):
         s["idx"] = i + 1
+
+    # 時間戳單位修正：若任何句子 end-start < 2 秒，很可能是以分鐘為單位
+    if sentences and any((s["end"] - s["start"]) < 2.0 for s in sentences):
+        print(f"    ⚠️  偵測到分鐘制時間戳，自動乘以 60")
+        for s in sentences:
+            s["start"] = round(s["start"] * 60, 1)
+            s["end"]   = round(s["end"]   * 60, 1)
+
     return sentences
 
 
-# ── Supabase 工具 ──────────────────────────────────────────────────────────────
+# ── Supabase ────────────────────────────────────────────────────────────────
 
-def upsert_challenge(client, target_date: str, video_id: str, title: str, channel: str, sentences: list):
-    result = client.table("daily_challenges").upsert({
+def upsert_challenge(client, target_date: str, video_id: str,
+                     title: str, channel: str, sentences: list):
+    client.table("daily_challenges").upsert({
         "date": target_date,
         "video_id": video_id,
         "video_title": title,
         "video_channel": channel,
         "sentences": sentences,
     }).execute()
-    return result
 
 
-# ── 主流程 ────────────────────────────────────────────────────────────────────
+# ── 主流程 ──────────────────────────────────────────────────────────────────
 
 def main():
     parser = argparse.ArgumentParser(
-        description="為每日口說挑戰 app 批量生成練習內容",
         formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="為每日口說挑戰 app 批量生成練習內容（Gemini 原生 YouTube 理解）",
         epilog=textwrap.dedent("""\
         範例：
-          # 填充未來 30 天，從三支 TED 影片中輪替
-          python scripts/generate_challenges.py \\
-            --videos "arj7oStGLkU eIho2S0ZahI iCvmsMzlF7o" \\
-            --start 2026-07-01 --count 30
+          # 讀取 video_ids.txt，填充 6 月全月
+          python scripts/generate_challenges.py --start 2026-06-01 --count 30
 
-          # 只預覽，不寫入
-          python scripts/generate_challenges.py \\
-            --videos "arj7oStGLkU" --count 3 --dry-run
+          # 直接指定影片
+          python scripts/generate_challenges.py --videos "id1 id2 id3" --count 10
+
+          # 只補空白日期
+          python scripts/generate_challenges.py --start 2026-06-01 --count 30 --skip-existing
         """)
     )
-    parser.add_argument("--videos", type=str, help="YouTube 影片 ID，空格分隔")
-    parser.add_argument("--start", type=str, default=None, help="起始日期 YYYY-MM-DD（預設：明天）")
-    parser.add_argument("--count", type=int, default=30, help="填充天數（預設：30）")
-    parser.add_argument("--dry-run", action="store_true", help="只印出，不寫入 Supabase")
-    parser.add_argument("--skip-existing", action="store_true", help="跳過 Supabase 已有資料的日期")
+    parser.add_argument("--videos", type=str, default=None, help="影片 ID 空格分隔")
+    parser.add_argument("--start", type=str, default=None, help="起始日期（預設：明天）")
+    parser.add_argument("--count", type=int, default=30, help="天數（預設：30）")
+    parser.add_argument("--dry-run", action="store_true", help="只印出，不寫入")
+    parser.add_argument("--skip-existing", action="store_true", help="跳過已有資料的日期")
     args = parser.parse_args()
 
-    # 讀取 API key
-    gemini_key = os.getenv("GEMINI_API_KEY")
-    supabase_url = os.getenv("SUPABASE_URL")
-    supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
+    gemini_key    = os.getenv("GEMINI_API_KEY")
+    supabase_url  = os.getenv("SUPABASE_URL")
+    supabase_key  = os.getenv("SUPABASE_SERVICE_KEY")
 
     if not gemini_key:
         sys.exit("缺少 GEMINI_API_KEY，請在 scripts/.env 設定")
@@ -201,8 +179,15 @@ def main():
     if args.videos:
         video_ids = args.videos.split()
     else:
-        raw = input("請輸入 YouTube 影片 ID（空格分隔）：").strip()
-        video_ids = raw.split()
+        ids_file = os.path.join(os.path.dirname(__file__), "video_ids.txt")
+        if os.path.exists(ids_file):
+            with open(ids_file) as f:
+                video_ids = f.read().split()
+            print(f"從 video_ids.txt 讀取 {len(video_ids)} 支影片")
+        else:
+            raw = input("請輸入 YouTube 影片 ID（空格分隔）：").strip()
+            video_ids = raw.split()
+
     if not video_ids:
         sys.exit("沒有提供任何影片 ID")
 
@@ -210,36 +195,19 @@ def main():
     start_date = date.fromisoformat(args.start) if args.start else date.today() + timedelta(days=1)
     dates = [start_date + timedelta(days=i) for i in range(args.count)]
 
+    # 把影片隨機分配到各天（每支影片儘量只用一次）
+    assigned: list[str] = []
+    pool = video_ids.copy()
+    random.shuffle(pool)
+    for i in range(len(dates)):
+        assigned.append(pool[i % len(pool)])
+        if (i + 1) % len(pool) == 0:
+            random.shuffle(pool)  # 每輪重新洗牌
+
     print(f"\n將為 {len(dates)} 天（{dates[0]} ～ {dates[-1]}）生成內容")
-    print(f"影片庫 {len(video_ids)} 支：{video_ids}\n")
+    print(f"影片池 {len(video_ids)} 支，隨機分配\n")
 
-    # 預先取得所有影片的字幕 & 標題（避免重複呼叫 API）
-    cache: dict[str, dict] = {}
-    for vid in video_ids:
-        if vid in cache:
-            continue
-        print(f"  ▸ 取得影片資訊：{vid}")
-        try:
-            title, channel = get_video_title(vid)
-            entries = get_transcript(vid)
-            transcript_text = transcript_to_text(entries)
-            print(f"    標題：{title}")
-            print(f"    字幕長度：{len(transcript_text)} 字元")
-
-            print(f"    呼叫 Gemini 選句中…")
-            sentences = ask_gemini(transcript_text, gemini_key)
-            print(f"    ✓ 選出 {len(sentences)} 句")
-
-            cache[vid] = {
-                "title": title,
-                "channel": channel,
-                "sentences": sentences,
-            }
-        except Exception as e:
-            print(f"    ✗ 錯誤：{e}")
-            cache[vid] = None
-
-    # 建立 Supabase client（非 dry-run）
+    # Supabase client
     sb = None
     existing_dates: set[str] = set()
     if not args.dry_run:
@@ -248,30 +216,49 @@ def main():
             rows = sb.table("daily_challenges").select("date").execute()
             existing_dates = {r["date"] for r in (rows.data or [])}
             if existing_dates:
-                print(f"  Supabase 已有 {len(existing_dates)} 天資料，這些日期將跳過\n")
+                print(f"  Supabase 已有 {len(existing_dates)} 天，這些日期將跳過\n")
 
-    # 寫入每天
-    print("\n寫入每日挑戰：")
-    for i, d in enumerate(dates):
-        vid = video_ids[i % len(video_ids)]
+    # 已分析過的影片 cache（同影片只呼叫 Gemini 一次）
+    cache: dict[str, dict | None] = {}
+
+    print("正在生成每日挑戰（Gemini 直接讀取 YouTube 影片）：\n")
+    for target_date, vid in zip(dates, assigned):
+        date_str = str(target_date)
+
+        if date_str in existing_dates:
+            print(f"  {date_str}  — 已有資料，跳過")
+            continue
+
+        # 取得或分析影片
+        if vid not in cache:
+            title, channel = get_video_title(vid)
+            print(f"  分析影片 {vid}  ·  {title[:50]}")
+            print(f"  頻道：{channel}")
+            try:
+                sentences = analyze_video(vid, gemini_key)
+                cache[vid] = {"title": title, "channel": channel, "sentences": sentences}
+                print(f"  ✓ 選出 {len(sentences)} 句")
+                time.sleep(2)  # 避免 Gemini rate limit
+            except Exception as e:
+                print(f"  ✗ Gemini 分析失敗：{e}")
+                cache[vid] = None
+
         data = cache.get(vid)
         if data is None:
-            print(f"  {d}  ✗ 跳過（影片 {vid} 無法處理）")
+            print(f"  {date_str}  ✗ 跳過（影片 {vid} 無法處理）")
             continue
 
-        if str(d) in existing_dates:
-            print(f"  {d}  — 已有資料，跳過")
-            continue
-
-        print(f"  {d}  →  {data['title'][:50]}")
+        print(f"  {date_str}  →  {data['title'][:50]}")
         if args.dry_run:
-            print(f"         [dry-run] sentences: {[s['text'][:40]+'…' for s in data['sentences']]}")
+            for s in data["sentences"]:
+                print(f"           [{s['start']}–{s['end']}s] {s['text'][:55]}")
         else:
             try:
-                upsert_challenge(sb, str(d), vid, data["title"], data["channel"], data["sentences"])
-                print(f"         ✓ 已寫入 Supabase")
+                upsert_challenge(sb, date_str, vid,
+                                 data["title"], data["channel"], data["sentences"])
+                print(f"           ✓ 已寫入 Supabase")
             except Exception as e:
-                print(f"         ✗ 寫入失敗：{e}")
+                print(f"           ✗ 寫入失敗：{e}")
 
     print("\n完成！")
 

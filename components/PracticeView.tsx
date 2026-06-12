@@ -284,6 +284,17 @@ export default function PracticeView({
     []
   );
 
+  const handleRecordingDeleted = useCallback(
+    (recId: string) => {
+      setRecordings((prev) => {
+        const next = prev.filter((r) => r.id !== recId);
+        setRecordedSet(new Set(next.map((r) => r.sentence_idx)));
+        return next;
+      });
+    },
+    []
+  );
+
   const handleCheckin = useCallback(async () => {
     const makeup = date !== today;
     try {
@@ -516,6 +527,7 @@ export default function PracticeView({
           onPauseToggle={handlePauseToggle}
           onTimeAdjust={(field, delta) => handleTimeAdjust(i, field, delta)}
           onRecordingAdded={handleRecordingAdded}
+          onRecordingDeleted={handleRecordingDeleted}
           onToast={onToast}
         />
       ))}
