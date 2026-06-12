@@ -19,12 +19,14 @@ load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 # ── 依賴確認 ──────────────────────────────────────────────────────────────────
 try:
-    from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
+    from youtube_transcript_api import YouTubeTranscriptApi
+    from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 except ImportError:
     sys.exit("請先安裝依賴：pip install -r scripts/requirements.txt")
 
 try:
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types as genai_types
 except ImportError:
     sys.exit("請先安裝依賴：pip install -r scripts/requirements.txt")
 
@@ -39,15 +41,13 @@ except ImportError:
 def get_transcript(video_id: str) -> list[dict]:
     """取得字幕，優先英文。回傳 [{text, start, duration}, ...]"""
     try:
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-        # 優先手動英文，其次自動英文
-        try:
-            t = transcript_list.find_manually_created_transcript(["en", "en-US", "en-GB"])
-        except Exception:
-            t = transcript_list.find_generated_transcript(["en", "en-US", "en-GB"])
-        return t.fetch()
+        ytt = YouTubeTranscriptApi()
+        fetched = ytt.fetch(video_id, languages=["en", "en-US", "en-GB"])
+        return [{"text": s.text, "start": s.start, "duration": s.duration} for s in fetched]
     except (TranscriptsDisabled, NoTranscriptFound) as e:
         raise RuntimeError(f"影片 {video_id} 無英文字幕：{e}")
+    except Exception as e:
+        raise RuntimeError(f"影片 {video_id} 字幕取得失敗：{e}")
 
 
 def transcript_to_text(entries: list[dict], max_chars=8000) -> str:
@@ -114,11 +114,24 @@ GEMINI_PROMPT = """\
 """
 
 
-def ask_gemini(transcript_text: str, api_key: str) -> list[dict]:
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.0-flash")
+def ask_gemini(transcript_text: str, api_key: str, retries: int = 3) -> list[dict]:
+    import time
+    client = genai.Client(api_key=api_key)
     prompt = GEMINI_PROMPT.format(transcript=transcript_text)
-    response = model.generate_content(prompt)
+    for attempt in range(retries):
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt,
+            )
+            break
+        except Exception as e:
+            if attempt < retries - 1 and ("503" in str(e) or "UNAVAILABLE" in str(e)):
+                wait = 10 * (attempt + 1)
+                print(f"    ⏳ 暫時無法連線，{wait}s 後重試…")
+                time.sleep(wait)
+            else:
+                raise
     raw = response.text.strip()
 
     # 抓出 JSON block
@@ -171,6 +184,7 @@ def main():
     parser.add_argument("--start", type=str, default=None, help="起始日期 YYYY-MM-DD（預設：明天）")
     parser.add_argument("--count", type=int, default=30, help="填充天數（預設：30）")
     parser.add_argument("--dry-run", action="store_true", help="只印出，不寫入 Supabase")
+    parser.add_argument("--skip-existing", action="store_true", help="跳過 Supabase 已有資料的日期")
     args = parser.parse_args()
 
     # 讀取 API key
@@ -227,8 +241,14 @@ def main():
 
     # 建立 Supabase client（非 dry-run）
     sb = None
+    existing_dates: set[str] = set()
     if not args.dry_run:
         sb = create_client(supabase_url, supabase_key)
+        if args.skip_existing:
+            rows = sb.table("daily_challenges").select("date").execute()
+            existing_dates = {r["date"] for r in (rows.data or [])}
+            if existing_dates:
+                print(f"  Supabase 已有 {len(existing_dates)} 天資料，這些日期將跳過\n")
 
     # 寫入每天
     print("\n寫入每日挑戰：")
@@ -237,6 +257,10 @@ def main():
         data = cache.get(vid)
         if data is None:
             print(f"  {d}  ✗ 跳過（影片 {vid} 無法處理）")
+            continue
+
+        if str(d) in existing_dates:
+            print(f"  {d}  — 已有資料，跳過")
             continue
 
         print(f"  {d}  →  {data['title'][:50]}")
