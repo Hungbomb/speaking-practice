@@ -358,63 +358,68 @@ export default function PracticeView({
         )}
       </div>
 
-      {/* Video card */}
-      {challenge && (
+      {/* Video card — always rendered so #yt-player exists when YouTube API fires */}
+      <div
+        style={{
+          background: "var(--card)",
+          border: "1px solid var(--line)",
+          borderRadius: 22,
+          overflow: "hidden",
+        }}
+      >
+        {/* Title row — only show when loaded */}
         <div
           style={{
-            background: "var(--card)",
-            border: "1px solid var(--line)",
-            borderRadius: 22,
-            overflow: "hidden",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+            padding: "16px 20px 12px",
+            gap: 12,
+            flexWrap: "wrap",
+            minHeight: 52,
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "baseline",
-              padding: "16px 20px 12px",
-              gap: 12,
-              flexWrap: "wrap",
-            }}
-          >
-            <h2 style={{ fontSize: 15.5, fontWeight: 600 }}>
-              {challenge.video.title}
-            </h2>
-            <span style={{ fontSize: 12.5, color: "var(--ink-soft)" }}>
-              {challenge.video.channel}
-            </span>
-          </div>
+          {challenge ? (
+            <>
+              <h2 style={{ fontSize: 15.5, fontWeight: 600 }}>{challenge.video.title}</h2>
+              <span style={{ fontSize: 12.5, color: "var(--ink-soft)" }}>{challenge.video.channel}</span>
+            </>
+          ) : (
+            <span style={{ fontSize: 13.5, color: "var(--ink-soft)" }}>載入中…</span>
+          )}
+        </div>
 
-          {/* Player */}
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              aspectRatio: "16/9",
-              background: "#171310",
-            }}
-          >
-            {ytError && (
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#CBB9A6",
-                  fontSize: 13.5,
-                  textAlign: "center",
-                  padding: 20,
-                  lineHeight: 1.8,
-                }}
-              >
-                {ytError}
-              </div>
-            )}
-            <div id="yt-player" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
-          </div>
+        {/* Player — always in DOM */}
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            aspectRatio: "16/9",
+            background: "#171310",
+          }}
+        >
+          {ytError && (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#CBB9A6",
+                fontSize: 13.5,
+                textAlign: "center",
+                padding: 20,
+                lineHeight: 1.8,
+              }}
+            >
+              {ytError}
+            </div>
+          )}
+          <div id="yt-player" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
+        </div>
+
+        {challenge && (<>
 
           {/* Segment track */}
           <div style={{ padding: "16px 20px 20px" }}>
@@ -493,8 +498,8 @@ export default function PracticeView({
               })}
             </div>
           </div>
-        </div>
-      )}
+        </>)}
+      </div>
 
       {/* Sentence cards */}
       {sentences.map((s, i) => (
