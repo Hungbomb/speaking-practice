@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 """
-每日口說挑戰 — 內容自動生成腳本（Gemini 原生 YouTube 理解）
-用法：
-  python generate_challenges.py --videos "videoId1 videoId2 ..." --start 2026-06-01 --count 30
+每日口說挑戰 — 內容自動生成腳本
+流程：yt-dlp 抓字幕 → Gemini 選句（精確時間戳）→ 無字幕時改用 Gemini 直接看影片
 
-參數：
-  --videos      YouTube 影片 ID，空格分隔（可省略 → 讀 video_ids.txt）
-  --start       起始日期 YYYY-MM-DD（預設：明天）
-  --count       要填充的天數（預設：30）
-  --dry-run     只印出，不寫入 Supabase
-  --skip-existing  跳過 Supabase 已有資料的日期
+用法：
+  python generate_challenges.py --start 2026-07-01 --count 31
+  python generate_challenges.py --videos "id1 id2" --start 2026-07-01 --count 5
+  python generate_challenges.py --start 2026-07-01 --count 31 --skip-existing
+  python generate_challenges.py --start 2026-07-01 --count 5 --dry-run
 """
 
-import os, sys, json, argparse, textwrap, re, time, random
+import os, sys, json, argparse, textwrap, re, time, random, subprocess, tempfile
+import xml.etree.ElementTree as ET
 from datetime import date, timedelta
 from dotenv import load_dotenv
 
@@ -22,15 +21,15 @@ try:
     from google import genai
     from google.genai import types as genai_types
 except ImportError:
-    sys.exit("請先安裝依賴：pip install -r scripts/requirements.txt")
+    sys.exit("請先安裝：pip install -r requirements.txt")
 
 try:
     from supabase import create_client
 except ImportError:
-    sys.exit("請先安裝依賴：pip install -r scripts/requirements.txt")
+    sys.exit("請先安裝：pip install -r requirements.txt")
 
 
-# ── YouTube oEmbed（取標題，不需 API key） ──────────────────────────────────
+# ── YouTube oEmbed（取標題，不需 API key） ─────────────────────────────────
 
 def get_video_title(video_id: str) -> tuple[str, str]:
     import urllib.request
@@ -43,23 +42,206 @@ def get_video_title(video_id: str) -> tuple[str, str]:
         return video_id, "YouTube"
 
 
-# ── Gemini 直接讀 YouTube 影片 ─────────────────────────────────────────────
+# ── yt-dlp 字幕下載與解析 ─────────────────────────────────────────────────
 
-GEMINI_PROMPT = """\
-你是英語口說練習教材設計師。請仔細觀看這段 YouTube 影片。
+def vtt_ts_to_sec(ts: str) -> float:
+    """HH:MM:SS.mmm → 秒"""
+    h, m, rest = ts.split(":")
+    s, ms = rest.split(".")
+    return int(h) * 3600 + int(m) * 60 + int(s) + int(ms.ljust(3, "0")[:3]) / 1000
 
-從影片中挑選 **3 個** 適合中等英語學習者（B2 程度）練習口說的句子，標準：
-1. 句子完整、語意清楚，不依賴前後文也能理解
+
+def ttml_ts_to_sec(ts: str) -> float:
+    """TTML 時間格式 HH:MM:SS.mmm 或 SS.mmm → 秒"""
+    if ts.count(":") == 2:
+        h, m, rest = ts.split(":")
+        if "." in rest:
+            s, ms = rest.split(".")
+            return int(h) * 3600 + int(m) * 60 + int(s) + int(ms.ljust(3, "0")[:3]) / 1000
+        return int(h) * 3600 + int(m) * 60 + float(rest)
+    return float(ts.rstrip("s"))
+
+
+def parse_ttml(path: str) -> list[dict]:
+    """解析 TTML/XML 字幕，回傳 [{start, end, text}, ...]"""
+    with open(path, encoding="utf-8") as f:
+        content = f.read()
+
+    # 移除 namespace 方便解析
+    content = re.sub(r' xmlns(?::[a-z]+)?="[^"]*"', "", content)
+    content = re.sub(r"<(/?)(?:[a-z]+:)([a-zA-Z])", r"<\1\2", content)
+
+    try:
+        root = ET.fromstring(content)
+    except ET.ParseError:
+        return []
+
+    segments = []
+    for p in root.iter("p"):
+        begin = p.get("begin", "")
+        end   = p.get("end",   "")
+        text  = " ".join(p.itertext()).strip()
+        text  = re.sub(r"\s+", " ", text)
+        if begin and end and text:
+            try:
+                segments.append({
+                    "start": ttml_ts_to_sec(begin),
+                    "end":   ttml_ts_to_sec(end),
+                    "text":  text,
+                })
+            except Exception:
+                pass
+    return segments
+
+
+def parse_vtt_dedup(path: str) -> list[dict]:
+    """
+    解析 YouTube auto-generated VTT。
+    YouTube 用滾動視窗格式（每格只加 1 個新詞），需要去重才能還原完整文字。
+    策略：清除所有 XML tag 後，找出每格相較前一格「新增」的部分。
+    """
+    with open(path, encoding="utf-8") as f:
+        content = f.read()
+
+    # 先把所有 cue 的 start/end/clean_text 讀出來
+    raw: list[tuple[float, float, str]] = []
+    for block in re.split(r"\n{2,}", content):
+        m = re.match(r"(\d{2}:\d{2}:\d{2}\.\d{3}) --> (\d{2}:\d{2}:\d{2}\.\d{3})", block)
+        if not m:
+            continue
+        start = vtt_ts_to_sec(m.group(1))
+        end   = vtt_ts_to_sec(m.group(2))
+        text  = re.sub(r"<[^>]+>", "", block[m.end():]).strip()
+        text  = re.sub(r"\s+", " ", text)
+        if text:
+            raw.append((start, end, text))
+
+    if not raw:
+        return []
+
+    # 去重：找每格與前一格文字的重疊字首，只保留新增部分
+    new_words_by_start: dict[float, list[str]] = {}
+    for i, (start, end, text) in enumerate(raw):
+        curr = text.split()
+        if i == 0:
+            new_words_by_start.setdefault(start, []).extend(curr)
+            continue
+
+        prev = raw[i - 1][2].split()
+        # 找 curr 開頭有多少字與 prev 結尾相同（重疊部分）
+        overlap = 0
+        for size in range(min(len(prev), len(curr)), 0, -1):
+            if prev[-size:] == curr[:size]:
+                overlap = size
+                break
+        new = curr[overlap:]
+        if new:
+            new_words_by_start.setdefault(start, []).extend(new)
+
+    # 把詞流合回段落（遇標點或停頓 > 1.5s 就切段）
+    timeline = sorted(new_words_by_start.items())  # [(start_sec, [words])]
+    flat: list[tuple[float, str]] = []
+    for ts, ws in timeline:
+        for w in ws:
+            flat.append((ts, w))
+
+    if not flat:
+        return []
+
+    segments: list[dict] = []
+    seg_words: list[tuple[float, str]] = []
+    seg_start = flat[0][0]
+
+    for i, (ts, word) in enumerate(flat):
+        seg_words.append((ts, word))
+        next_ts = flat[i + 1][0] if i + 1 < len(flat) else ts + 2.0
+        is_end  = (
+            re.search(r"[.!?]$", word)
+            or (next_ts - ts > 1.5)
+            or len(seg_words) >= 25
+        )
+        if is_end:
+            segments.append({
+                "start": round(seg_start, 2),
+                "end":   round(next_ts, 2),
+                "text":  " ".join(w for _, w in seg_words),
+            })
+            seg_start = next_ts
+            seg_words = []
+
+    if seg_words:
+        segments.append({
+            "start": round(seg_start, 2),
+            "end":   round(flat[-1][0] + 1.0, 2),
+            "text":  " ".join(w for _, w in seg_words),
+        })
+
+    return segments
+
+
+def download_transcript(video_id: str, retries: int = 3) -> list[dict] | None:
+    """
+    用 yt-dlp 下載英文字幕，優先 TTML（乾淨格式），fallback VTT。
+    自動處理 429 限速，最多重試 retries 次。
+    回傳句子層級片段列表，或 None（無字幕）。
+    """
+    with tempfile.TemporaryDirectory() as tmpdir:
+        base = os.path.join(tmpdir, video_id)
+
+        for fmt in ["ttml", "vtt"]:
+            for attempt in range(retries):
+                cmd = [
+                    "yt-dlp",
+                    "--extractor-args", "youtube:player_client=tv_embedded",
+                    "--write-auto-subs", "--write-subs",
+                    "--sub-lang", "en",
+                    "--sub-format", fmt,
+                    "--skip-download",
+                    "--no-warnings",
+                    "-o", base,
+                    f"https://www.youtube.com/watch?v={video_id}",
+                ]
+                try:
+                    result = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+                except subprocess.TimeoutExpired:
+                    break
+
+                # 偵測 429 限速
+                if "429" in result.stderr or "Too Many Requests" in result.stderr:
+                    wait = 60 * (attempt + 1)  # 60s, 120s, 180s
+                    print(f"    ⏳ YouTube 字幕限速，{wait}s 後重試…")
+                    time.sleep(wait)
+                    continue
+
+                # 找下載的檔案
+                found = [
+                    os.path.join(tmpdir, f)
+                    for f in os.listdir(tmpdir)
+                    if f.startswith(video_id) and f.endswith(f".{fmt}")
+                ]
+                if not found:
+                    break  # 沒有這個 fmt，試下一個
+
+                segs = parse_ttml(found[0]) if fmt == "ttml" else parse_vtt_dedup(found[0])
+                if segs:
+                    print(f"    📝 字幕 ({fmt})：{len(segs)} 個片段")
+                    return segs
+                break  # 檔案存在但解析失敗，試下一個格式
+
+    return None
+
+
+# ── Gemini：從字幕選句（精確時間戳）─────────────────────────────────────
+
+TRANSCRIPT_PROMPT = """\
+你是英語口說練習教材設計師。以下是 YouTube 影片的字幕，格式為：
+[行號] [開始秒數] 文字
+
+從字幕中挑選 **3 個** 適合中等英語學習者（B2 程度）練習口說的句子：
+1. 完整、語意清楚，不依賴前後文也能理解
 2. 包含一個以上值得學習的片語或用法
-3. **長度：35–50 個英文單字**（這點非常重要，太短的句子不適合練習）
+3. **長度：35–50 個英文單字**（如果單一片段太短，請合併相鄰片段）
 4. 分布在影片不同段落（開頭、中段、後段各一）
-5. 如果原文句子太短，可以把相鄰的兩句合併成一個練習句
-
-**時間戳格式（非常重要）**：
-- 單位是「秒」，不是分鐘
-- 例如：第 2 分 15 秒 = 135.0（不是 2.25）
-- 例如：第 45 秒 = 45.0
-- end 必須比 start 多至少 3 秒（一句話至少說 3 秒）
 
 只輸出以下 JSON，不要任何說明文字：
 
@@ -67,10 +249,10 @@ GEMINI_PROMPT = """\
 [
   {{
     "idx": 1,
-    "start": <開始秒數，例如 45.0>,
-    "end": <結束秒數，例如 52.5>,
-    "text": "<完整英文句子，字數 10–25 字>",
-    "zh": "<自然流暢的繁體中文翻譯>",
+    "seg_start": <第一個片段的行號（整數）>,
+    "seg_end": <最後一個片段的行號（整數，只用一行則與 seg_start 相同）>,
+    "text": "<35–50 字的完整句子>",
+    "zh": "<自然繁體中文翻譯>",
     "kw": [
       {{"w": "<關鍵片語>", "zh": "<中文解釋>"}},
       {{"w": "<關鍵片語2>", "zh": "<中文解釋2>"}}
@@ -82,25 +264,21 @@ GEMINI_PROMPT = """\
 """
 
 
-def analyze_video(video_id: str, api_key: str, retries: int = 3) -> list[dict]:
-    """讓 Gemini 直接觀看 YouTube 影片，回傳 3 個練習句子"""
+def analyze_from_transcript(segments: list[dict], api_key: str, retries: int = 3) -> list[dict]:
+    """Gemini 讀字幕文字選出 3 句，回傳含真實時間戳的結果"""
     client = genai.Client(api_key=api_key)
 
+    lines = [f"[{i:03d}] [{s['start']:.1f}s] {s['text']}" for i, s in enumerate(segments[:400])]
+    full_prompt = "字幕：\n\n" + "\n".join(lines) + "\n\n" + TRANSCRIPT_PROMPT
+
+    raw = ""
     for attempt in range(retries):
         try:
-            response = client.models.generate_content(
+            resp = client.models.generate_content(
                 model="gemini-2.5-flash",
-                contents=[
-                    genai_types.Content(parts=[
-                        genai_types.Part(file_data=genai_types.FileData(
-                            file_uri=f"https://www.youtube.com/watch?v={video_id}",
-                            mime_type="video/mp4",
-                        )),
-                        genai_types.Part(text=GEMINI_PROMPT),
-                    ])
-                ],
+                contents=[genai_types.Content(parts=[genai_types.Part(text=full_prompt)])],
             )
-            raw = response.text.strip()
+            raw = resp.text.strip()
             break
         except Exception as e:
             err = str(e)
@@ -111,69 +289,153 @@ def analyze_video(video_id: str, api_key: str, retries: int = 3) -> list[dict]:
             else:
                 raise
 
-    # 解析 JSON
     match = re.search(r"```json\s*([\s\S]+?)```", raw)
     raw_json = match.group(1).strip() if match else raw.strip("`").strip()
-    sentences = json.loads(raw_json)
-    for i, s in enumerate(sentences):
-        s["idx"] = i + 1
+    result = json.loads(raw_json)
 
-    # 時間戳單位修正：若任何句子 end-start < 2 秒，很可能是以分鐘為單位
-    if sentences and any((s["end"] - s["start"]) < 2.0 for s in sentences):
-        print(f"    ⚠️  偵測到分鐘制時間戳，自動乘以 60")
-        for s in sentences:
-            s["start"] = round(s["start"] * 60, 1)
-            s["end"]   = round(s["end"]   * 60, 1)
+    n = len(segments)
+    for i, r in enumerate(result):
+        r["idx"] = i + 1
+        s_idx = max(0, min(int(r.pop("seg_start")), n - 1))
+        e_idx = max(0, min(int(r.pop("seg_end")),   n - 1))
+        r["start"] = round(segments[s_idx]["start"], 1)
+        r["end"]   = round(segments[e_idx]["end"],   1)
 
-    return sentences
+    return result
 
 
-# ── Supabase ────────────────────────────────────────────────────────────────
+# ── Gemini Fallback：直接看影片（時間戳較不精確）────────────────────────
+
+VIDEO_PROMPT = """\
+你是英語口說練習教材設計師。請仔細觀看這段 YouTube 影片。
+
+從影片中挑選 **3 個** 適合中等英語學習者（B2 程度）練習口說的句子：
+1. 完整、語意清楚，不依賴前後文也能理解
+2. 包含一個以上值得學習的片語或用法
+3. **長度：35–50 個英文單字**（如果一句話太短，可把相鄰句子合併）
+4. 分布在影片不同段落（開頭、中段、後段各一）
+
+**時間戳格式（非常重要）**：
+- 單位是「秒」，不是分鐘
+- 例如：第 2 分 15 秒 = 135.0（不是 2.25）
+- end 必須比 start 多至少 5 秒
+
+只輸出以下 JSON，不要任何說明文字：
+
+```json
+[
+  {{
+    "idx": 1,
+    "start": <開始秒數，例如 45.0>,
+    "end": <結束秒數，例如 58.0>,
+    "text": "<35–50 字的完整句子>",
+    "zh": "<自然繁體中文翻譯>",
+    "kw": [
+      {{"w": "<關鍵片語>", "zh": "<中文解釋>"}},
+      {{"w": "<關鍵片語2>", "zh": "<中文解釋2>"}}
+    ]
+  }},
+  ...
+]
+```
+"""
+
+
+def analyze_from_video(video_id: str, api_key: str, retries: int = 3) -> list[dict]:
+    """Fallback：Gemini 直接看影片（用於沒有字幕的影片）"""
+    client = genai.Client(api_key=api_key)
+
+    raw = ""
+    for attempt in range(retries):
+        try:
+            resp = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=[genai_types.Content(parts=[
+                    genai_types.Part(file_data=genai_types.FileData(
+                        file_uri=f"https://www.youtube.com/watch?v={video_id}",
+                        mime_type="video/mp4",
+                    )),
+                    genai_types.Part(text=VIDEO_PROMPT),
+                ])],
+            )
+            raw = resp.text.strip()
+            break
+        except Exception as e:
+            err = str(e)
+            if attempt < retries - 1 and any(x in err for x in ["503", "UNAVAILABLE", "429", "quota"]):
+                wait = 15 * (attempt + 1)
+                print(f"    ⏳ Gemini 暫時無法回應，{wait}s 後重試（{attempt+1}/{retries}）…")
+                time.sleep(wait)
+            else:
+                raise
+
+    match = re.search(r"```json\s*([\s\S]+?)```", raw)
+    raw_json = match.group(1).strip() if match else raw.strip("`").strip()
+    result = json.loads(raw_json)
+
+    for i, r in enumerate(result):
+        r["idx"] = i + 1
+
+    # 偵測分鐘制時間戳，自動修正
+    if result and any((r["end"] - r["start"]) < 2.0 for r in result):
+        print("    ⚠️  偵測到分鐘制時間戳，自動乘以 60")
+        for r in result:
+            r["start"] = round(r["start"] * 60, 1)
+            r["end"]   = round(r["end"]   * 60, 1)
+
+    return result
+
+
+def analyze_video(video_id: str, api_key: str) -> list[dict]:
+    """主入口：先嘗試字幕，無字幕才用 Gemini 看影片"""
+    segments = download_transcript(video_id)
+    if segments:
+        return analyze_from_transcript(segments, api_key)
+    print("    🎬 無字幕，改用 Gemini 直接看影片")
+    return analyze_from_video(video_id, api_key)
+
+
+# ── Supabase ──────────────────────────────────────────────────────────────
 
 def upsert_challenge(client, target_date: str, video_id: str,
                      title: str, channel: str, sentences: list):
     client.table("daily_challenges").upsert({
-        "date": target_date,
-        "video_id": video_id,
-        "video_title": title,
+        "date":          target_date,
+        "video_id":      video_id,
+        "video_title":   title,
         "video_channel": channel,
-        "sentences": sentences,
+        "sentences":     sentences,
     }).execute()
 
 
-# ── 主流程 ──────────────────────────────────────────────────────────────────
+# ── 主流程 ────────────────────────────────────────────────────────────────
 
 def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="為每日口說挑戰 app 批量生成練習內容（Gemini 原生 YouTube 理解）",
+        description="為每日口說挑戰 app 批量生成練習內容",
         epilog=textwrap.dedent("""\
         範例：
-          # 讀取 video_ids.txt，填充 6 月全月
-          python scripts/generate_challenges.py --start 2026-06-01 --count 30
-
-          # 直接指定影片
-          python scripts/generate_challenges.py --videos "id1 id2 id3" --count 10
-
-          # 只補空白日期
-          python scripts/generate_challenges.py --start 2026-06-01 --count 30 --skip-existing
+          python generate_challenges.py --start 2026-07-01 --count 31
+          python generate_challenges.py --start 2026-07-01 --count 31 --skip-existing
+          python generate_challenges.py --videos "id1 id2" --start 2026-07-01 --count 2 --dry-run
         """)
     )
-    parser.add_argument("--videos", type=str, default=None, help="影片 ID 空格分隔")
-    parser.add_argument("--start", type=str, default=None, help="起始日期（預設：明天）")
-    parser.add_argument("--count", type=int, default=30, help="天數（預設：30）")
-    parser.add_argument("--dry-run", action="store_true", help="只印出，不寫入")
-    parser.add_argument("--skip-existing", action="store_true", help="跳過已有資料的日期")
+    parser.add_argument("--videos",        type=str, default=None)
+    parser.add_argument("--start",         type=str, default=None)
+    parser.add_argument("--count",         type=int, default=30)
+    parser.add_argument("--dry-run",       action="store_true")
+    parser.add_argument("--skip-existing", action="store_true")
     args = parser.parse_args()
 
-    gemini_key    = os.getenv("GEMINI_API_KEY")
-    supabase_url  = os.getenv("SUPABASE_URL")
-    supabase_key  = os.getenv("SUPABASE_SERVICE_KEY")
+    gemini_key   = os.getenv("GEMINI_API_KEY")
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
 
     if not gemini_key:
-        sys.exit("缺少 GEMINI_API_KEY，請在 scripts/.env 設定")
+        sys.exit("缺少 GEMINI_API_KEY")
     if not args.dry_run and (not supabase_url or not supabase_key):
-        sys.exit("缺少 SUPABASE_URL 或 SUPABASE_SERVICE_KEY，請在 scripts/.env 設定")
+        sys.exit("缺少 SUPABASE_URL 或 SUPABASE_SERVICE_KEY")
 
     # 影片清單
     if args.videos:
@@ -185,29 +447,27 @@ def main():
                 video_ids = f.read().split()
             print(f"從 video_ids.txt 讀取 {len(video_ids)} 支影片")
         else:
-            raw = input("請輸入 YouTube 影片 ID（空格分隔）：").strip()
-            video_ids = raw.split()
+            video_ids = input("請輸入影片 ID（空格分隔）：").strip().split()
 
     if not video_ids:
-        sys.exit("沒有提供任何影片 ID")
+        sys.exit("沒有提供影片 ID")
 
     # 日期範圍
     start_date = date.fromisoformat(args.start) if args.start else date.today() + timedelta(days=1)
     dates = [start_date + timedelta(days=i) for i in range(args.count)]
 
-    # 把影片隨機分配到各天（每支影片儘量只用一次）
+    # 把影片隨機分配（每支儘量只用一次，每輪重新洗牌）
     assigned: list[str] = []
     pool = video_ids.copy()
     random.shuffle(pool)
     for i in range(len(dates)):
         assigned.append(pool[i % len(pool)])
         if (i + 1) % len(pool) == 0:
-            random.shuffle(pool)  # 每輪重新洗牌
+            random.shuffle(pool)
 
     print(f"\n將為 {len(dates)} 天（{dates[0]} ～ {dates[-1]}）生成內容")
     print(f"影片池 {len(video_ids)} 支，隨機分配\n")
 
-    # Supabase client
     sb = None
     existing_dates: set[str] = set()
     if not args.dry_run:
@@ -218,29 +478,27 @@ def main():
             if existing_dates:
                 print(f"  Supabase 已有 {len(existing_dates)} 天，這些日期將跳過\n")
 
-    # 已分析過的影片 cache（同影片只呼叫 Gemini 一次）
+    # 已分析過的影片 cache
     cache: dict[str, dict | None] = {}
 
-    print("正在生成每日挑戰（Gemini 直接讀取 YouTube 影片）：\n")
+    print("正在生成每日挑戰：\n")
     for target_date, vid in zip(dates, assigned):
         date_str = str(target_date)
-
         if date_str in existing_dates:
             print(f"  {date_str}  — 已有資料，跳過")
             continue
 
-        # 取得或分析影片
         if vid not in cache:
             title, channel = get_video_title(vid)
-            print(f"  分析影片 {vid}  ·  {title[:50]}")
+            print(f"  分析影片 {vid}  ·  {title[:55]}")
             print(f"  頻道：{channel}")
             try:
                 sentences = analyze_video(vid, gemini_key)
                 cache[vid] = {"title": title, "channel": channel, "sentences": sentences}
                 print(f"  ✓ 選出 {len(sentences)} 句")
-                time.sleep(2)  # 避免 Gemini rate limit
+                time.sleep(5)  # 避免 Gemini + YouTube 雙重限速
             except Exception as e:
-                print(f"  ✗ Gemini 分析失敗：{e}")
+                print(f"  ✗ 分析失敗：{e}")
                 cache[vid] = None
 
         data = cache.get(vid)
@@ -248,15 +506,16 @@ def main():
             print(f"  {date_str}  ✗ 跳過（影片 {vid} 無法處理）")
             continue
 
-        print(f"  {date_str}  →  {data['title'][:50]}")
+        print(f"  {date_str}  →  {data['title'][:55]}")
         if args.dry_run:
             for s in data["sentences"]:
-                print(f"           [{s['start']}–{s['end']}s] {s['text'][:55]}")
+                wc = len(s["text"].split())
+                print(f"           [{s['start']}–{s['end']}s | {wc}字] {s['text'][:60]}")
         else:
             try:
                 upsert_challenge(sb, date_str, vid,
                                  data["title"], data["channel"], data["sentences"])
-                print(f"           ✓ 已寫入 Supabase")
+                print("           ✓ 已寫入 Supabase")
             except Exception as e:
                 print(f"           ✗ 寫入失敗：{e}")
 
