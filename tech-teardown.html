@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拆解一個口說練習 App — 背後的技術概念</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Display serif: Fraunces / 思源宋體, 標籤: Space Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Space+Mono:wght@400;700&family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   主題變數 —— 改這裡就能改整體外觀
+   BLUEPRINT NOTEBOOK（藍圖筆記風）
+   =========================================== */
+:root{
+  --paper:#f5f1e6; --paper2:#efe9da; --ink:#1c1b17; --ink2:#5c584d;
+  --blue:#2b5fa8; --blue-soft:rgba(43,95,168,.16); --terra:#c65d3b;
+  --white:#fffdf8;
+  --serif:"Fraunces","Noto Serif TC",serif;
+  --sans:"Noto Sans TC",sans-serif;
+  --mono:"Space Mono",monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --stage-bg:#d9d2c1; --slide-bg:var(--paper);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ===========================================
+   FIXED 16:9 STAGE —— viewport-base.css 全文
+   =========================================== */
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg,#000)}
+.deck-viewport{position:fixed;inset:0;overflow:hidden;background:var(--stage-bg,#000)}
+.deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;background:var(--slide-bg,#fff)}
+.slide{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;display:block;visibility:hidden;opacity:0;pointer-events:none;background:var(--slide-bg,#fff)}
+.slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1}
+img,video,canvas,svg{max-width:100%;max-height:100%}
+.deck-controls{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:1000}
+@media print{
+  html,body{width:1920px;height:auto;overflow:visible;background:#fff}
+  .deck-viewport{position:static;overflow:visible;background:#fff}
+  .deck-stage{position:static;width:auto;height:auto;transform:none!important;background:none}
+  .slide{position:relative;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;width:1920px;height:1080px;break-after:page;page-break-after:always}
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  .deck-controls{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.2s!important}}
+
+/* ===========================================
+   共用：方格紙背景 / 邊界線 / 角標
+   =========================================== */
+.slide{font-family:var(--sans);color:var(--ink);background:var(--paper)}
+.paper{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--blue-soft) 1px,transparent 1px),
+    linear-gradient(90deg,var(--blue-soft) 1px,transparent 1px);
+  background-size:48px 48px}
+.paper::after{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(43,95,168,.26) 2px,transparent 2px),
+    linear-gradient(90deg,rgba(43,95,168,.26) 2px,transparent 2px);
+  background-size:240px 240px}
+.margin-rule{position:absolute;left:150px;top:0;bottom:0;width:3px;background:rgba(198,93,59,.45);pointer-events:none}
+.tick{position:absolute;width:44px;height:44px;pointer-events:none}
+.tick::before,.tick::after{content:"";position:absolute;background:var(--blue)}
+.tick::before{width:44px;height:3px;top:0}.tick::after{width:3px;height:44px;left:0}
+.t-tl{left:96px;top:96px}.t-br{right:96px;bottom:96px;transform:rotate(180deg)}
+
+/* 版面框（內容區，避開左邊界線） */
+.frame{position:absolute;left:210px;right:130px;top:132px;bottom:118px}
+
+/* 眉標 */
+.eyebrow{font-family:var(--mono);font-size:25px;letter-spacing:.2em;color:var(--blue);
+  text-transform:uppercase;display:flex;align-items:center;gap:16px}
+.eyebrow::before{content:"";width:56px;height:3px;background:var(--terra);flex:none}
+.kicker{font-family:var(--mono);font-size:24px;color:var(--terra);letter-spacing:.14em}
+
+/* 標題 */
+.h2{font-family:var(--serif);font-weight:900;font-size:92px;line-height:1.0;
+  letter-spacing:-.01em;color:var(--ink);margin:26px 0 0}
+.h2 .u{position:relative;color:var(--blue);white-space:nowrap}
+.h2 .u::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:12px;background:rgba(198,93,59,.32);z-index:0}
+.h2 .u>span{position:relative;z-index:1}
+.lead{font-size:34px;color:var(--ink2);margin:28px 0 0;line-height:1.55;max-width:1360px;font-weight:500}
+.lead b{color:var(--terra);font-weight:700}
+.lead .code{font-family:var(--mono);font-size:29px;color:var(--blue);background:rgba(43,95,168,.08);padding:2px 10px;border-radius:5px}
+
+/* 頁尾與頁碼 */
+.foot{position:absolute;left:210px;bottom:52px;font-family:var(--mono);font-size:21px;color:var(--ink2);letter-spacing:.05em}
+.pageno{position:absolute;right:130px;bottom:52px;font-family:var(--mono);font-size:21px;color:var(--blue)}
+
+/* 卡片 / 晶片 / 註解 通用元件 */
+.card{background:var(--white);border:2px solid var(--ink);padding:32px 34px;
+  box-shadow:6px 6px 0 rgba(43,95,168,.9)}
+.card.terra{box-shadow:6px 6px 0 rgba(198,93,59,.9)}
+.card h3{font-family:var(--serif);font-weight:700;font-size:38px;color:var(--ink);margin:0 0 12px;display:flex;align-items:center;gap:14px}
+.card .num{font-family:var(--mono);font-size:24px;color:var(--white);background:var(--blue);
+  width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;flex:none}
+.card.terra .num{background:var(--terra)}
+.card p{font-size:26px;color:var(--ink2);line-height:1.55}
+.card .tagline{font-family:var(--mono);font-size:20px;color:var(--blue);margin-top:14px;letter-spacing:.04em}
+
+.chip{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:23px;color:var(--ink);
+  border:2px solid var(--ink);padding:11px 20px;background:var(--white);box-shadow:4px 4px 0 rgba(43,95,168,.85)}
+.chip.b{box-shadow:4px 4px 0 rgba(198,93,59,.85)}
+
+/* 手寫感虛線註解 */
+.note{font-family:var(--mono);font-size:22px;color:var(--blue);border:2px dashed var(--blue);
+  padding:18px 20px;line-height:1.55;background:rgba(245,241,230,.75)}
+.note .n{color:var(--terra);font-weight:700}
+
+/* ===========================================
+   動畫（進場 stagger）
+   =========================================== */
+.reveal{opacity:0;transform:translateY(28px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.slide.visible .reveal{opacity:1;transform:none}
+.slide.visible .reveal.r1{transition-delay:.06s}
+.slide.visible .reveal.r2{transition-delay:.20s}
+.slide.visible .reveal.r3{transition-delay:.34s}
+.slide.visible .reveal.r4{transition-delay:.48s}
+.slide.visible .reveal.r5{transition-delay:.62s}
+.slide.visible .reveal.r6{transition-delay:.76s}
+
+/* ===========================================
+   標題頁（Slide 1）
+   =========================================== */
+.title-slide .frame{top:150px;bottom:70px}
+.title-slide .h1{font-family:var(--serif);font-weight:900;font-size:154px;line-height:.95;
+  letter-spacing:-.01em;color:var(--ink);margin:40px 0 0}
+.title-slide .h1 .u{position:relative;color:var(--blue)}
+.title-slide .h1 .u::after{content:"";position:absolute;left:0;right:0;bottom:8px;height:16px;background:rgba(198,93,59,.35);z-index:0}
+.title-slide .h1 .u>span{position:relative;z-index:1}
+.title-note{position:absolute;right:130px;top:150px;width:310px;transform:rotate(2deg)}
+
+/* ===========================================
+   格線佈局工具
+   =========================================== */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.grid-2-1{display:grid;grid-template-columns:1.35fr 1fr;gap:44px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:22px}
+
+/* 流程圖節點 */
+.flow{display:flex;align-items:stretch;gap:0}
+.node{flex:1;background:var(--white);border:2px solid var(--ink);padding:26px 22px;text-align:center;position:relative}
+.node .lbl{font-family:var(--mono);font-size:20px;color:var(--blue);letter-spacing:.06em}
+.node .big{font-family:var(--serif);font-weight:700;font-size:34px;color:var(--ink);margin:8px 0 6px}
+.node .sm{font-size:21px;color:var(--ink2);line-height:1.4}
+.node.terra{border-color:var(--terra)}
+.arrow{display:flex;align-items:center;justify-content:center;width:64px;color:var(--terra);font-size:44px;font-weight:700;flex:none}
+
+/* 表格式對照 */
+.rows{display:flex;flex-direction:column;gap:16px}
+.row{display:grid;grid-template-columns:280px 1fr;gap:26px;align-items:center;
+  background:var(--white);border:2px solid var(--ink);padding:20px 26px;box-shadow:4px 4px 0 rgba(43,95,168,.5)}
+.row .k{font-family:var(--mono);font-size:24px;color:var(--blue);font-weight:700}
+.row .v{font-size:25px;color:var(--ink2);line-height:1.45}
+.row .v b{color:var(--ink);font-weight:700}
+
+/* 程式碼片段 */
+.code-block{font-family:var(--mono);font-size:24px;line-height:1.7;background:#20242b;color:#e6edf3;
+  border:2px solid var(--ink);padding:26px 30px;box-shadow:6px 6px 0 rgba(43,95,168,.85);white-space:pre;overflow:hidden}
+.code-block .c{color:#7d8590}.code-block .k{color:#ff9d6b}.code-block .s{color:#8ddb8c}.code-block .b{color:#79c0ff}
+
+/* Tier 學習分層 */
+.tier{background:var(--white);border:2px solid var(--ink);padding:26px 30px;position:relative}
+.tier .badge{position:absolute;top:-18px;left:26px;font-family:var(--mono);font-size:21px;font-weight:700;
+  color:var(--white);background:var(--blue);padding:6px 16px;letter-spacing:.05em}
+.tier.t2 .badge{background:var(--terra)}
+.tier.t3 .badge{background:var(--ink)}
+.tier h3{font-family:var(--serif);font-weight:700;font-size:34px;margin:8px 0 10px}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.tier li{font-size:25px;color:var(--ink2);line-height:1.4;padding-left:32px;position:relative}
+.tier li::before{content:"▸";position:absolute;left:0;color:var(--terra);font-weight:700}
+.tier li b{color:var(--ink)}
+
+/* 收尾頁 */
+.closing .frame{top:170px}
+.big-quote{font-family:var(--serif);font-weight:600;font-size:80px;line-height:1.12;color:var(--ink);max-width:1500px}
+.big-quote .u{color:var(--blue)}
+
+/* 行內編輯 UI */
+.edit-hotzone{position:fixed;top:0;left:0;width:80px;height:80px;z-index:10000;cursor:pointer}
+.edit-toggle{position:fixed;top:20px;left:20px;font-size:26px;background:var(--white);border:2px solid var(--ink);
+  border-radius:10px;width:56px;height:56px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:10001;box-shadow:3px 3px 0 var(--blue)}
+.edit-toggle.show,.edit-toggle.active{opacity:1;pointer-events:auto}
+.edit-toggle.active{background:var(--blue);color:#fff}
+[contenteditable="true"]{outline:2px dashed var(--terra);outline-offset:4px;cursor:text;border-radius:4px}
+
+/* 進度頁碼列（在舞台外） */
+.deck-controls{font-family:var(--mono);font-size:20px;color:var(--ink2);background:rgba(245,241,230,.85);
+  border:1px solid var(--blue-soft);padding:6px 16px;border-radius:20px;display:flex;gap:14px;align-items:center}
+.deck-controls b{color:var(--blue)}
+.deck-controls .hint{opacity:.7}
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+  <main class="deck-stage" id="deckStage">
+
+    <!-- ============ SLIDE 1 · 標題 ============ -->
+    <section class="slide title-slide active">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="title-note note reveal r3"><span class="n">// 給程式小白</span><br>不用背程式碼，<br>先看懂「一個 App<br>是怎麼組起來的」。</div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">Project Teardown · 技術導覽</div>
+        <h1 class="h1 reveal r2">拆解一個<br><span class="u"><span>口說練習</span></span> App</h1>
+        <p class="lead reveal r3">從 <b>Next.js</b> 前端、<b>Supabase</b> 雲端資料庫，到 <b>AI</b> 自動產生每日內容 —— 背後有哪些技術概念，哪些最值得你也去學。</p>
+        <div class="reveal r4" style="display:flex;gap:20px;margin-top:56px;flex-wrap:wrap">
+          <span class="chip">前端 Frontend</span><span class="chip b">資料庫 Database</span><span class="chip">AI 生成管線</span>
+        </div>
+        <div class="foot">2026 · 每日口說挑戰</div>
+        <div class="pageno">01 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 2 · 這個 App 在做什麼 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">Big Picture · 全景</div>
+        <h2 class="h2 reveal r2">這個 App 到底在做什麼？</h2>
+        <p class="lead reveal r3">說穿了只有兩條主線：一條是<b>你在用</b>，一條是<b>電腦每天自動準備教材</b>。</p>
+        <div class="stack" style="margin-top:52px">
+          <div class="flow reveal r4">
+            <div class="node"><div class="lbl">YOU · 你</div><div class="big">打開 App</div><div class="sm">看今天的句子、按錄音、打卡</div></div>
+            <div class="arrow">→</div>
+            <div class="node"><div class="lbl">FRONTEND · 畫面</div><div class="big">網頁介面</div><div class="sm">顯示句子、翻譯、錄音按鈕</div></div>
+            <div class="arrow">→</div>
+            <div class="node terra"><div class="lbl">CLOUD · 雲端</div><div class="big">資料庫</div><div class="sm">存你的錄音與打卡紀錄</div></div>
+          </div>
+          <div class="flow reveal r5">
+            <div class="node terra"><div class="lbl">AI ROBOT · 機器人</div><div class="big">每天自動選句</div><div class="sm">從 YouTube 抓字幕、AI 挑句子</div></div>
+            <div class="arrow">→</div>
+            <div class="node terra"><div class="lbl">CLOUD · 雲端</div><div class="big">寫進資料庫</div><div class="sm">你隔天打開就看得到新內容</div></div>
+            <div class="arrow">→</div>
+            <div class="node"><div class="lbl">YOU · 你</div><div class="big">每天有新題</div><div class="sm">不用自己找教材</div></div>
+          </div>
+        </div>
+        <div class="foot">全景圖 · 兩條主線</div><div class="pageno">02 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 3 · 技術全景圖 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">The Stack · 技術全景</div>
+        <h2 class="h2 reveal r2">用到的技術，一頁看懂</h2>
+        <div class="grid3 reveal r3" style="margin-top:44px">
+          <div class="card"><h3><span class="num">1</span>前端</h3><p>使用者看到與互動的畫面</p><div class="tagline">Next.js · React · TypeScript · Tailwind</div></div>
+          <div class="card terra"><h3><span class="num">2</span>資料 / 後端</h3><p>存放內容、錄音、打卡</p><div class="tagline">Supabase（Postgres + Storage）</div></div>
+          <div class="card"><h3><span class="num">3</span>瀏覽器能力</h3><p>直接用瀏覽器錄音</p><div class="tagline">MediaRecorder · getUserMedia</div></div>
+        </div>
+        <div class="grid2 reveal r4" style="margin-top:28px">
+          <div class="card"><h3><span class="num">4</span>部署上線</h3><p>把程式碼變成真正能用的網址</p><div class="tagline">Vercel · GitHub · 環境變數</div></div>
+          <div class="card terra"><h3><span class="num">5</span>AI 內容生成</h3><p>每天自動準備教材的幕後管線</p><div class="tagline">Python · yt-dlp · Gemini（LLM）</div></div>
+        </div>
+        <div class="foot">五大區塊</div><div class="pageno">03 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 4 · Next.js + React ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ① · 前端框架</div>
+        <h2 class="h2 reveal r2"><span class="u"><span>Next.js</span></span> + React</h2>
+        <div class="grid-2-1" style="margin-top:40px">
+          <div class="stack">
+            <p class="lead reveal r3" style="margin:0">React 讓你把畫面拆成一塊塊<b>可重複用的積木（元件 Component）</b>；Next.js 幫你把這些積木組成一個完整、能上線的網站，還處理路由、效能等雜事。</p>
+            <div class="rows reveal r4">
+              <div class="row"><div class="k">元件 Component</div><div class="v">畫面的積木，例如 <b>SentenceCard</b>（一張句子卡）</div></div>
+              <div class="row"><div class="k">"use client"</div><div class="v">標記「這塊要在<b>使用者的瀏覽器</b>裡跑」，才能互動、錄音</div></div>
+              <div class="row"><div class="k">框架 Framework</div><div class="v">別人先寫好的<b>骨架與慣例</b>，你不用從零造輪子</div></div>
+            </div>
+          </div>
+          <div class="note reveal r5"><span class="n">// 白話</span><br>元件就像<br>樂高積木 🧱<br><br>一塊「句子卡」寫一次，<br>15 個句子就重複用 15 次，<br>不用複製貼上 15 遍。</div>
+        </div>
+        <div class="foot">Frontend · Framework</div><div class="pageno">04 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 5 · 元件與狀態 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ② · 元件與狀態</div>
+        <h2 class="h2 reveal r2">畫面會「記住」與「反應」</h2>
+        <p class="lead reveal r3">狀態（State）＝畫面現在的記憶。使用者一操作，狀態改變，畫面就自動跟著更新 —— 這是 React 的核心。</p>
+        <div class="grid-2-1" style="margin-top:38px">
+          <div class="code-block reveal r4">// 是否正在錄音？一開始 false
+<span class="k">const</span> [isRecording, setIsRecording]
+      = <span class="b">useState</span>(<span class="k">false</span>);
+
+<span class="c">// 按下按鈕 → 改狀態 → 畫面自動變</span>
+setIsRecording(<span class="k">true</span>);
+<span class="c">// 按鈕就從「●錄音」變「■停止」</span></div>
+          <div class="stack">
+            <div class="note reveal r5"><span class="n">// 本專案實際用到</span><br><b>useState</b> 記住開關/資料<br><b>useEffect</b> 一載入就抓資料<br><b>useRef</b> 抓住錄音器物件</div>
+            <div class="note reveal r6" style="border-color:var(--terra);color:var(--terra)"><span class="n" style="color:var(--blue)">// 拆積木</span><br>PracticeView · CalendarView<br>MilestoneView · SentenceCard</div>
+          </div>
+        </div>
+        <div class="foot">Frontend · State &amp; Hooks</div><div class="pageno">05 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 6 · TypeScript ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ③ · 型別</div>
+        <h2 class="h2 reveal r2"><span class="u"><span>TypeScript</span></span>：幫資料貼標籤</h2>
+        <p class="lead reveal r3">先講清楚「一筆錄音長什麼樣」，打錯字或用錯欄位時，編輯器<b>當下就會提醒你</b>，不用等程式跑壞才發現。</p>
+        <div class="grid-2-1" style="margin-top:38px">
+          <div class="code-block reveal r4"><span class="k">interface</span> <span class="b">Recording</span> {
+  date: <span class="s">string</span>;        <span class="c">// 日期</span>
+  sentence_idx: <span class="s">number</span>; <span class="c">// 第幾句</span>
+  storage_path: <span class="s">string</span>; <span class="c">// 檔案位置</span>
+  duration_sec: <span class="s">number</span> | <span class="k">null</span>;
+}</div>
+          <div class="note reveal r5"><span class="n">// 為什麼值得</span><br>就像表單先寫好欄位。<br><br>你若不小心把日期<br>寫成數字，它會<br><b style="color:var(--terra)">馬上畫紅線</b>提醒，<br>省下大量除錯時間。</div>
+        </div>
+        <div class="foot">Frontend · Types</div><div class="pageno">06 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 7 · Supabase 資料庫 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ④ · 資料庫與後端</div>
+        <h2 class="h2 reveal r2"><span class="u"><span>Supabase</span></span>：雲端的資料倉庫</h2>
+        <p class="lead reveal r3">App 關掉後資料還在，靠的就是資料庫。Supabase 一次給你<b>資料表</b>、<b>檔案儲存</b>與<b>網路存取</b>。</p>
+        <div class="grid-2-1" style="margin-top:36px">
+          <div class="rows reveal r4">
+            <div class="row"><div class="k">daily_challenges</div><div class="v">每天的<b>句子、翻譯、時間戳</b></div></div>
+            <div class="row"><div class="k">recordings</div><div class="v">你的<b>錄音檔</b>位置與長度</div></div>
+            <div class="row"><div class="k">checkins</div><div class="v">每天<b>打卡</b>紀錄</div></div>
+            <div class="row"><div class="k">Storage</div><div class="v">實際音檔存這，用<b>簽名網址</b>安全取用</div></div>
+          </div>
+          <div class="note reveal r5"><span class="n">// 關鍵字：CRUD</span><br><b>C</b>reate 新增<br><b>R</b>ead 讀取<br><b>U</b>pdate 更新<br><b>D</b>elete 刪除<br><br>幾乎每個 App 都<br>在做這四件事。</div>
+        </div>
+        <div class="foot">Backend · Database + Storage</div><div class="pageno">07 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 8 · 環境變數與機密 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ⑤ · 機密安全</div>
+        <h2 class="h2 reveal r2">金鑰，絕對不能上 Git</h2>
+        <p class="lead reveal r3">程式需要「鑰匙」才能連上資料庫。鑰匙分兩種，放錯地方會出大事。</p>
+        <div class="grid2 reveal r4" style="margin-top:40px">
+          <div class="card"><h3>🔓 anon key</h3><p>權限小、可公開。放前端沒關係，只能做被允許的事。</p><div class="tagline">NEXT_PUBLIC_… · 可進網站</div></div>
+          <div class="card terra"><h3>🔑 service key</h3><p>權限極大、能改整個資料庫。<b>只放本機、絕不進 Git。</b></p><div class="tagline">只在 scripts/.env · 千萬別外洩</div></div>
+        </div>
+        <div class="note reveal r5" style="margin-top:30px"><span class="n">// 實作守則</span>　把 <b>.env</b> 寫進 <b>.gitignore</b> → git 就不會上傳；一旦金鑰貼上網，等於門鎖公開，必須立刻換新。</div>
+        <div class="foot">Security · Secrets &amp; .env</div><div class="pageno">08 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 9 · 瀏覽器錄音 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ⑥ · 瀏覽器 API</div>
+        <h2 class="h2 reveal r2">用瀏覽器就能錄音</h2>
+        <p class="lead reveal r3">不用安裝任何東西，瀏覽器內建的 <span class="code">MediaRecorder</span> 就能錄下你的聲音。</p>
+        <div class="grid-2-1" style="margin-top:36px">
+          <div class="code-block reveal r4"><span class="c">// 1. 取得麥克風權限</span>
+<span class="b">getUserMedia</span>({ audio: <span class="k">true</span> })
+
+<span class="c">// 2. 挑瀏覽器支援的格式</span>
+[<span class="s">"audio/mp4"</span>,      <span class="c">// iPhone</span>
+ <span class="s">"audio/webm"</span>]     <span class="c">// 其他</span>
+
+<span class="c">// 3. 開始錄 → 停止 → 上傳</span></div>
+          <div class="note reveal r5"><span class="n">// 魔鬼在細節</span><br>iPhone 的 Safari<br>只吃 <b>audio/mp4</b>，<br>其他瀏覽器吃 webm。<br><br>要先偵測、挑對格式，<br>不然 iPhone 會錄不出來。</div>
+        </div>
+        <div class="foot">Browser · MediaRecorder API</div><div class="pageno">09 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 10 · 部署上線 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ⑦ · 部署</div>
+        <h2 class="h2 reveal r2">從電腦到<span class="u"><span>真實網址</span></span></h2>
+        <p class="lead reveal r3">寫好的程式要「上線」別人才用得到。流程比想像簡單：</p>
+        <div class="flow reveal r4" style="margin-top:44px">
+          <div class="node"><div class="lbl">LOCAL</div><div class="big">你的電腦</div><div class="sm">寫程式、測試</div></div>
+          <div class="arrow">→</div>
+          <div class="node"><div class="lbl">git push</div><div class="big">GitHub</div><div class="sm">程式碼雲端備份</div></div>
+          <div class="arrow">→</div>
+          <div class="node terra"><div class="lbl">AUTO DEPLOY</div><div class="big">Vercel</div><div class="sm">自動變成網址</div></div>
+          <div class="arrow">→</div>
+          <div class="node"><div class="lbl">LIVE 🌐</div><div class="big">上線</div><div class="sm">手機也能開</div></div>
+        </div>
+        <div class="note reveal r5" style="margin-top:38px"><span class="n">// 踩過的坑</span>　免費資料庫太久沒用會<b>自動休眠</b>，網址會突然連不上 —— 到後台按 Restore 喚醒即可。真實開發就是不斷遇到、解決這種小狀況。</div>
+        <div class="foot">Deployment · Git → Vercel</div><div class="pageno">10 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 11 · AI 內容生成管線 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ⑧ · AI 管線</div>
+        <h2 class="h2 reveal r2">每天的教材，是這樣長出來的</h2>
+        <p class="lead reveal r3">一支 Python 腳本，把「抓字幕 → AI 選句 → 存資料庫」串成一條自動生產線。</p>
+        <div class="stack" style="margin-top:40px">
+          <div class="flow reveal r4">
+            <div class="node"><div class="lbl">STEP 1 · yt-dlp</div><div class="big">抓字幕</div><div class="sm">從 YouTube 下載字幕與時間</div></div>
+            <div class="arrow">→</div>
+            <div class="node terra"><div class="lbl">STEP 2 · Gemini LLM</div><div class="big">AI 選句</div><div class="sm">挑出適合練習的 3 句</div></div>
+            <div class="arrow">→</div>
+            <div class="node"><div class="lbl">STEP 3 · Supabase</div><div class="big">寫入資料庫</div><div class="sm">隔天 App 就顯示</div></div>
+          </div>
+          <div class="grid2 reveal r5">
+            <div class="note"><span class="n">// LLM 是什麼</span>　就是像 ChatGPT 的<b>大型語言模型</b>。你給它字幕與指令，它回你選好的句子＋翻譯，用 API 呼叫即可。</div>
+            <div class="note" style="border-color:var(--terra);color:var(--terra)"><span class="n" style="color:var(--blue)">// 為什麼強大</span>　把「找教材」這種重複人工，交給程式＋AI <b>自動化</b>，一次設定、天天產出。</div>
+          </div>
+        </div>
+        <div class="foot">AI Pipeline · Python + LLM</div><div class="pageno">11 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 12 · 資料清理與對齊 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">概念 ⑨ · 真實世界的資料</div>
+        <h2 class="h2 reveal r2">資料，往往是<span class="u"><span>髒的</span></span></h2>
+        <p class="lead reveal r3">YouTube 字幕是「滾動式」格式，還夾雜定位標記。直接用，句子的時間戳就會對不上聲音。</p>
+        <div class="grid2 reveal r4" style="margin-top:38px">
+          <div class="card"><h3 style="color:var(--terra)">😖 問題</h3><p>第 2、3 句播放位置整個跑掉，聽到的跟畫面完全不同段。</p><div class="tagline">字幕含 align 標記 · 時間錯位</div></div>
+          <div class="card"><h3 style="color:var(--blue)">🛠 解法</h3><p>改用字幕內<b>每個字的精確時刻</b>，再用文字比對定位到真實秒數。</p><div class="tagline">word-level timestamp + 文字對齊</div></div>
+        </div>
+        <div class="note reveal r5" style="margin-top:30px"><span class="n">// 帶走的觀念</span>　寫程式有一大半時間在<b>清理與理解資料</b>，不是寫華麗功能。能把「對不上」變「對得上」，本身就是很值錢的能力。</div>
+        <div class="foot">Data Wrangling · Problem Solving</div><div class="pageno">12 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 13 · 最值得先學的 ============ -->
+    <section class="slide">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="eyebrow reveal r1">For You · 給小白的優先序</div>
+        <h2 class="h2 reveal r2">最值得你先學的順序</h2>
+        <div class="grid3" style="margin-top:60px">
+          <div class="tier reveal r3"><span class="badge">TIER 1 · 先學</span>
+            <h3>看得到成果</h3>
+            <ul>
+              <li><b>HTML / CSS / 一點 JS</b>　前端是最有回饋的入口</li>
+              <li><b>Git + 部署</b>　把作品放上線，成就感最大</li>
+            </ul>
+          </div>
+          <div class="tier t2 reveal r4"><span class="badge">TIER 2 · 再學</span>
+            <h3>每個 App 都要</h3>
+            <ul>
+              <li><b>資料庫概念</b>　表格與 CRUD，資料怎麼存</li>
+              <li><b>環境變數 / 機密</b>　小而關鍵，別外洩金鑰</li>
+            </ul>
+          </div>
+          <div class="tier t3 reveal r5"><span class="badge">TIER 3 · 進階</span>
+            <h3>現在最有槓桿</h3>
+            <ul>
+              <li><b>串接 AI API</b>　像本專案的 Gemini，自動化</li>
+              <li><b>TypeScript</b>　專案變大後省你除錯</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note reveal r6" style="margin-top:44px"><span class="n">// 一句話</span>　不用一次學完。<b>先做出一個能上線的小東西</b>，過程中缺什麼再補什麼 —— 這是最快、也最不容易放棄的路。</div>
+        <div class="foot">Learning Priorities</div><div class="pageno">13 / 14</div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 14 · 收尾 ============ -->
+    <section class="slide closing">
+      <div class="paper"></div><div class="margin-rule"></div>
+      <div class="tick t-tl"></div><div class="tick t-br"></div>
+      <div class="frame">
+        <div class="kicker reveal r1">// 你的下一步</div>
+        <p class="big-quote reveal r2" style="margin-top:24px">你已經有一個<br>真正<span class="u">上線</span>的 App 了。<br>下一步，是看懂它的<br>其中<span class="u">一塊積木</span>。</p>
+        <div class="reveal r4" style="display:flex;gap:20px;margin-top:56px;flex-wrap:wrap">
+          <span class="chip">改一個顏色</span><span class="chip b">加一句文案</span><span class="chip">讀懂一個元件</span>
+        </div>
+        <p class="lead reveal r5" style="margin-top:44px">從最小的改動開始，你就從「使用者」變成「打造者」。</p>
+        <div class="foot">每日口說挑戰 · Tech Teardown</div><div class="pageno">14 / 14</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- 行內編輯 -->
+<div class="edit-hotzone" aria-hidden="true"></div>
+<button class="edit-toggle" id="editToggle" title="編輯模式（E）">✏️</button>
+
+<!-- 頁碼列（舞台外） -->
+<div class="deck-controls"><span>← →</span><span class="hint">切換</span><span><b id="cur">1</b> / 14</span></div>
+
+<script>
+/* ===========================================
+   簡報控制器：縮放 / 鍵盤 / 滑鼠 / 觸控
+   =========================================== */
+class SlidePresentation{
+  constructor(){
+    this.slides=[...document.querySelectorAll('.slide')];
+    this.i=0;
+    this.stage=document.getElementById('deckStage');
+    this.cur=document.getElementById('cur');
+    this.scale();addEventListener('resize',()=>this.scale());
+    this.keys();this.touch();this.wheel();
+    this.show(0);
+  }
+  scale(){const f=Math.min(innerWidth/1920,innerHeight/1080);
+    this.stage.style.transform=`translate(${(innerWidth-1920*f)/2}px,${(innerHeight-1080*f)/2}px) scale(${f})`;}
+  show(n){this.i=Math.max(0,Math.min(n,this.slides.length-1));
+    this.slides.forEach((s,k)=>{s.classList.toggle('active',k===this.i);s.classList.toggle('visible',k===this.i);});
+    if(this.cur)this.cur.textContent=this.i+1;}
+  next(){this.show(this.i+1)} prev(){this.show(this.i-1)}
+  keys(){addEventListener('keydown',e=>{
+    if(e.target.getAttribute&&e.target.getAttribute('contenteditable')==='true')return;
+    if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();this.next();}
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();this.prev();}
+    else if(e.key==='Home'){this.show(0)} else if(e.key==='End'){this.show(this.slides.length-1)}
+  });}
+  wheel(){let lock=false;addEventListener('wheel',e=>{
+    if(lock)return;if(Math.abs(e.deltaY)<24)return;lock=true;
+    e.deltaY>0?this.next():this.prev();setTimeout(()=>lock=false,650);
+  },{passive:true});}
+  touch(){let x0=null,y0=null;
+    addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+    addEventListener('touchend',e=>{if(x0===null)return;
+      const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;
+      if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy))dx<0?this.next():this.prev();x0=null;});}
+}
+const deck=new SlidePresentation();
+
+/* ===========================================
+   行內編輯：點文字直接改，Ctrl+S 存檔
+   =========================================== */
+const editor={
+  isActive:false,
+  toggle(){this.isActive=!this.isActive;
+    const b=document.getElementById('editToggle');b.classList.toggle('active',this.isActive);
+    document.querySelectorAll('.slide h1,.slide h2,.slide h3,.slide p,.slide li,.slide .v,.slide .k,.slide .big,.slide .sm,.slide .note,.slide .chip,.slide .tagline')
+      .forEach(el=>el.setAttribute('contenteditable',this.isActive));
+    if(!this.isActive)this.save();},
+  save(){try{localStorage.setItem('deck-edits',document.querySelector('.deck-stage').innerHTML);}catch(e){}}
+};
+document.getElementById('editToggle').addEventListener('click',()=>editor.toggle());
+const hz=document.querySelector('.edit-hotzone'),tg=document.getElementById('editToggle');let ht=null;
+hz.addEventListener('mouseenter',()=>{clearTimeout(ht);tg.classList.add('show');});
+hz.addEventListener('mouseleave',()=>{ht=setTimeout(()=>{if(!editor.isActive)tg.classList.remove('show');},400);});
+tg.addEventListener('mouseenter',()=>clearTimeout(ht));
+tg.addEventListener('mouseleave',()=>{ht=setTimeout(()=>{if(!editor.isActive)tg.classList.remove('show');},400);});
+hz.addEventListener('click',()=>editor.toggle());
+addEventListener('keydown',e=>{
+  if((e.key==='e'||e.key==='E')&&e.target.getAttribute('contenteditable')!=='true')editor.toggle();
+  if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();editor.save();
+    const b=document.getElementById('editToggle');const o=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=o,800);}
+});
+</script>
+</body>
+</html>

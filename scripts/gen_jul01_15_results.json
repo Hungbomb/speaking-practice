@@ -1,0 +1,1236 @@
+{
+  "2026-07-01": {
+    "video_id": "uO5cvkzh3P0",
+    "title": "They Said This Will Never Run In Real Time",
+    "channel": "Two Minute Papers",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "So, previous techniques had a problem with scenes like this. You see, they split the problem into small pieces and solve them separately. But, the problem is that those pieces ignore each other and cause a problem called overshoot.",
+        "zh": "所以，以前的技術在處理這類場景時遇到了問題。你看，它們將問題分解成小塊並分別解決。但是，問題在於這些小塊彼此忽略，導致了一個稱為過衝（overshoot）的問題。",
+        "kw": [
+          {
+            "w": "had a problem with",
+            "zh": "遇到了問題"
+          },
+          {
+            "w": "split the problem into",
+            "zh": "將問題分解成"
+          },
+          {
+            "w": "solve them separately",
+            "zh": "分別解決"
+          },
+          {
+            "w": "ignore each other",
+            "zh": "彼此忽略"
+          },
+          {
+            "w": "cause a problem",
+            "zh": "導致問題"
+          },
+          {
+            "w": "called overshoot",
+            "zh": "稱為過衝"
+          }
+        ],
+        "start": 95.4,
+        "end": 110.0
+      },
+      {
+        "idx": 2,
+        "text": "And even if you have five barbarian ships given by two and a half million elements, I thought, \"Surely, you'd have to wait overnight for this one, right?\" It turns out, nope.",
+        "zh": "即使你有五艘野蠻人飛船，由兩百五十萬個元素組成，我心想：「這肯定要等上一整晚才能算完吧？」結果發現，不，根本不用。",
+        "kw": [
+          {
+            "w": "given by",
+            "zh": "由...組成"
+          },
+          {
+            "w": "two and a half million elements",
+            "zh": "兩百五十萬個元素"
+          },
+          {
+            "w": "wait overnight",
+            "zh": "等待一整晚（完成）"
+          },
+          {
+            "w": "It turns out, nope",
+            "zh": "結果發現，不"
+          }
+        ],
+        "start": 215.6,
+        "end": 227.1
+      },
+      {
+        "idx": 3,
+        "text": "This means that you can do the whole thing before shipping a game. So, when the user sees it, they won't even know about this part, and it will run super fast, which is excellent.",
+        "zh": "這意味著你可以在遊戲發布之前完成所有這些預計算。所以當用戶看到遊戲時，他們甚至不會知道這部分，而且它會運行得超快，這非常棒。",
+        "kw": [
+          {
+            "w": "do the whole thing",
+            "zh": "完成整個事情/過程"
+          },
+          {
+            "w": "shipping a game",
+            "zh": "發布/推出遊戲"
+          },
+          {
+            "w": "won't even know about",
+            "zh": "甚至不會知道"
+          },
+          {
+            "w": "run super fast",
+            "zh": "運行超快"
+          },
+          {
+            "w": "which is excellent",
+            "zh": "這非常棒"
+          }
+        ],
+        "start": 326.0,
+        "end": 337.8
+      }
+    ]
+  },
+  "2026-07-02": {
+    "video_id": "AUmHqD0lGHo",
+    "title": "How A Random System Can Actually Be Predictable",
+    "channel": "Veritasium",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "That is, a collection of random walks creates a normal distribution. It's centered around the middle because the number of paths a ball could take to get here is the greatest.",
+        "zh": "也就是說，一系列的隨機漫步會形成一個常態分佈。它以中間為中心，因為球能到達這裡的路徑數量最多。",
+        "kw": [
+          {
+            "w": "collection of random walks",
+            "zh": "一系列的隨機漫步"
+          },
+          {
+            "w": "normal distribution",
+            "zh": "常態分佈"
+          },
+          {
+            "w": "centered around",
+            "zh": "以…為中心"
+          }
+        ],
+        "start": 31.5,
+        "end": 41.5
+      },
+      {
+        "idx": 2,
+        "text": "According to Bachelier, the expected future price of a stock is described by a normal distribution centered on the current price, which spreads out over",
+        "zh": "根據巴舍利耶的說法，股票的預期未來價格由一個以當前價格為中心的常態分佈所描述，這個分佈會隨著時間擴散開來。",
+        "kw": [
+          {
+            "w": "According to",
+            "zh": "根據…"
+          },
+          {
+            "w": "expected future price",
+            "zh": "預期未來價格"
+          },
+          {
+            "w": "described by",
+            "zh": "由…所描述"
+          },
+          {
+            "w": "spreads out",
+            "zh": "擴散開來"
+          }
+        ],
+        "start": 80.0,
+        "end": 89.4
+      },
+      {
+        "idx": 3,
+        "text": "Bachelier realized he had rediscovered the exact equation which describes how heat radiates from regions of high temperature to regions of low temperature. So, Bachelier called his discovery the radiation of probabilities.",
+        "zh": "巴舍利耶意識到他重新發現了描述熱量如何從高溫區域輻射到低溫區域的精確方程式。因此，巴舍利耶將他的發現命名為「機率輻射」。",
+        "kw": [
+          {
+            "w": "rediscovered the exact equation",
+            "zh": "重新發現了精確方程式"
+          },
+          {
+            "w": "radiates from…to",
+            "zh": "從…輻射到…"
+          },
+          {
+            "w": "regions of high/low temperature",
+            "zh": "高/低溫區域"
+          },
+          {
+            "w": "called his discovery",
+            "zh": "將他的發現命名為"
+          }
+        ],
+        "start": 90.1,
+        "end": 107.6
+      }
+    ]
+  },
+  "2026-07-03": {
+    "video_id": "Qw8qVSZEWBc",
+    "title": "What Is an API? Types, Uses, & AI Integration",
+    "channel": "IBM Technology",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "APIs are everywhere in our daily lives. And when you use a mobile app to check the weather or book a ride or order food, you're interacting with APIs.",
+        "zh": "API 在我們的日常生活中無處不在。當你使用手機應用程式查看天氣、預訂行程或訂餐時，你其實都在與 API 互動。",
+        "kw": [
+          {
+            "w": "everywhere in our daily lives",
+            "zh": "在我們的日常生活中無處不在"
+          },
+          {
+            "w": "interacting with",
+            "zh": "與...互動"
+          }
+        ],
+        "start": 0.5,
+        "end": 10.7
+      },
+      {
+        "idx": 2,
+        "text": "These are open source APIs that are defined, they have defined endpoints, and they really have request and response formats.",
+        "zh": "這些是開源 API，它們有明確的端點，並且具備請求和回應的格式。",
+        "kw": [
+          {
+            "w": "open source APIs",
+            "zh": "開源 API"
+          },
+          {
+            "w": "defined endpoints",
+            "zh": "明確的端點"
+          },
+          {
+            "w": "request and response formats",
+            "zh": "請求和回應格式"
+          }
+        ],
+        "start": 167.0,
+        "end": 175.0
+      },
+      {
+        "idx": 3,
+        "text": "They are typically built for HTTP and result in developer-friendly interfaces that are easily accessible and widely understood by applications written in Java, Ruby, Python, many languages.",
+        "zh": "它們通常是為 HTTP 而建構的，並產生對開發者友善的介面，這些介面易於存取，並能被用 Java、Ruby、Python 等多種語言編寫的應用程式廣泛理解。",
+        "kw": [
+          {
+            "w": "typically built for",
+            "zh": "通常為...而建構"
+          },
+          {
+            "w": "developer-friendly interfaces",
+            "zh": "開發者友善的介面"
+          },
+          {
+            "w": "widely understood by",
+            "zh": "被...廣泛理解"
+          }
+        ],
+        "start": 309.8,
+        "end": 321.9
+      }
+    ]
+  },
+  "2026-07-04": {
+    "video_id": "xfyKqOmr7Wk",
+    "title": "Your Brain Peaked at Birth",
+    "channel": "Kurzgesagt – In a Nutshell",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "At birth, a newborn's brain has roughly 100 billion neurons, 15% more than an adults. Soon, synapses start forming at a rate of around 100 million per second.",
+        "zh": "新生兒出生時，大腦約有 1000 億個神經元，比成年人多 15%。很快地，突觸開始以每秒約 1 億個的速度形成。",
+        "kw": [
+          {
+            "w": "at birth",
+            "zh": "出生時"
+          },
+          {
+            "w": "roughly",
+            "zh": "大約地，粗略地"
+          },
+          {
+            "w": "start forming",
+            "zh": "開始形成"
+          },
+          {
+            "w": "at a rate of",
+            "zh": "以...的速度"
+          }
+        ],
+        "start": 3.0,
+        "end": 14.6
+      },
+      {
+        "idx": 2,
+        "text": "Wrestling with gravity is as much a mental challenge as it is a physical one. Like trying to surf while doubling your size and quadrupling your weight.",
+        "zh": "與重力搏鬥既是心理挑戰，也是生理挑戰。就像是嘗試衝浪，同時體型增大一倍、體重增加四倍。",
+        "kw": [
+          {
+            "w": "wrestling with gravity",
+            "zh": "與重力搏鬥"
+          },
+          {
+            "w": "as much a ... as it is a ...",
+            "zh": "既是...也是... (強調兩者並重)"
+          },
+          {
+            "w": "doubling your size",
+            "zh": "體型加倍"
+          },
+          {
+            "w": "quadrupling your weight",
+            "zh": "體重增加四倍"
+          }
+        ],
+        "start": 39.2,
+        "end": 47.0
+      },
+      {
+        "idx": 3,
+        "text": "But as we grow, our brains have to use these new connections or lose them. Frequently used synapses get stronger, and the ones that aren't are marked for destruction.",
+        "zh": "但隨著我們成長，大腦必須使用這些新的連結，否則就會失去它們。頻繁使用的突觸會變得更強，而那些不常使用的則會被標記為淘汰。",
+        "kw": [
+          {
+            "w": "use ... or lose them",
+            "zh": "要麼使用，要麼失去 (常用於技能或能力)"
+          },
+          {
+            "w": "get stronger",
+            "zh": "變得更強"
+          },
+          {
+            "w": "marked for destruction",
+            "zh": "被標記為淘汰/毀滅"
+          }
+        ],
+        "start": 55.0,
+        "end": 64.4
+      }
+    ]
+  },
+  "2026-07-05": {
+    "video_id": "7B0ydm64cV8",
+    "title": "Who really invented the internet...?",
+    "channel": "Fireship",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "So that same year, a different guy named Paul invents the Domain Name System, a giant global phone book that turns human-friendly domain names into the IP address where the computer lives.",
+        "zh": "同年，另一位名叫保羅的人發明了網域名稱系統，這是一個巨大的全球電話簿，能將人性化的網域名稱轉換成電腦所在的 IP 位址。",
+        "kw": [
+          {
+            "w": "Domain Name System",
+            "zh": "網域名稱系統（將網域名稱轉換為IP位址的系統）"
+          },
+          {
+            "w": "global phone book",
+            "zh": "全球電話簿（比喻DNS的功能，像電話簿一樣查找位址）"
+          },
+          {
+            "w": "human-friendly domain names",
+            "zh": "易讀的網域名稱（方便人們記憶和使用的網站名稱，如google.com）"
+          },
+          {
+            "w": "IP address",
+            "zh": "IP 位址（網路上識別電腦的數字位址）"
+          }
+        ],
+        "start": 143.9,
+        "end": 154.0
+      },
+      {
+        "idx": 2,
+        "text": "Investors throw up billions at any company with a dot-com in the name. And so, companies lease OC-3 lines and stuff data centers full of Sun servers to handle traffic that never comes.",
+        "zh": "投資者向任何名字中帶有「.com」的公司投入數十億資金。於是，各公司租用 OC-3 專線，並用 Sun 伺服器塞滿資料中心，以應對從未出現的流量。",
+        "kw": [
+          {
+            "w": "throw up billions at",
+            "zh": "大筆投入數十億資金（指在某個領域或公司投入大量資金，通常帶有輕率或過度投資的意味）"
+          },
+          {
+            "w": "dot-com in the name",
+            "zh": "名字中帶有「.com」（指網際網路公司，特別是在網路泡沫時期）"
+          },
+          {
+            "w": "lease OC-3 lines",
+            "zh": "租用 OC-3 專線（OC-3 是一種高速光纖通訊線路，租用專線用於網路連接）"
+          },
+          {
+            "w": "stuff data centers full of",
+            "zh": "將資料中心塞滿（指過度配置設備，以應對預期但未出現的需求）"
+          },
+          {
+            "w": "handle traffic",
+            "zh": "處理流量（指處理網路上的數據傳輸量）"
+          }
+        ],
+        "start": 306.3,
+        "end": 316.8
+      },
+      {
+        "idx": 3,
+        "text": "It groups related changes into cohorts, orders them into layers, and adds AI summaries so you can move through the change in an order that actually makes sense.",
+        "zh": "它將相關的變更分組為群體，按層級排序，並添加 AI 摘要，以便您能以真正有意義的順序進行這些變更。",
+        "kw": [
+          {
+            "w": "groups related changes into cohorts",
+            "zh": "將相關變更分組為群體（將有共同點或相關性的改動歸類在一起）"
+          },
+          {
+            "w": "orders them into layers",
+            "zh": "將它們分層排序（將變更內容按不同的層次或級別來組織）"
+          },
+          {
+            "w": "AI summaries",
+            "zh": "AI 摘要（人工智慧生成的簡要內容概述）"
+          },
+          {
+            "w": "in an order that actually makes sense",
+            "zh": "以真正有意義的順序（指以一種邏輯性強、易於理解的排列方式）"
+          }
+        ],
+        "start": 450.1,
+        "end": 458.7
+      }
+    ]
+  },
+  "2026-07-06": {
+    "video_id": "UzN6eHeaJj4",
+    "title": "Scientists Can't Explain Why Bird Nests Are So Different",
+    "channel": "SciShow",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Climate, predators, material availability influence a nest’s location, shape, size, and how it’s attached to external structures, but even trying to explain different nest styles within similar environments can be tough.",
+        "zh": "氣候、掠食者、材料供應會影響鳥巢的位置、形狀、大小，以及它如何附著在外部結構上，但即使是在相似的環境中，試圖解釋不同的築巢風格也可能很困難。",
+        "kw": [
+          {
+            "w": "material availability",
+            "zh": "材料供應"
+          },
+          {
+            "w": "influence a nest’s location, shape, size",
+            "zh": "影響鳥巢的位置、形狀、大小"
+          },
+          {
+            "w": "attached to external structures",
+            "zh": "附著在外部結構上"
+          },
+          {
+            "w": "explain different nest styles",
+            "zh": "解釋不同的築巢風格"
+          },
+          {
+            "w": "within similar environments",
+            "zh": "在相似的環境中"
+          },
+          {
+            "w": "can be tough",
+            "zh": "可能很困難"
+          }
+        ],
+        "start": 122.3,
+        "end": 136.1
+      },
+      {
+        "idx": 2,
+        "text": "Things like climate, potential predators, or whether or not the birds lived on an island, accounted for only 4% of the variation in birds' nests.",
+        "zh": "氣候、潛在的掠食者，以及鳥類是否生活在島嶼上等因素，僅解釋了鳥巢變異的 4%。",
+        "kw": [
+          {
+            "w": "potential predators",
+            "zh": "潛在的掠食者"
+          },
+          {
+            "w": "whether or not",
+            "zh": "是否"
+          },
+          {
+            "w": "accounted for",
+            "zh": "解釋了 / 佔了"
+          },
+          {
+            "w": "variation in birds' nests",
+            "zh": "鳥巢的變異"
+          }
+        ],
+        "start": 257.6,
+        "end": 273.4
+      },
+      {
+        "idx": 3,
+        "text": "There’s tons of glorious nest nuance out there, but it just hasn’t been captured by the broad models, and we may one day weave together an explanation.",
+        "zh": "鳥巢有著大量的精彩細微之處，但它們尚未被廣泛的模型所捕捉，而我們有一天或許能將其編織成一個完整的解釋。",
+        "kw": [
+          {
+            "w": "glorious nest nuance",
+            "zh": "精彩的鳥巢細微之處"
+          },
+          {
+            "w": "captured by",
+            "zh": "被...捕捉/涵蓋"
+          },
+          {
+            "w": "broad models",
+            "zh": "廣泛的模型"
+          },
+          {
+            "w": "weave together an explanation",
+            "zh": "編織出一個解釋"
+          }
+        ],
+        "start": 515.0,
+        "end": 535.4
+      }
+    ]
+  },
+  "2026-07-07": {
+    "video_id": "mG4SmhWyeFA",
+    "title": "DeepSeek Just Solved AI's Billion Dollar Problem",
+    "channel": "Two Minute Papers",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "I just found out that the way these AI systems run on our computers is incredibly inefficient. So, if you want your AI assistant to answer quicker, you need more compute power, clear as day.",
+        "zh": "我剛發現這些 AI 系統在我們的電腦上運行的方式效率極低。所以，如果你想讓你的 AI 助手回答得更快，你需要更多的運算能力，這點顯而易見。",
+        "kw": [
+          {
+            "w": "found out that",
+            "zh": "發現、得知"
+          },
+          {
+            "w": "incredibly inefficient",
+            "zh": "效率極低"
+          },
+          {
+            "w": "compute power",
+            "zh": "運算能力"
+          },
+          {
+            "w": "clear as day",
+            "zh": "顯而易見、非常清楚"
+          }
+        ],
+        "start": 12.5,
+        "end": 25.6
+      },
+      {
+        "idx": 2,
+        "text": "So, our brain is huge and hungry, but there is a problem. Information is coming in through a straw. So then, we spend most of our time not thinking, but reading slowly.",
+        "zh": "所以，我們的大腦龐大而飢渴，但存在一個問題。資訊像透過吸管般緩慢傳入。結果，我們大部分時間不是在思考，而是在緩慢閱讀。",
+        "kw": [
+          {
+            "w": "huge and hungry",
+            "zh": "龐大而飢渴（比喻運算量大且資源需求高）"
+          },
+          {
+            "w": "coming in through a straw",
+            "zh": "透過吸管傳入（比喻資訊傳輸瓶頸）"
+          },
+          {
+            "w": "spend most of our time",
+            "zh": "把大部分時間花在"
+          }
+        ],
+        "start": 80.3,
+        "end": 92.9
+      },
+      {
+        "idx": 3,
+        "text": "Well, hold on to your papers, fellow scholars, because it speeds up this whole network from 40% utilization to about 80% utilization. In practice, almost twice as much work from the machine you already bought.",
+        "zh": "各位學者，請抓緊你們的論文，因為它將整個網路的利用率從 40% 提升到約 80%。實際上，這意味著您已經購買的機器能完成幾乎兩倍的工作量。",
+        "kw": [
+          {
+            "w": "hold on to your papers",
+            "zh": "請抓緊你的論文（表示驚人發現或重要訊息）"
+          },
+          {
+            "w": "fellow scholars",
+            "zh": "各位學者"
+          },
+          {
+            "w": "speeds up",
+            "zh": "加速"
+          },
+          {
+            "w": "utilization",
+            "zh": "利用率"
+          },
+          {
+            "w": "in practice",
+            "zh": "實際上"
+          },
+          {
+            "w": "twice as much work",
+            "zh": "兩倍的工作量"
+          }
+        ],
+        "start": 210.9,
+        "end": 226.3
+      }
+    ]
+  },
+  "2026-07-08": {
+    "video_id": "9IYRd5TnC5M",
+    "title": "The V-22’s prototype was even more dangerous",
+    "channel": "Real Engineering",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "The V-22 has a bit of a public image problem when it comes to safety, but statistics show it's no more dangerous than other military helicopters, and that's thanks to the lessons learned during the V-22's development.",
+        "zh": "V-22 在安全方面有些公眾形象問題，但統計數據顯示它並不比其他軍用直升機更危險，這要歸功於 V-22 開發過程中汲取的教訓。",
+        "kw": [
+          {
+            "w": "public image problem",
+            "zh": "公眾形象問題"
+          },
+          {
+            "w": "when it comes to safety",
+            "zh": "談到安全時"
+          },
+          {
+            "w": "no more dangerous than",
+            "zh": "不比…更危險"
+          },
+          {
+            "w": "thanks to the lessons learned",
+            "zh": "多虧了學到的教訓"
+          }
+        ],
+        "start": 0.0,
+        "end": 12.6
+      },
+      {
+        "idx": 2,
+        "text": "But, the XV-15 placed its engines on the wingtips. With the power from the engine being so much closer to the rotor, the pylons could be bolstered with a full nacelle that provided a lot of extra stiffness.",
+        "zh": "但 XV-15 將其引擎置於翼尖。由於引擎的動力離旋翼更近，機艙可以透過完整的整流罩加固，這提供了大量的額外剛性。",
+        "kw": [
+          {
+            "w": "placed its engines on the wingtips",
+            "zh": "將引擎置於翼尖"
+          },
+          {
+            "w": "being so much closer to",
+            "zh": "離…如此之近"
+          },
+          {
+            "w": "bolstered with",
+            "zh": "透過…加強／支撐"
+          },
+          {
+            "w": "provided a lot of extra stiffness",
+            "zh": "提供了大量的額外剛性"
+          }
+        ],
+        "start": 90.6,
+        "end": 101.5
+      },
+      {
+        "idx": 3,
+        "text": "It's available to pre-order for just another few days, so grab one now on the Nebula store with the link in the comments, and don't forget that all Nebula members get a 15% discount.",
+        "zh": "它只剩下幾天可以預購了，所以現在就透過留言中的連結到 Nebula 商店搶購一個吧，別忘了所有 Nebula 會員都可以享受 15% 的折扣。",
+        "kw": [
+          {
+            "w": "available to pre-order",
+            "zh": "可供預購"
+          },
+          {
+            "w": "for just another few days",
+            "zh": "只剩下幾天了"
+          },
+          {
+            "w": "grab one now",
+            "zh": "現在就去搶購一個"
+          },
+          {
+            "w": "link in the comments",
+            "zh": "留言中的連結"
+          },
+          {
+            "w": "get a 15% discount",
+            "zh": "獲得15%折扣"
+          }
+        ],
+        "start": 143.8,
+        "end": 154.1
+      }
+    ]
+  },
+  "2026-07-09": {
+    "video_id": "o0gkdZBtwEg",
+    "title": "How KV Cache Speeds Up LLMs for Faster AI Models on GPUs",
+    "channel": "IBM Technology",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Now, by the end of this video, you'll know exactly how these two techniques work, why they work, and how you can configure them to get dramatically more throughput out of a GPU that you already have.",
+        "zh": "看完這部影片，您將確切知道這兩種技術是如何運作的、為何有效，以及如何配置它們，以從您現有的 GPU 中獲得顯著更高的吞吐量。",
+        "kw": [
+          {
+            "w": "by the end of",
+            "zh": "在…結束時；到…結束前"
+          },
+          {
+            "w": "configure them to get",
+            "zh": "配置它們以獲得"
+          },
+          {
+            "w": "dramatically more",
+            "zh": "顯著增加的；大幅更多的"
+          }
+        ],
+        "start": 66.0,
+        "end": 77.3
+      },
+      {
+        "idx": 2,
+        "text": "So if your max context is 2048 tokens, but the average user sends in 200 tokens and gets 300 back, that's 1,500 tokens of reserved memory just sitting empty per request.",
+        "zh": "因此，如果您的最大上下文長度是 2048 個 token，但平均用戶發送 200 個 token 並得到 300 個 token 回應，那麼每個請求就有 1,500 個 token 的預留記憶體只是閒置著。",
+        "kw": [
+          {
+            "w": "sends in",
+            "zh": "提交；輸入"
+          },
+          {
+            "w": "gets back",
+            "zh": "取回；獲得回應"
+          },
+          {
+            "w": "sitting empty",
+            "zh": "閒置著；空著沒用"
+          },
+          {
+            "w": "per request",
+            "zh": "每個請求"
+          }
+        ],
+        "start": 311.1,
+        "end": 331.5
+      },
+      {
+        "idx": 3,
+        "text": "In RAG pipelines, multi-turn chat and coding agents that are gonna hit rates of 75 to 95% are common, with time to first token dropping dramatically because shared prefill is skipped entirely.",
+        "zh": "在 RAG 管線、多輪對話和編碼代理中，達到 75% 到 95% 的命中率是很常見的，因為共享預填充被完全跳過，所以首個 token 的生成時間顯著縮短。",
+        "kw": [
+          {
+            "w": "hit rates of",
+            "zh": "達到…的命中率"
+          },
+          {
+            "w": "are common",
+            "zh": "很常見的"
+          },
+          {
+            "w": "dropping dramatically",
+            "zh": "顯著下降"
+          },
+          {
+            "w": "skipped entirely",
+            "zh": "完全跳過"
+          }
+        ],
+        "start": 524.1,
+        "end": 537.6
+      }
+    ]
+  },
+  "2026-07-10": {
+    "video_id": "p0cLeC_2uVg",
+    "title": "What’s The World’s Longest Domestic Flight?",
+    "channel": "Half as Interesting",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Unfortunately, the Virgin Islands to Guam air travel market doesn't quite have enough demand to operate what would be the world's second longest flight at 17 to 18 hours.",
+        "zh": "不幸的是，維京群島到關島的航空旅行市場沒有足夠的需求來運營這條預計耗時17到18小時、本會是全球第二長的航線。",
+        "kw": [
+          {
+            "w": "air travel market",
+            "zh": "航空旅行市場"
+          },
+          {
+            "w": "have enough demand",
+            "zh": "有足夠需求"
+          },
+          {
+            "w": "operate what would be",
+            "zh": "運營會是...的"
+          }
+        ],
+        "start": 30.2,
+        "end": 38.4
+      },
+      {
+        "idx": 2,
+        "text": "That's because Reunion is not part of the Schengen area, but mainland France is. So, that means some guy has got to stamp you in and out of the Schengen area.",
+        "zh": "那是因為留尼旺島不屬於申根區，但法國本土是。所以，這表示有人必須為你蓋章進出申根區。",
+        "kw": [
+          {
+            "w": "part of",
+            "zh": "屬於...的一部分"
+          },
+          {
+            "w": "mainland France",
+            "zh": "法國本土"
+          },
+          {
+            "w": "stamp you in and out",
+            "zh": "蓋章允許進出"
+          }
+        ],
+        "start": 138.7,
+        "end": 148.9
+      },
+      {
+        "idx": 3,
+        "text": "For example, they use 100% recycled materials for main body fabrics and linings and source super high-quality leather with traceable supply chains focused on animal welfare.",
+        "zh": "例如，他們使用100%回收材料製作主體布料和內襯，並採購具有可追溯供應鏈、專注於動物福利的超高品質皮革。",
+        "kw": [
+          {
+            "w": "recycled materials",
+            "zh": "回收材料"
+          },
+          {
+            "w": "main body fabrics and linings",
+            "zh": "主體布料和內襯"
+          },
+          {
+            "w": "traceable supply chains",
+            "zh": "可追溯的供應鏈"
+          },
+          {
+            "w": "focused on animal welfare",
+            "zh": "專注於動物福利"
+          }
+        ],
+        "start": 398.8,
+        "end": 407.5
+      }
+    ]
+  },
+  "2026-07-11": {
+    "video_id": "l72ufA-4SzE",
+    "title": "They Looked Inside Claude’s AI's Mind. It Got Weird",
+    "channel": "Two Minute Papers",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "We now see that it understands that if you look at an image and you have floppy ears, a black snout, and so on, then it might be a dog, a good boy.",
+        "zh": "我們現在明白，如果它看著一張圖片，而圖中有垂耳、黑色口鼻等等特徵，那麼它可能就是一隻狗，一個好孩子。",
+        "kw": [
+          {
+            "w": "floppy ears",
+            "zh": "垂耳"
+          },
+          {
+            "w": "black snout",
+            "zh": "黑色口鼻"
+          },
+          {
+            "w": "so on",
+            "zh": "等等"
+          },
+          {
+            "w": "might be",
+            "zh": "可能是"
+          },
+          {
+            "w": "good boy",
+            "zh": "好孩子 (指可愛的狗)"
+          }
+        ],
+        "start": 46.2,
+        "end": 55.9
+      },
+      {
+        "idx": 2,
+        "text": "They caught it while it was thinking rabbit, and it went to find something that rhymes with it. Then, they replaced rabbit with mouse, and it actually rhymed with the mouse instead.",
+        "zh": "他們在AI思考「rabbit」（兔子）時捕捉到這個過程，它會去尋找與之押韻的詞。然後，他們將「rabbit」替換成「mouse」（老鼠），結果AI真的就與「mouse」押韻了。",
+        "kw": [
+          {
+            "w": "caught it while it was thinking",
+            "zh": "在它思考時捕捉到"
+          },
+          {
+            "w": "rhymes with",
+            "zh": "與…押韻"
+          },
+          {
+            "w": "replaced with",
+            "zh": "替換成"
+          },
+          {
+            "w": "instead",
+            "zh": "反而，卻"
+          }
+        ],
+        "start": 215.8,
+        "end": 227.5
+      },
+      {
+        "idx": 3,
+        "text": "And three, now hold on to your papers, fellow scholars, because it knows when it is being tested, and it gets crazier. It does not tell you that it knows. You have to peer into its mind to get to know that.",
+        "zh": "第三點，各位學者們，現在請抓穩你們的資料，因為它知道自己正在被測試，而且這還更瘋狂。它不會告訴你它知道。你必須深入探究它的思維才能得知。",
+        "kw": [
+          {
+            "w": "hold on to your papers",
+            "zh": "抓穩你的資料 (表示事情驚人)"
+          },
+          {
+            "w": "fellow scholars",
+            "zh": "各位學者"
+          },
+          {
+            "w": "being tested",
+            "zh": "正在被測試"
+          },
+          {
+            "w": "gets crazier",
+            "zh": "變得更瘋狂"
+          },
+          {
+            "w": "peer into its mind",
+            "zh": "深入探究其思維"
+          }
+        ],
+        "start": 257.4,
+        "end": 271.1
+      }
+    ]
+  },
+  "2026-07-12": {
+    "video_id": "omYfLDlt-MA",
+    "title": "Why do some British trains still rely on old levers?",
+    "channel": "Tom Scott",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Dangerous positions are either impossible, if the points aren’t set properly, because it’s interlocked mechanically, and because they’re physical and fail-safe, if your hand slips off, and that could break something.",
+        "zh": "危險狀況要嘛不可能發生，如果轉轍器沒有正確設定，因為它是機械式聯鎖的，而且因為它們是實體且故障安全的，如果你的手滑開，那可能會弄壞東西。",
+        "kw": [
+          {
+            "w": "dangerous positions",
+            "zh": "危險狀況"
+          },
+          {
+            "w": "set properly",
+            "zh": "正確設定"
+          },
+          {
+            "w": "interlocked mechanically",
+            "zh": "機械式聯鎖"
+          },
+          {
+            "w": "fail-safe",
+            "zh": "故障安全"
+          },
+          {
+            "w": "slips off",
+            "zh": "滑開"
+          }
+        ],
+        "start": 193.5,
+        "end": 206.3
+      },
+      {
+        "idx": 2,
+        "text": "A “signal passed at danger”, a SPAD, but they’re always investigated, and if it’s a train driver’s fault, there were a few more basics to learn.",
+        "zh": "「衝紅燈」（Signal Passed At Danger），簡稱 SPAD，總是會被調查，而且如果是列車駕駛的過失，還有一些需要學習的基礎知識。",
+        "kw": [
+          {
+            "w": "signal passed at danger",
+            "zh": "衝紅燈（列車行駛過危險訊號）"
+          },
+          {
+            "w": "SPAD",
+            "zh": "衝紅燈（列車行駛過危險訊號）"
+          },
+          {
+            "w": "always investigated",
+            "zh": "總是被調查"
+          },
+          {
+            "w": "train driver’s fault",
+            "zh": "列車駕駛的過失"
+          },
+          {
+            "w": "basics to learn",
+            "zh": "需要學習的基礎知識"
+          }
+        ],
+        "start": 840.5,
+        "end": 850.9
+      },
+      {
+        "idx": 3,
+        "text": "After that, it headed on to Glossop, passing by Dinting, and stop at Hadfield, round the triangle at Dinting, back to Glossop, stop there, back to Dinting, stop there, and back to Manchester.",
+        "zh": "之後，它開往 Glossop，經過 Dinting，並在 Hadfield 停靠，繞過 Dinting 的三角線，回到 Glossop 停靠，再回到 Dinting 停靠，然後回到曼徹斯特。",
+        "kw": [
+          {
+            "w": "headed on to",
+            "zh": "開往"
+          },
+          {
+            "w": "passing by",
+            "zh": "經過"
+          },
+          {
+            "w": "stop at",
+            "zh": "停靠在"
+          },
+          {
+            "w": "round the triangle",
+            "zh": "繞過三角線"
+          },
+          {
+            "w": "back to",
+            "zh": "返回"
+          }
+        ],
+        "start": 1054.9,
+        "end": 1068.1
+      }
+    ]
+  },
+  "2026-07-13": {
+    "video_id": "ML3q7Ok4hJg",
+    "title": "I read every major CS paper of the last 100 years...",
+    "channel": "Fireship",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "What he really asked was something way more boring, \"Can every mathematical problem be solved by an algorithm?\" Surprisingly, he proved the answer is no, but in the process, he accidentally invented the computer.",
+        "zh": "他真正問的問題其實乏味得多：「每個數學問題都能透過演算法來解決嗎？」令人驚訝的是，他證明答案是否定的，但在這個過程中，他卻意外地發明了電腦。",
+        "kw": [
+          {
+            "w": "way more boring",
+            "zh": "乏味得多（強調對比）"
+          },
+          {
+            "w": "solved by an algorithm",
+            "zh": "透過演算法解決"
+          },
+          {
+            "w": "in the process",
+            "zh": "在這個過程中"
+          },
+          {
+            "w": "accidentally invented",
+            "zh": "意外地發明"
+          }
+        ],
+        "start": 6.7,
+        "end": 17.8
+      },
+      {
+        "idx": 2,
+        "text": "Eventually, this paper would become the bedrock for every database, blockchain, and every massive AI training run, because you need thousands of GPUs that constantly stay in sync and agree on state without dissolving into chaos.",
+        "zh": "最終，這篇論文成為了所有資料庫、區塊鏈以及每一個大規模人工智慧訓練的基石，因為你需要數千個圖形處理器（GPU）持續保持同步並就狀態達成一致，而不會陷入混亂。",
+        "kw": [
+          {
+            "w": "bedrock for",
+            "zh": "…的基石/基礎"
+          },
+          {
+            "w": "massive AI training run",
+            "zh": "大規模人工智慧訓練"
+          },
+          {
+            "w": "stay in sync",
+            "zh": "保持同步"
+          },
+          {
+            "w": "agree on state",
+            "zh": "就狀態達成一致"
+          },
+          {
+            "w": "dissolving into chaos",
+            "zh": "陷入混亂"
+          }
+        ],
+        "start": 281.6,
+        "end": 293.7
+      },
+      {
+        "idx": 3,
+        "text": "Most importantly though, this algorithm helped assemble the largest structured pile of human text ever created. And that massive pile of text would eventually become the training data or feedstock for future AI models.",
+        "zh": "然而，最重要的是，這個演算法協助彙集了有史以來最大的結構化人類文本堆疊。而這龐大的文本堆疊最終將成為未來人工智慧模型的訓練資料或原料。",
+        "kw": [
+          {
+            "w": "Most importantly though",
+            "zh": "然而，最重要的是（用於強調重點）"
+          },
+          {
+            "w": "helped assemble",
+            "zh": "協助彙集/組裝"
+          },
+          {
+            "w": "structured pile of human text",
+            "zh": "結構化人類文本堆疊"
+          },
+          {
+            "w": "training data or feedstock for",
+            "zh": "…的訓練資料或原料"
+          }
+        ],
+        "start": 423.6,
+        "end": 434.8
+      }
+    ]
+  },
+  "2026-07-14": {
+    "video_id": "p0dX6C_ZSAQ",
+    "title": "Your inner world is smaller than you think. Expand it.",
+    "channel": "Big Think",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Like it or not, the world that we really know and live in is one where our choices matter. We have some responsibility for bringing about what is going to happen next.",
+        "zh": "不管你喜歡與否，我們真正了解和生活的世界是個選擇至關重要的世界。我們對接下來會發生什麼事負有一定的責任。",
+        "kw": [
+          {
+            "w": "Like it or not",
+            "zh": "無論你喜不喜歡，不論怎樣"
+          },
+          {
+            "w": "choices matter",
+            "zh": "選擇很重要"
+          },
+          {
+            "w": "bringing about",
+            "zh": "導致、促成"
+          }
+        ],
+        "start": 0.0,
+        "end": 11.7
+      },
+      {
+        "idx": 2,
+        "text": "The first step to expanding our narrow models is to understand our own biases because everyone's not experiencing reality the same way on the inside.",
+        "zh": "拓展我們狹隘思維模式的第一步是了解我們自己的偏見，因為每個人的內在體驗現實的方式都不同。",
+        "kw": [
+          {
+            "w": "expanding our narrow models",
+            "zh": "拓展我們狹隘的思維模式"
+          },
+          {
+            "w": "understand our own biases",
+            "zh": "了解我們自己的偏見"
+          },
+          {
+            "w": "experiencing reality the same way",
+            "zh": "以相同的方式體驗現實"
+          }
+        ],
+        "start": 52.5,
+        "end": 63.8
+      },
+      {
+        "idx": 3,
+        "text": "It's very often that in the conversations about free will, you find people who believe in free will contrasted with determinists who just think the laws of physics are going to tell us what happens in the world.",
+        "zh": "在關於自由意志的對話中，你經常會發現，相信自由意志的人與決定論者形成對比，後者認為物理定律會告訴我們世界上會發生什麼。",
+        "kw": [
+          {
+            "w": "conversations about",
+            "zh": "關於...的對話"
+          },
+          {
+            "w": "contrasted with",
+            "zh": "與...形成對比"
+          },
+          {
+            "w": "laws of physics",
+            "zh": "物理定律"
+          }
+        ],
+        "start": 100.6,
+        "end": 112.1
+      }
+    ]
+  },
+  "2026-07-15": {
+    "video_id": "0GQ2RP-25gM",
+    "title": "Why AI is like a (Clever Hans) Horse - Computerphile",
+    "channel": "Computerphile",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "So, the questioner, this is our questioner, would ask, \"What's 3 + 3?\" And when the correct answer approached, there'd be an involuntary signal that Hans had learned.",
+        "zh": "所以，提問者——也就是我們的提問者——會問「3 加 3 是多少？」當正確答案即將出現時，就會有一個漢斯已經學會的非自願信號。",
+        "kw": [
+          {
+            "w": "questioner",
+            "zh": "提問者"
+          },
+          {
+            "w": "involuntary signal",
+            "zh": "非自願的信號"
+          },
+          {
+            "w": "had learned",
+            "zh": "已經學會了"
+          }
+        ],
+        "start": 78.9,
+        "end": 88.2
+      },
+      {
+        "idx": 2,
+        "text": "In a 30-second piece of audio, which is what our classifiers take, these frequency bins, they're called, there's going to be something like 240,000 of them.",
+        "zh": "在一段 30 秒的音頻中——也就是我們的分類器會處理的長度——這些被稱為頻率區塊的東西，大概會有 24 萬個。",
+        "kw": [
+          {
+            "w": "piece of audio",
+            "zh": "一段音頻"
+          },
+          {
+            "w": "classifiers take",
+            "zh": "分類器處理"
+          },
+          {
+            "w": "frequency bins",
+            "zh": "頻率區塊/頻帶"
+          }
+        ],
+        "start": 279.3,
+        "end": 287.5
+      },
+      {
+        "idx": 3,
+        "text": "What is the minimal number of frequencies I can pass in to a classifier? I'm not going to tell you which classifier. It's publicly available, but I don't want to embarrass them cuz it's not a particularly good classifier.",
+        "zh": "我能傳遞給分類器的最少頻率數量是多少？我不會告訴你們是哪個分類器。它是公開可用的，但我不想讓他們難堪，因為它並不是一個特別好的分類器。",
+        "kw": [
+          {
+            "w": "minimal number of frequencies",
+            "zh": "最少頻率數量"
+          },
+          {
+            "w": "pass in to a classifier",
+            "zh": "傳遞給分類器"
+          },
+          {
+            "w": "publicly available",
+            "zh": "公開可用的"
+          },
+          {
+            "w": "embarrass them",
+            "zh": "讓他們難堪"
+          },
+          {
+            "w": "particularly good classifier",
+            "zh": "特別好的分類器"
+          }
+        ],
+        "start": 644.9,
+        "end": 656.0
+      }
+    ]
+  }
+}

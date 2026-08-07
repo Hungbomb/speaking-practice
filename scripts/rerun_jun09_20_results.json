@@ -1,0 +1,982 @@
+{
+  "2026-06-09": {
+    "video_id": "GREaEG_0Xcw",
+    "title": "How Car Dealerships Scam America",
+    "channel": "Wendover Productions",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "After a decade of steady career advancement and saving, after years of driving a used car acquired after college, and after months of research, this northern Coloradan is set to buy their first new car.",
+        "zh": "經過十年穩定的職涯發展和儲蓄，開了多年大學畢業後買的二手車，並研究了數月之後，這位科羅拉多州北部的居民準備購買他們的第一輛新車。",
+        "kw": [
+          {
+            "w": "steady career advancement",
+            "zh": "穩定的職涯發展"
+          },
+          {
+            "w": "acquired after college",
+            "zh": "大學畢業後買的"
+          },
+          {
+            "w": "set to buy",
+            "zh": "準備購買"
+          }
+        ],
+        "start": 6.0,
+        "end": 17.3
+      },
+      {
+        "idx": 2,
+        "text": "Aided by legal protections from a bygone era and dealing with less and less competition just means more leverage for the middleman dealership.",
+        "zh": "在過時法律的保護下，加上競爭日益減少，這意味著中間商經銷商擁有更大的影響力。",
+        "kw": [
+          {
+            "w": "aided by",
+            "zh": "在...的幫助下"
+          },
+          {
+            "w": "bygone era",
+            "zh": "逝去的時代、過去的年代"
+          },
+          {
+            "w": "less and less competition",
+            "zh": "越來越少的競爭"
+          },
+          {
+            "w": "more leverage",
+            "zh": "更大的影響力/籌碼"
+          },
+          {
+            "w": "middleman dealership",
+            "zh": "中間商經銷商"
+          }
+        ],
+        "start": 385.8,
+        "end": 393.8
+      },
+      {
+        "idx": 3,
+        "text": "They'll do this through financing, working the buyer to as high of an interest rate as they can stomach, they'll push the add-ons like extended warranties, gap insurance, winterization, paint, wheel, and glass insurance.",
+        "zh": "他們會透過融資，誘導買方接受盡可能高的利率；他們也會推銷附加產品，例如延長保固、差額保險、防寒處理、車漆、輪胎和玻璃保險。",
+        "kw": [
+          {
+            "w": "working the buyer to as high of an interest rate as they can stomach",
+            "zh": "誘導買方接受盡可能高的利率（直到他們能承受的程度）"
+          },
+          {
+            "w": "push the add-ons",
+            "zh": "推銷附加產品"
+          },
+          {
+            "w": "extended warranties",
+            "zh": "延長保固"
+          },
+          {
+            "w": "gap insurance",
+            "zh": "差額保險"
+          },
+          {
+            "w": "winterization",
+            "zh": "防寒處理"
+          }
+        ],
+        "start": 559.6,
+        "end": 570.0
+      }
+    ]
+  },
+  "2026-06-10": {
+    "video_id": "tz23G_UXCGA",
+    "title": "Something is jamming GPS over Europe. Here's what we found",
+    "channel": "Veritasium",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "So, they wondered what could cause this. It's a heavily militarized Russian exclave, and in recent years, it's become a hotspot for this kind of electronic warfare. So maybe that was it.",
+        "zh": "所以，他們想知道是什麼原因造成的。那是一個高度軍事化的俄羅斯飛地，近年來已成為這類電子戰的熱點。所以，也許就是它了。",
+        "kw": [
+          {
+            "w": "heavily militarized",
+            "zh": "高度軍事化的"
+          },
+          {
+            "w": "Russian exclave",
+            "zh": "俄羅斯飛地"
+          },
+          {
+            "w": "hotspot for",
+            "zh": "…的熱點"
+          },
+          {
+            "w": "electronic warfare",
+            "zh": "電子戰"
+          }
+        ],
+        "start": 98.5,
+        "end": 124.5
+      },
+      {
+        "idx": 2,
+        "text": "Now, satellites have atomic clocks, so their timing drifts by only three seconds every million years, but a typical receiver's clock can drift by that much in just a couple of days, throwing your position off by 30 meters.",
+        "zh": "現在，衛星擁有原子鐘，所以它們的計時每百萬年只會漂移三秒，但一般接收器的時鐘在短短幾天內就能漂移那麼多，導致你的位置誤差達到30公尺。",
+        "kw": [
+          {
+            "w": "atomic clocks",
+            "zh": "原子鐘"
+          },
+          {
+            "w": "timing drifts by",
+            "zh": "計時漂移…"
+          },
+          {
+            "w": "throwing your position off",
+            "zh": "使你的定位不準／造成你的位置誤差"
+          }
+        ],
+        "start": 406.2,
+        "end": 437.4
+      },
+      {
+        "idx": 3,
+        "text": "They obtained the actual digitized radio waves millions of times per second from two stations: one in Amsterdam in the Netherlands and one in Trondheim in Northern Norway, which captured these interference events on February 11th, 2026.",
+        "zh": "他們從兩個站點獲得了每秒數百萬次的數位化無線電波：一個是荷蘭阿姆斯特丹的站點，另一個是挪威北部特隆赫姆的站點，這些站點在2026年2月11日捕捉到了這些干擾事件。",
+        "kw": [
+          {
+            "w": "obtained",
+            "zh": "獲得、取得"
+          },
+          {
+            "w": "digitized radio waves",
+            "zh": "數位化無線電波"
+          },
+          {
+            "w": "millions of times per second",
+            "zh": "每秒數百萬次"
+          },
+          {
+            "w": "captured interference events",
+            "zh": "捕捉到干擾事件"
+          }
+        ],
+        "start": 1346.5,
+        "end": 1363.3
+      }
+    ]
+  },
+  "2026-06-11": {
+    "video_id": "DVhEJ4Wwlf8",
+    "title": "Russia’s Weird, Bad Alternative Internet",
+    "channel": "Half as Interesting",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Hey, so nice to meet you. We should keep in touch. Let me add you on Facebook. Oh, sorry. V contact. No, better yet, I'll follow you on Insta I mean Ross gram.",
+        "zh": "嘿，很高興見到你。我們應該保持聯繫。讓我加你臉書。噢，抱歉。V contact。不，更好的是，我會追蹤你的 Insta，我是說 Ross gram。",
+        "kw": [
+          {
+            "w": "keep in touch",
+            "zh": "保持聯繫"
+          },
+          {
+            "w": "better yet",
+            "zh": "更好的是"
+          },
+          {
+            "w": "I mean",
+            "zh": "我的意思是（用於自我糾正或澄清）"
+          }
+        ],
+        "start": 0.5,
+        "end": 9.8
+      },
+      {
+        "idx": 2,
+        "text": "censoring the internet and bringing it under state control is a huge pain. And Russia's attempts to do it bit by bit over the years have resulted in a very strange, frustrating, risky user experience.",
+        "zh": "審查網路並將其置於國家控制之下是一件非常麻煩的事。俄羅斯多年來一點一滴的嘗試，導致了非常奇怪、令人沮喪且充滿風險的使用者體驗。",
+        "kw": [
+          {
+            "w": "bringing it under state control",
+            "zh": "將其置於國家控制之下"
+          },
+          {
+            "w": "a huge pain",
+            "zh": "一件非常麻煩的事"
+          },
+          {
+            "w": "bit by bit",
+            "zh": "逐漸地，一點一點地"
+          },
+          {
+            "w": "resulted in",
+            "zh": "導致"
+          }
+        ],
+        "start": 68.8,
+        "end": 79.2
+      },
+      {
+        "idx": 3,
+        "text": "But, a lot of it is about trying to compel the internet-using public to use Russian alternatives of popular foreign apps. Hence, banning Instagram, but launching Rossgram, banning TikTok, but allowing a Russian version called Yappy,",
+        "zh": "但其中很多是關於試圖強迫使用網路的民眾使用俄羅斯版的流行外國應用程式。因此，他們禁止了 Instagram，但推出了 Rossgram；禁止了 TikTok，但允許了一個叫做 Yappy 的俄羅斯版本。",
+        "kw": [
+          {
+            "w": "compel ... to use",
+            "zh": "強迫...使用"
+          },
+          {
+            "w": "alternatives of",
+            "zh": "...的替代品"
+          },
+          {
+            "w": "hence",
+            "zh": "因此"
+          },
+          {
+            "w": "launching",
+            "zh": "推出，發布（應用程式等）"
+          }
+        ],
+        "start": 292.6,
+        "end": 306.5
+      }
+    ]
+  },
+  "2026-06-12": {
+    "video_id": "hoTTWm2R-wA",
+    "title": "Why are this year's World Cup tickets so expensive? | The Economist",
+    "channel": "The Economist",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Adjusted for inflation, tickets cost four times what they did when America last hosted in 1994 and more than double Qatar just four years ago.",
+        "zh": "經通膨調整後，今年門票價格是美國上次於 1994 年主辦時的四倍，也比四年前的卡達世界盃高出一倍以上。",
+        "kw": [
+          {
+            "w": "Adjusted for inflation",
+            "zh": "經通膨調整後"
+          },
+          {
+            "w": "cost X times what they did",
+            "zh": "價格是當時的 X 倍"
+          },
+          {
+            "w": "more than double",
+            "zh": "高出一倍以上"
+          }
+        ],
+        "start": 18.4,
+        "end": 27.1
+      },
+      {
+        "idx": 2,
+        "text": "And noisy stadiums are what make FIFA's main revenue streams, broadcasting rights and sponsorship deals, so Think of it as an input cost for the real product, televised football.",
+        "zh": "吵鬧的體育場正是國際足聯主要收入來源（轉播權和贊助協議）的關鍵，所以將其視為電視轉播足球這項真正產品的投入成本。",
+        "kw": [
+          {
+            "w": "revenue streams",
+            "zh": "收入來源"
+          },
+          {
+            "w": "broadcasting rights",
+            "zh": "轉播權"
+          },
+          {
+            "w": "sponsorship deals",
+            "zh": "贊助協議"
+          },
+          {
+            "w": "input cost",
+            "zh": "投入成本"
+          }
+        ],
+        "start": 64.2,
+        "end": 75.0
+      },
+      {
+        "idx": 3,
+        "text": "27 of the 64 matches played below 50% of stadium capacity. There are now warning signs for the World Cup, too. Tickets are yet to sell out and resale prices are falling.",
+        "zh": "64 場比賽中有 27 場的上座率低於體育場容量的 50%。現在，世界盃也出現了警訊。門票尚未售罄，轉售價格正在下跌。",
+        "kw": [
+          {
+            "w": "stadium capacity",
+            "zh": "體育場容量"
+          },
+          {
+            "w": "warning signs",
+            "zh": "警訊"
+          },
+          {
+            "w": "yet to sell out",
+            "zh": "尚未售罄"
+          },
+          {
+            "w": "resale prices are falling",
+            "zh": "轉售價格正在下跌"
+          }
+        ],
+        "start": 131.1,
+        "end": 142.8
+      }
+    ]
+  },
+  "2026-06-13": {
+    "video_id": "2NK0wBBZZ24",
+    "title": "What Went Wrong With California High Speed Rail",
+    "channel": "Wendover Productions",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Today, three decades on and six years past the first planned completion date, the project is seven times over budget, now devoid of a planned completion date, and lacking a single foot of laid track.",
+        "zh": "今天，在三個十年之後，並且比原定首次完工日期晚了六年，這個專案預算已經超支七倍，現在沒有預計的完工日期，而且一寸鐵軌都還沒有鋪設。",
+        "kw": [
+          {
+            "w": "three decades on",
+            "zh": "三十年過去了"
+          },
+          {
+            "w": "past the first planned completion date",
+            "zh": "超出了原定首次完工日期"
+          },
+          {
+            "w": "seven times over budget",
+            "zh": "預算超支七倍"
+          },
+          {
+            "w": "devoid of",
+            "zh": "缺乏，沒有"
+          },
+          {
+            "w": "lacking a single foot of laid track",
+            "zh": "一寸鐵軌都還沒有鋪設"
+          }
+        ],
+        "start": 11.0,
+        "end": 23.0
+      },
+      {
+        "idx": 2,
+        "text": "The alignment was so attractive, in fact, that France's national rail operator, SNCF, was briefly looking at partnering with the state to build its system under the condition that they chose this alignment.",
+        "zh": "事實上，這條路線如此吸引人，以至於法國國家鐵路公司（SNCF）曾短暫考慮與加州政府合作建造其系統，前提是他們選擇這條路線。",
+        "kw": [
+          {
+            "w": "attractive, in fact",
+            "zh": "事實上很吸引人"
+          },
+          {
+            "w": "briefly looking at partnering with",
+            "zh": "曾短暫考慮與...合作"
+          },
+          {
+            "w": "under the condition that",
+            "zh": "在...的條件下，前提是"
+          }
+        ],
+        "start": 618.9,
+        "end": 629.3
+      },
+      {
+        "idx": 3,
+        "text": "While a closer look certainly finds cases of mismanagement during construction here and there, the larger problem is a massive mismatch between expectations and reality.",
+        "zh": "雖然仔細檢視確實發現施工期間不時出現管理不善的情況，但更大的問題是期望與現實之間存在巨大的落差。",
+        "kw": [
+          {
+            "w": "closer look",
+            "zh": "仔細檢視"
+          },
+          {
+            "w": "cases of mismanagement",
+            "zh": "管理不善的情況"
+          },
+          {
+            "w": "here and there",
+            "zh": "不時地，到處都有"
+          },
+          {
+            "w": "massive mismatch between expectations and reality",
+            "zh": "期望與現實之間巨大的落差"
+          }
+        ],
+        "start": 1093.8,
+        "end": 1103.1
+      }
+    ]
+  },
+  "2026-06-14": {
+    "video_id": "Dkqzqw8rxXI",
+    "title": "DeepMind’s New AI Found A Strange New Way To Think",
+    "channel": "Two Minute Papers",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Now, DeepMind's new AI called AlphaProof Nexus tried to solve about 350 of them and came up with a 95.7% failure rate. Basically, it solved nine, and it only cost a couple hundred dollars per problem.",
+        "zh": "DeepMind 新的人工智慧 AlphaProof Nexus 試圖解決約 350 道這些問題，結果卻有 95.7% 的失敗率。基本上，它只解決了九道題，而且每道題花費數百美元。",
+        "kw": [
+          {
+            "w": "came up with",
+            "zh": "想出，提出"
+          },
+          {
+            "w": "failure rate",
+            "zh": "失敗率"
+          },
+          {
+            "w": "cost a couple hundred dollars per problem",
+            "zh": "每道題花費數百美元"
+          }
+        ],
+        "start": 21.3,
+        "end": 37.7
+      },
+      {
+        "idx": 2,
+        "text": "Well, hold on to your papers, fellow scholars, because it's kind of like a chess system where the solutions are the players and each of these players gets an ELO score, also named after Arpad Elo, fellow Hungarian.",
+        "zh": "各位學者，請仔細聽好了，這有點像一個西洋棋系統，其中解決方案就是玩家，每個玩家都會得到一個 ELO 分數，這個分數也是以匈牙利同胞 Arpad Elo 的名字命名的。",
+        "kw": [
+          {
+            "w": "hold on to your papers",
+            "zh": "仔細聽，準備好；此處為呼籲聽眾專心或驚訝於接下來的內容"
+          },
+          {
+            "w": "kind of like",
+            "zh": "有點像，類似於"
+          },
+          {
+            "w": "named after",
+            "zh": "以...命名"
+          }
+        ],
+        "start": 170.2,
+        "end": 184.4
+      },
+      {
+        "idx": 3,
+        "text": "But wait, interestingly, the story of AI so far has been that we make it smarter. Now, the story has changed. We don't need to make it smarter, we need to make the harness around it tighter.",
+        "zh": "但等等，有趣的是，到目前為止人工智慧的故事一直是我們讓它變得更聰明。現在，情況已經改變了。我們不需要讓它更聰明，我們需要收緊圍繞它的「韁繩」（即更嚴格地引導和控制它）。",
+        "kw": [
+          {
+            "w": "so far",
+            "zh": "到目前為止"
+          },
+          {
+            "w": "the story has changed",
+            "zh": "情況已經改變了；劇情反轉"
+          },
+          {
+            "w": "make the harness around it tighter",
+            "zh": "收緊圍繞它的韁繩；比喻為加強對其行為的控制或限制"
+          }
+        ],
+        "start": 246.2,
+        "end": 259.0
+      }
+    ]
+  },
+  "2026-06-15": {
+    "video_id": "ZewlcJsfbn8",
+    "title": "The Dark Side of the World’s Lightest Structural Metal",
+    "channel": "Real Engineering",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "They didn't fully understand why this made magnesium so much stronger, but this made the magnesium strong enough to be used in lightweight structural parts in planes and zeppelins of World War I.",
+        "zh": "他們不完全了解為什麼這使鎂變得如此堅固，但這使鎂足夠堅固，可以用於第一次世界大戰中飛機和飛艇的輕型結構零件。",
+        "kw": [
+          {
+            "w": "fully understand",
+            "zh": "完全理解"
+          },
+          {
+            "w": "strong enough to be used in",
+            "zh": "足夠堅固以用於"
+          },
+          {
+            "w": "lightweight structural parts",
+            "zh": "輕型結構零件"
+          }
+        ],
+        "start": 56.1,
+        "end": 66.9
+      },
+      {
+        "idx": 2,
+        "text": "As the molten pool of metal cools, aluminum atoms can substitute themselves into the magnesium crystal lattice, but they are slightly smaller than the surrounding magnesium atoms, so they create tension in the structure and make it harder for atoms to slide past one another.",
+        "zh": "當熔融金屬冷卻時，鋁原子可以取代鎂晶體晶格中的位置，但它們比周圍的鎂原子略小，因此它們在結構中產生張力，並使原子更難相互滑動。",
+        "kw": [
+          {
+            "w": "molten pool of metal",
+            "zh": "熔融金屬液池"
+          },
+          {
+            "w": "substitute themselves into",
+            "zh": "取代...的位置"
+          },
+          {
+            "w": "crystal lattice",
+            "zh": "晶體晶格"
+          },
+          {
+            "w": "create tension in the structure",
+            "zh": "在結構中產生張力"
+          }
+        ],
+        "start": 378.5,
+        "end": 393.4
+      },
+      {
+        "idx": 3,
+        "text": "Like many things in engineering, magnesium alloys got their first use in war, but today it's helping car manufacturers to trim crucial weight where needed and helping children recover from painful surgeries.",
+        "zh": "正如工程學中的許多事物一樣，鎂合金最初用於戰爭，但如今它正幫助汽車製造商在需要的地方減輕關鍵重量，並幫助兒童從痛苦的手術中恢復。",
+        "kw": [
+          {
+            "w": "got their first use in",
+            "zh": "首次用於"
+          },
+          {
+            "w": "trim crucial weight",
+            "zh": "減輕關鍵重量"
+          },
+          {
+            "w": "recover from painful surgeries",
+            "zh": "從痛苦的手術中恢復"
+          }
+        ],
+        "start": 773.4,
+        "end": 784.5
+      }
+    ]
+  },
+  "2026-06-16": {
+    "video_id": "mzlZ5GF1CXI",
+    "title": "The growing backlash to AI's \"race to replace” humans | The Economist",
+    "channel": "The Economist",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Just the other week on the same Wednesday, I think it was, I spent 1 hour talking about the risks of superintelligence with Steve Bannon and 1 hour talking about the risks of it with Bernie Sanders in the Capitol on the same day.",
+        "zh": "就在上週三，我想是那天，我花了一小時和史蒂夫·班農談論超級智慧的風險，又花了一小時在國會和伯尼·桑德斯談論同樣的風險，就在同一天。",
+        "kw": [
+          {
+            "w": "the other week",
+            "zh": "上週；前幾週"
+          },
+          {
+            "w": "superintelligence",
+            "zh": "超級智慧"
+          },
+          {
+            "w": "in the Capitol",
+            "zh": "在國會大廈"
+          },
+          {
+            "w": "on the same day",
+            "zh": "在同一天"
+          }
+        ],
+        "start": 26.8,
+        "end": 46.0
+      },
+      {
+        "idx": 2,
+        "text": "A lot of politicians I've spoken to recently have told me privately that they've seen this huge vibe shift among their voters where they've swung very negative on this.",
+        "zh": "許多我最近聊過的政治人物私下告訴我，他們看到選民之間出現了巨大的「氛圍轉變」，選民對此事的態度變得非常負面。",
+        "kw": [
+          {
+            "w": "spoken to recently",
+            "zh": "最近交談過"
+          },
+          {
+            "w": "privately told me",
+            "zh": "私下告訴我"
+          },
+          {
+            "w": "huge vibe shift",
+            "zh": "巨大的氛圍轉變"
+          },
+          {
+            "w": "swung very negative on this",
+            "zh": "對此事的態度變得非常負面"
+          }
+        ],
+        "start": 70.6,
+        "end": 78.2
+      },
+      {
+        "idx": 3,
+        "text": "If we have no say in what happens anymore, you know that doesn't mean for sure we're going to get ultimately killed, but we see it again and again in history that if a group of people just has no say, things often don't work out so well.",
+        "zh": "如果我們對發生的事情不再有任何發言權，這不代表我們一定會被殺死，但我們在歷史上一次又一次地看到，如果一群人沒有發言權，事情往往不會發展得很好。",
+        "kw": [
+          {
+            "w": "have no say",
+            "zh": "沒有發言權"
+          },
+          {
+            "w": "doesn't mean for sure",
+            "zh": "不確定；不必然意味著"
+          },
+          {
+            "w": "again and again",
+            "zh": "一次又一次地"
+          },
+          {
+            "w": "don't work out so well",
+            "zh": "發展得不順利"
+          }
+        ],
+        "start": 216.7,
+        "end": 231.8
+      }
+    ]
+  },
+  "2026-06-17": {
+    "video_id": "iJqXFUDB66k",
+    "title": "Why They Built The World’s Longest Rail Tunnel",
+    "channel": "Half as Interesting",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "The Alps have never been transportation's best friend. For centuries, one of the only ways to get from tomato Europe to potato Europe was through the Gotthard Pass. Trying to circumvent the Alps entirely requires doing something like this or this, which sucks.",
+        "zh": "阿爾卑斯山從來都不是交通的好朋友。幾個世紀以來，從「番茄歐洲」到「馬鈴薯歐洲」的唯一途徑之一，就是穿過哥達山口。試圖完全繞過阿爾卑斯山需要做這樣或那樣的事情，這很糟糕。",
+        "kw": [
+          {
+            "w": "transportation's best friend",
+            "zh": "對交通而言非常便利或有利（此處為反語，指極度不便）"
+          },
+          {
+            "w": "circumvent entirely",
+            "zh": "完全避開、繞過"
+          },
+          {
+            "w": "which sucks",
+            "zh": "（口語）這很糟糕、很討厭"
+          }
+        ],
+        "start": 44.1,
+        "end": 57.7
+      },
+      {
+        "idx": 2,
+        "text": "For safety reasons, you need two main tubes in case one catches on fire, and 178 cross passages to serve as escape routes and maintenance access. You also need specialized ventilation systems to keep the tunnel cool.",
+        "zh": "出於安全考量，你需要兩條主隧道以防其中一條著火，以及 178 條橫向通道作為逃生路線和維護通道。你還需要專門的通風系統來保持隧道涼爽。",
+        "kw": [
+          {
+            "w": "For safety reasons",
+            "zh": "出於安全考量"
+          },
+          {
+            "w": "in case",
+            "zh": "以防萬一"
+          },
+          {
+            "w": "serve as",
+            "zh": "充當、用作"
+          },
+          {
+            "w": "specialized ventilation systems",
+            "zh": "專業通風系統"
+          }
+        ],
+        "start": 177.5,
+        "end": 188.9
+      },
+      {
+        "idx": 3,
+        "text": "In the end, the alignment deviation across the entire tunnel was 3 in 8 cm horizontally and a whopping 0.4 in or 1 cm vertically, which is frankly embarrassing and why the Gotthard Base Tunnel remains one of Switzerland's greatest national shames to this day.",
+        "zh": "最終，整個隧道的對齊偏差在水平方向上為 3 英寸（8 厘米），垂直方向上竟然達到 0.4 英寸（1 厘米），這坦率地說很令人尷尬，也是哥達基線隧道至今仍是瑞士最大國家恥辱之一的原因。",
+        "kw": [
+          {
+            "w": "In the end",
+            "zh": "最終、結果"
+          },
+          {
+            "w": "alignment deviation",
+            "zh": "對齊偏差、校準誤差"
+          },
+          {
+            "w": "a whopping",
+            "zh": "一個驚人的、巨大的（常與數字連用，表示強調）"
+          },
+          {
+            "w": "frankly embarrassing",
+            "zh": "坦率地說很尷尬"
+          },
+          {
+            "w": "national shames",
+            "zh": "國恥、國家的恥辱"
+          }
+        ],
+        "start": 414.0,
+        "end": 431.0
+      }
+    ]
+  },
+  "2026-06-18": {
+    "video_id": "1PBRhm5ZnjU",
+    "title": "Anthropic begged the world to stop AI… then shipped this",
+    "channel": "Fireship",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Last week, Anthropic stood on the global stage and begged the world's AI labs to install a coordinated brake pedal on frontier AI development because they're terrified that models are getting dangerously close to recursive self-improvement.",
+        "zh": "上週，Anthropic 站在全球舞台上，懇求全球的 AI 實驗室安裝一個協調的煞車踏板，以減緩前沿 AI 的發展，因為他們擔心模型正危險地接近遞歸式自我改進。",
+        "kw": [
+          {
+            "w": "stood on the global stage",
+            "zh": "站在全球舞台上"
+          },
+          {
+            "w": "begged... to install",
+            "zh": "懇求...安裝"
+          },
+          {
+            "w": "coordinated brake pedal",
+            "zh": "協調的煞車踏板"
+          },
+          {
+            "w": "frontier AI development",
+            "zh": "前沿 AI 發展"
+          },
+          {
+            "w": "terrified that",
+            "zh": "深感恐懼"
+          },
+          {
+            "w": "getting dangerously close to",
+            "zh": "危險地接近"
+          },
+          {
+            "w": "recursive self-improvement",
+            "zh": "遞歸式自我改進"
+          }
+        ],
+        "start": 0.0,
+        "end": 12.2
+      },
+      {
+        "idx": 2,
+        "text": "It has a set of classifier models that will watch every query you make. And if you wander into cybersecurity, biology, chemistry, or of course model distillation, your request gets nuked and answered by Claude Opus 4.8 instead.",
+        "zh": "它擁有一組分類器模型，會監控你發出的每一個查詢。如果你涉足網路安全、生物學、化學，當然還有模型提煉等領域，你的請求就會被中止，並改由 Claude Opus 4.8 來回答。",
+        "kw": [
+          {
+            "w": "set of classifier models",
+            "zh": "一組分類器模型"
+          },
+          {
+            "w": "watch every query",
+            "zh": "監控每一個查詢"
+          },
+          {
+            "w": "wander into",
+            "zh": "涉足；偶然進入"
+          },
+          {
+            "w": "gets nuked",
+            "zh": "被中止；被摧毀"
+          },
+          {
+            "w": "answered by... instead",
+            "zh": "改由...回答"
+          }
+        ],
+        "start": 152.6,
+        "end": 165.6
+      },
+      {
+        "idx": 3,
+        "text": "And if you're building an AI app, Render workflows gives you an execution engine that will automatically retry when something fails, so your agents don't crash and burn on a long-running task.",
+        "zh": "如果你正在開發 AI 應用程式，Render 工作流程提供了一個執行引擎，當出現故障時會自動重試，這樣你的代理程式就不會在長時間運行的任務中徹底失敗。",
+        "kw": [
+          {
+            "w": "execution engine",
+            "zh": "執行引擎"
+          },
+          {
+            "w": "automatically retry",
+            "zh": "自動重試"
+          },
+          {
+            "w": "something fails",
+            "zh": "出現故障"
+          },
+          {
+            "w": "crash and burn",
+            "zh": "徹底失敗；燒毀"
+          },
+          {
+            "w": "long-running task",
+            "zh": "長時間運行的任務"
+          }
+        ],
+        "start": 285.3,
+        "end": 295.4
+      }
+    ]
+  },
+  "2026-06-19": {
+    "video_id": "NxZOBBenmZM",
+    "title": "The mist that keeps the Tyne Tunnels safe",
+    "channel": "Tom Scott",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "The Tyne Tunnels folks got in touch when they were doing a test, so I had that to look forward to; he wasn’t actually wearing a mic, but turns out he was great.",
+        "zh": "泰恩隧道的員工在他們進行測試時聯繫了我，所以我很期待；他其實沒有戴麥克風，但結果他很棒。",
+        "kw": [
+          {
+            "w": "got in touch",
+            "zh": "聯繫，取得聯繫"
+          },
+          {
+            "w": "look forward to",
+            "zh": "期待"
+          },
+          {
+            "w": "turns out",
+            "zh": "結果是，原來是"
+          }
+        ],
+        "start": 378.1,
+        "end": 404.6
+      },
+      {
+        "idx": 2,
+        "text": "It’s meant to fire up regularly, or about a bathtub every six seconds, and when that thing fires off, it’s not 140 PSI, but rather they’re using metric units, 140 bar.",
+        "zh": "它應該會定期啟動，或者說大約每六秒就能流出一個浴缸的水量；當它啟動時，壓力不是 140 PSI，而是他們使用的公制單位，140 巴。",
+        "kw": [
+          {
+            "w": "fire up",
+            "zh": "啟動，發動"
+          },
+          {
+            "w": "every six seconds",
+            "zh": "每六秒"
+          },
+          {
+            "w": "metric units",
+            "zh": "公制單位"
+          }
+        ],
+        "start": 874.0,
+        "end": 923.0
+      },
+      {
+        "idx": 3,
+        "text": "That may not have looked like much, but that soaked me immediately, every single bit of me, and I’m so cold; that’s the point of it, because the point of it is it’s mist!",
+        "zh": "那可能看起來沒什麼，但它立刻把我全身都淋濕了，我好冷；這就是它的重點，因為它的重點就是它是霧氣！",
+        "kw": [
+          {
+            "w": "looked like much",
+            "zh": "看起來很多/很厲害"
+          },
+          {
+            "w": "soaked me immediately",
+            "zh": "立刻把我淋濕"
+          },
+          {
+            "w": "every single bit of me",
+            "zh": "我身體的每一寸，全身"
+          },
+          {
+            "w": "the point of it",
+            "zh": "它的重點"
+          }
+        ],
+        "start": 1257.3,
+        "end": 1273.6
+      }
+    ]
+  },
+  "2026-06-20": {
+    "video_id": "hIOW2HKgzPk",
+    "title": "Why Fast Food Got So Expensive",
+    "channel": "Wendover Productions",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Instead of reaching for their wallet, they pulled out their phone to capture the absurdity. A Big Mac meal running nearly $18. The picture was posted on Twitter and accompanied by a question, and the response was overwhelming.",
+        "zh": "他們沒有掏錢包，而是拿出手機拍下這荒謬的景象。一份大麥克套餐要價將近18美元。這張照片被發布在推特上並附帶一個問題，而回應是鋪天蓋地的。",
+        "kw": [
+          {
+            "w": "reach for one's wallet",
+            "zh": "掏錢包"
+          },
+          {
+            "w": "pull out one's phone",
+            "zh": "拿出手機"
+          },
+          {
+            "w": "capture the absurdity",
+            "zh": "捕捉荒謬之處"
+          },
+          {
+            "w": "run nearly",
+            "zh": "要價將近"
+          },
+          {
+            "w": "accompany by",
+            "zh": "伴隨、附帶"
+          },
+          {
+            "w": "overwhelming",
+            "zh": "壓倒性的"
+          }
+        ],
+        "start": 15.7,
+        "end": 28.8
+      },
+      {
+        "idx": 2,
+        "text": "With 14,000 locations in just the US, but just 5% of those locations operated by the publicly traded company, McDonald's as a corporation just can't maximize consistency or quality of products like In-N-Out.",
+        "zh": "麥當勞在美國就有14,000家分店，但其中只有5%是由這家上市公司直營，作為一家企業，麥當勞就是無法像In-N-Out那樣最大化產品的一致性或品質。",
+        "kw": [
+          {
+            "w": "operated by",
+            "zh": "由…經營"
+          },
+          {
+            "w": "publicly traded company",
+            "zh": "上市公司"
+          },
+          {
+            "w": "maximize",
+            "zh": "最大化、發揮到極致"
+          },
+          {
+            "w": "consistency",
+            "zh": "一致性"
+          },
+          {
+            "w": "quality of products",
+            "zh": "產品品質"
+          }
+        ],
+        "start": 394.1,
+        "end": 406.1
+      },
+      {
+        "idx": 3,
+        "text": "But now, Dynamic Yield, the kiosks, the McDonald's app, and drive-thru have all taken this to the next level through far smarter, far more personalized sales tactics.",
+        "zh": "但現在，Dynamic Yield、自助點餐機、麥當勞應用程式和得來速都透過更智慧、更個人化的銷售策略，將此提升到了新的層次。",
+        "kw": [
+          {
+            "w": "take to the next level",
+            "zh": "提升到新的層次"
+          },
+          {
+            "w": "personalized",
+            "zh": "個人化的"
+          },
+          {
+            "w": "sales tactics",
+            "zh": "銷售策略"
+          },
+          {
+            "w": "kiosks",
+            "zh": "自助服務機台"
+          }
+        ],
+        "start": 632.2,
+        "end": 643.6
+      }
+    ]
+  }
+}

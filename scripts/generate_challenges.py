@@ -10,8 +10,7 @@
   python generate_challenges.py --start 2026-07-01 --count 5 --dry-run
 """
 
-import os, sys, json, argparse, textwrap, re, time, random, subprocess, tempfile
-import xml.etree.ElementTree as ET
+import os, sys, json, argparse, textwrap, re, time, random, subprocess, tempfile, html
 from datetime import date, timedelta
 from dotenv import load_dotenv
 
@@ -67,21 +66,12 @@ def parse_ttml(path: str) -> list[dict]:
     with open(path, encoding="utf-8") as f:
         content = f.read()
 
-    # 移除 namespace 方便解析
-    content = re.sub(r' xmlns(?::[a-z]+)?="[^"]*"', "", content)
-    content = re.sub(r"<(/?)(?:[a-z]+:)([a-zA-Z])", r"<\1\2", content)
-
-    try:
-        root = ET.fromstring(content)
-    except ET.ParseError:
-        return []
-
     segments = []
-    for p in root.iter("p"):
-        begin = p.get("begin", "")
-        end   = p.get("end",   "")
-        text  = " ".join(p.itertext()).strip()
-        text  = re.sub(r"\s+", " ", text)
+    # Use regex to avoid XML namespace issues (ttp:profile, xml:lang etc.)
+    for m in re.finditer(r'<p\b[^>]+\bbegin="([^"]+)"[^>]+\bend="([^"]+)"[^>]*>([^<]*)</p>', content):
+        begin, end, text = m.group(1), m.group(2), m.group(3).strip()
+        text = text.replace("&quot;", '"').replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">").replace("&#39;", "'")
+        text = re.sub(r"\s+", " ", text).strip()
         if begin and end and text:
             try:
                 segments.append({
@@ -94,9 +84,79 @@ def parse_ttml(path: str) -> list[dict]:
     return segments
 
 
+def parse_vtt_words(path: str) -> list[tuple[float, str]]:
+    """
+    單詞層級解析：YouTube auto-generated VTT 內嵌 <HH:MM:SS.mmm><c>word</c>，
+    每個字都有精確發話時刻。以時間戳去重（滾動視窗中同一字時間戳相同）。
+    回傳 [(sec, word), ...] 已依時間排序。無單詞層級標籤時回傳 []。
+    """
+    with open(path, encoding="utf-8") as f:
+        content = f.read()
+
+    words_by_ts: dict[float, str] = {}
+    for block in re.split(r"\n{2,}", content):
+        m = re.match(r"(\d{2}:\d{2}:\d{2}\.\d{3}) --> (\d{2}:\d{2}:\d{2}\.\d{3})", block)
+        if not m:
+            continue
+        cue_start = vtt_ts_to_sec(m.group(1))
+        # 找含單詞層級標籤的那一行（新內容行；前一行是繰り越しの純文字）
+        active = None
+        for ln in block[m.end():].split("\n"):
+            if not ln.strip():
+                continue
+            if re.search(r"<\d{2}:\d{2}:\d{2}\.\d{3}>", ln):
+                active = ln
+                break
+        if active is None:
+            continue
+        # 先頭語：第一個時間戳標籤前的純文字，賦予 cue 開始時刻
+        first_tag = re.search(r"<\d{2}:\d{2}:\d{2}\.\d{3}>", active)
+        head = re.sub(r"<[^>]+>", "", active[:first_tag.start()]).strip()
+        if head:
+            words_by_ts.setdefault(round(cue_start, 3), head)
+        # 其餘帶時間戳的字
+        for wm in re.finditer(r"<(\d{2}:\d{2}:\d{2}\.\d{3})><c>\s*([^<]+?)\s*</c>", active):
+            ts = round(vtt_ts_to_sec(wm.group(1)), 3)
+            word = wm.group(2).strip()
+            if word:
+                words_by_ts.setdefault(ts, word)
+
+    return sorted(words_by_ts.items())
+
+
+def build_word_segments(flat: list[tuple[float, str]]) -> list[dict]:
+    """
+    從單詞流組合句子層級段落。
+    start = 首字發話時刻；end = 末字之後下一字的發話時刻（自然邊界，遇長停頓時上限 +0.6s）。
+    切段條件：句尾標點、停頓 > 1.2s、或超過 22 字。
+    """
+    if not flat:
+        return []
+    segments: list[dict] = []
+    cur: list[str] = []
+    seg_start = flat[0][0]
+    for i, (ts, word) in enumerate(flat):
+        cur.append(word)
+        next_ts = flat[i + 1][0] if i + 1 < len(flat) else ts + 0.5
+        gap = next_ts - ts
+        is_end = bool(re.search(r"[.!?]$", word)) or gap > 1.2 or len(cur) >= 22
+        if is_end:
+            text = re.sub(r"\s+", " ", html.unescape(" ".join(cur))).strip()
+            end = min(next_ts, ts + 0.6) if gap > 0.6 else next_ts
+            if text:
+                segments.append({"start": round(seg_start, 2), "end": round(end, 2), "text": text})
+            seg_start = next_ts
+            cur = []
+    if cur:
+        text = re.sub(r"\s+", " ", html.unescape(" ".join(cur))).strip()
+        if text:
+            segments.append({"start": round(seg_start, 2), "end": round(flat[-1][0] + 0.6, 2), "text": text})
+    return segments
+
+
 def parse_vtt_dedup(path: str) -> list[dict]:
     """
-    解析 YouTube auto-generated VTT。
+    解析 YouTube auto-generated VTT（無單詞層級標籤時的後備）。
     YouTube 用滾動視窗格式（每格只加 1 個新詞），需要去重才能還原完整文字。
     策略：清除所有 XML tag 後，找出每格相較前一格「新增」的部分。
     """
@@ -111,7 +171,11 @@ def parse_vtt_dedup(path: str) -> list[dict]:
             continue
         start = vtt_ts_to_sec(m.group(1))
         end   = vtt_ts_to_sec(m.group(2))
-        text  = re.sub(r"<[^>]+>", "", block[m.end():]).strip()
+        # Skip past the timestamp line (which may contain 'align:start position:0%')
+        text_start = block.find('\n', m.end())
+        if text_start == -1:
+            continue
+        text  = re.sub(r"<[^>]+>", "", block[text_start:]).strip()
         text  = re.sub(r"\s+", " ", text)
         if text:
             raw.append((start, end, text))
@@ -179,54 +243,73 @@ def parse_vtt_dedup(path: str) -> list[dict]:
     return segments
 
 
+def _yt_dlp_sub(video_id: str, fmt: str, tmpdir: str, retries: int = 3) -> str | None:
+    """下載單一格式字幕，回傳檔案路徑或 None。處理 429 限速重試。"""
+    base = os.path.join(tmpdir, f"{video_id}.{fmt}")
+    for attempt in range(retries):
+        cmd = [
+            "yt-dlp",
+            "--extractor-args", "youtube:player_client=tv_embedded",
+            "--write-auto-subs", "--write-subs",
+            "--sub-lang", "en",
+            "--sub-format", fmt,
+            "--skip-download",
+            "--no-warnings",
+            "-o", base,
+            f"https://www.youtube.com/watch?v={video_id}",
+        ]
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+        except subprocess.TimeoutExpired:
+            return None
+
+        if "429" in result.stderr or "Too Many Requests" in result.stderr:
+            wait = 60 * (attempt + 1)  # 60s, 120s, 180s
+            print(f"    ⏳ YouTube 字幕限速，{wait}s 後重試…")
+            time.sleep(wait)
+            continue
+
+        found = [
+            os.path.join(tmpdir, f)
+            for f in os.listdir(tmpdir)
+            if f.startswith(video_id) and f.endswith(f".{fmt}")
+        ]
+        return found[0] if found else None
+    return None
+
+
 def download_transcript(video_id: str, retries: int = 3) -> list[dict] | None:
     """
-    用 yt-dlp 下載英文字幕，優先 TTML（乾淨格式），fallback VTT。
-    自動處理 429 限速，最多重試 retries 次。
-    回傳句子層級片段列表，或 None（無字幕）。
+    用 yt-dlp 下載英文字幕，回傳句子層級片段列表，或 None（無字幕）。
+    優先序：
+      1. VTT 單詞層級（<ts><c>word</c>，時間戳最精確，開始/結束都對得上）
+      2. TTML 句子層級（手動上傳字幕無單詞標籤時）
+      3. VTT 滾動視窗去重（最後手段）
     """
     with tempfile.TemporaryDirectory() as tmpdir:
-        base = os.path.join(tmpdir, video_id)
+        # 1) VTT 單詞層級 —— 首選
+        vtt_path = _yt_dlp_sub(video_id, "vtt", tmpdir, retries)
+        if vtt_path:
+            words = parse_vtt_words(vtt_path)
+            segs = build_word_segments(words)
+            if len(segs) >= 10:
+                print(f"    📝 字幕 (vtt 單詞層級)：{len(segs)} 個片段")
+                return segs
 
-        for fmt in ["ttml", "vtt"]:
-            for attempt in range(retries):
-                cmd = [
-                    "yt-dlp",
-                    "--extractor-args", "youtube:player_client=tv_embedded",
-                    "--write-auto-subs", "--write-subs",
-                    "--sub-lang", "en",
-                    "--sub-format", fmt,
-                    "--skip-download",
-                    "--no-warnings",
-                    "-o", base,
-                    f"https://www.youtube.com/watch?v={video_id}",
-                ]
-                try:
-                    result = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
-                except subprocess.TimeoutExpired:
-                    break
+        # 2) TTML 句子層級
+        ttml_path = _yt_dlp_sub(video_id, "ttml", tmpdir, retries)
+        if ttml_path:
+            segs = parse_ttml(ttml_path)
+            if segs:
+                print(f"    📝 字幕 (ttml)：{len(segs)} 個片段")
+                return segs
 
-                # 偵測 429 限速
-                if "429" in result.stderr or "Too Many Requests" in result.stderr:
-                    wait = 60 * (attempt + 1)  # 60s, 120s, 180s
-                    print(f"    ⏳ YouTube 字幕限速，{wait}s 後重試…")
-                    time.sleep(wait)
-                    continue
-
-                # 找下載的檔案
-                found = [
-                    os.path.join(tmpdir, f)
-                    for f in os.listdir(tmpdir)
-                    if f.startswith(video_id) and f.endswith(f".{fmt}")
-                ]
-                if not found:
-                    break  # 沒有這個 fmt，試下一個
-
-                segs = parse_ttml(found[0]) if fmt == "ttml" else parse_vtt_dedup(found[0])
-                if segs:
-                    print(f"    📝 字幕 ({fmt})：{len(segs)} 個片段")
-                    return segs
-                break  # 檔案存在但解析失敗，試下一個格式
+        # 3) VTT 去重（最後手段）
+        if vtt_path:
+            segs = parse_vtt_dedup(vtt_path)
+            if segs:
+                print(f"    📝 字幕 (vtt 去重)：{len(segs)} 個片段")
+                return segs
 
     return None
 
@@ -264,11 +347,79 @@ TRANSCRIPT_PROMPT = """\
 """
 
 
+def _norm_words(text: str) -> list[str]:
+    """正規化為小寫、去標點的詞列（用於文字對齊）"""
+    text = text.lower().replace("’", "'")
+    text = re.sub(r"[^a-z0-9'\s]", " ", text)
+    return text.split()
+
+
+def align_text_to_segments(segments: list[dict], text: str, hint: int = 0) -> tuple[float, float] | None:
+    """
+    把 Gemini 回傳的句子文字在字幕串裡實際定位，回傳 (start, end) 真實時刻。
+    做法：建立整支影片的 (詞 → 段落起始時刻) 索引，用句首/句尾各數詞作錨點對齊。
+    不受 Gemini 索引誤差影響。找不到可靠對齊時回傳 None。
+    """
+    target = _norm_words(text)
+    if len(target) < 4:
+        return None
+
+    # 全片詞流：每個詞帶所屬段落的 start，以及該段落 index
+    words: list[str] = []
+    word_start: list[float] = []
+    word_end: list[float] = []
+    for s in segments:
+        ws = _norm_words(s["text"])
+        for w in ws:
+            words.append(w)
+            word_start.append(s["start"])
+            word_end.append(s["end"])
+    if not words:
+        return None
+
+    def find_all(anchor: list[str]) -> list[int]:
+        """回傳 anchor（連續詞）在 words 內所有出現的起始位置"""
+        k = len(anchor)
+        return [i for i in range(len(words) - k + 1) if words[i:i + k] == anchor]
+
+    def closest(positions: list[int], expected: int) -> int:
+        return min(positions, key=lambda p: abs(p - expected)) if positions else -1
+
+    head = target[:4]
+    tail = target[-4:]
+    # hint 對應的詞位置（用來就近挑選，避免重複片語誤配）
+    hint_word = sum(len(_norm_words(segments[j]["text"])) for j in range(min(hint, len(segments))))
+
+    # 句首錨點：挑最接近 hint 的出現點
+    hi = closest(find_all(head), hint_word)
+    if hi < 0:
+        return None
+    # 句尾錨點：預期落在 hi + len(target) 附近，挑最接近該處者（避免誤配到後段重複片語）
+    expected_tail = hi + len(target) - len(tail)
+    tail_positions = [p for p in find_all(tail) if p >= hi]
+    ti = closest(tail_positions, expected_tail)
+    if ti < 0:
+        ti = min(hi + len(target) - 1, len(words) - 1)  # 找不到就用字數估末端
+    ti_end = min(ti + len(tail) - 1, len(words) - 1)
+
+    start = word_start[hi]
+    end   = word_end[ti_end]
+
+    # 上限：跨度明顯過長（慢於約 65 wpm）代表錨點誤配，改用字數估算合理長度
+    wc = len(target)
+    if end - start > wc * 0.9:
+        end = start + wc * 0.4
+    if end <= start:
+        return None
+    return (round(start, 1), round(end, 1))
+
+
 def analyze_from_transcript(segments: list[dict], api_key: str, retries: int = 3) -> list[dict]:
     """Gemini 讀字幕文字選出 3 句，回傳含真實時間戳的結果"""
     client = genai.Client(api_key=api_key)
 
-    lines = [f"[{i:03d}] [{s['start']:.1f}s] {s['text']}" for i, s in enumerate(segments[:400])]
+    # 送出整支影片的段落（單詞層級段落較多，上限放寬以涵蓋後段）
+    lines = [f"[{i:03d}] [{s['start']:.1f}s] {s['text']}" for i, s in enumerate(segments[:1200])]
     full_prompt = "字幕：\n\n" + "\n".join(lines) + "\n\n" + TRANSCRIPT_PROMPT
 
     raw = ""
@@ -282,7 +433,7 @@ def analyze_from_transcript(segments: list[dict], api_key: str, retries: int = 3
             break
         except Exception as e:
             err = str(e)
-            if attempt < retries - 1 and any(x in err for x in ["503", "UNAVAILABLE", "429", "quota"]):
+            if attempt < retries - 1 and any(x in err for x in ["503", "UNAVAILABLE", "429", "quota", "disconnected", "Connection"]):
                 wait = 15 * (attempt + 1)
                 print(f"    ⏳ Gemini 暫時無法回應，{wait}s 後重試（{attempt+1}/{retries}）…")
                 time.sleep(wait)
@@ -298,8 +449,21 @@ def analyze_from_transcript(segments: list[dict], api_key: str, retries: int = 3
         r["idx"] = i + 1
         s_idx = max(0, min(int(r.pop("seg_start")), n - 1))
         e_idx = max(0, min(int(r.pop("seg_end")),   n - 1))
-        r["start"] = round(segments[s_idx]["start"], 1)
-        r["end"]   = round(segments[e_idx]["end"],   1)
+        if e_idx < s_idx:
+            s_idx, e_idx = e_idx, s_idx
+
+        # 優先：用 Gemini 回傳的文字在字幕串裡實際定位，取真實時刻（不受索引誤差影響）
+        aligned = align_text_to_segments(segments, r.get("text", ""), hint=s_idx)
+        if aligned:
+            r["start"], r["end"] = aligned
+        else:
+            r["start"] = round(segments[s_idx]["start"], 1)
+            r["end"]   = round(segments[e_idx]["end"],   1)
+
+        # 安全網：僅在時長明顯被切斷時（快於約 330 wpm，物理上不可能）才補正
+        wc = len(r.get("text", "").split())
+        if wc and r["end"] - r["start"] < wc * 0.18:
+            r["end"] = round(r["start"] + wc * 0.33, 1)
 
     return result
 
@@ -362,7 +526,7 @@ def analyze_from_video(video_id: str, api_key: str, retries: int = 3) -> list[di
             break
         except Exception as e:
             err = str(e)
-            if attempt < retries - 1 and any(x in err for x in ["503", "UNAVAILABLE", "429", "quota"]):
+            if attempt < retries - 1 and any(x in err for x in ["503", "UNAVAILABLE", "429", "quota", "disconnected", "Connection"]):
                 wait = 15 * (attempt + 1)
                 print(f"    ⏳ Gemini 暫時無法回應，{wait}s 後重試（{attempt+1}/{retries}）…")
                 time.sleep(wait)
