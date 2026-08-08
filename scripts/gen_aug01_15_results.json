@@ -1,0 +1,1324 @@
+{
+  "2026-08-01": {
+    "video_id": "vO6SWG-jxvE",
+    "title": "DeepMind Just Changed How AI Sees The World",
+    "channel": "Two Minute Papers",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Now, what if I told you that they promised you a model that is 99% smaller, a speck of dust comparatively, and yet this tiny guy can see? That sounds impossible.",
+        "zh": "如果我告訴你，他們承諾提供一個小 99% 的模型，相比之下只是一粒灰塵，然而這個小傢伙卻能看見呢？這聽起來不可能。",
+        "kw": [
+          {
+            "w": "what if I told you",
+            "zh": "「如果我告訴你...會怎麼樣？」(用於引出驚訝或不尋常的資訊)"
+          },
+          {
+            "w": "speck of dust",
+            "zh": "「一粒灰塵」(形容非常小)"
+          },
+          {
+            "w": "comparatively",
+            "zh": "「相比之下」(用於比較不同事物)"
+          },
+          {
+            "w": "yet this tiny guy can see",
+            "zh": "「然而這個小傢伙卻能看見」(強調對比，\"guy\" 在此指模型，帶有擬人化色彩)"
+          },
+          {
+            "w": "sounds impossible",
+            "zh": "「聽起來不可能」(表達對某事難以置信或認為不可能)"
+          }
+        ],
+        "start": 33.4,
+        "end": 46.2
+      },
+      {
+        "idx": 2,
+        "text": "And I think this is one of the most important architectural ideas in Gemma 4. It removes hundreds of millions of specialist parameters, and it blurs the boundary between perception and thinking.",
+        "zh": "我認為這是 Gemma 4 中最重要的架構理念之一。它移除了數億個專業參數，模糊了感知與思考之間的界線。",
+        "kw": [
+          {
+            "w": "architectural ideas",
+            "zh": "「架構理念」(指設計或建構上的核心概念)"
+          },
+          {
+            "w": "removes hundreds of millions of specialist parameters",
+            "zh": "「移除了數億個專業參數」(強調數量巨大和專業性，\"specialist parameters\" 指模型中特定功能的參數)"
+          },
+          {
+            "w": "blurs the boundary between A and B",
+            "zh": "「模糊了 A 與 B 之間的界線」(表示 A 和 B 的區分變得不再清晰)"
+          },
+          {
+            "w": "perception and thinking",
+            "zh": "「感知與思考」(指接收訊息和處理資訊的兩種認知過程)"
+          }
+        ],
+        "start": 195.3,
+        "end": 209.4
+      },
+      {
+        "idx": 3,
+        "text": "So, to everyone who is working on open models, wherever you are in the world, you are heroes. You help scientists, students, and millions of other people to do their work better.",
+        "zh": "所以，對於所有致力於開源模型的人，無論你身在何處，你們都是英雄。你們幫助科學家、學生以及數百萬其他人更好地完成他們的工作。",
+        "kw": [
+          {
+            "w": "working on",
+            "zh": "「致力於；從事」(表示專注於某項工作或計畫)"
+          },
+          {
+            "w": "open models",
+            "zh": "「開源模型」(指公開其代碼、設計或參數的模型，允許他人自由使用、修改和分發)"
+          },
+          {
+            "w": "wherever you are in the world",
+            "zh": "「無論你身在世界何處」(強調普遍性和廣泛性)"
+          },
+          {
+            "w": "heroes",
+            "zh": "「英雄」(指因勇敢、成就或高尚品質而受人尊敬的人)"
+          },
+          {
+            "w": "millions of other people",
+            "zh": "「數百萬其他人」(強調人數眾多)"
+          },
+          {
+            "w": "do their work better",
+            "zh": "「更好地完成他們的工作」(強調提升效率和質量)"
+          }
+        ],
+        "start": 266.9,
+        "end": 279.2
+      }
+    ]
+  },
+  "2026-08-02": {
+    "video_id": "UiPJbxryrkU",
+    "title": "Why Sagrada Familia Took 144 Years to Complete",
+    "channel": "Real Engineering",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "A code that could be decrypted with fragments of the answer, allowing designs to be procedurally regenerated with parameters in a design software originally designed to model the complex curved surfaces of fighter jet wings.",
+        "zh": "一段可以憑藉答案碎片解密的程式碼，它讓設計得以透過參數在一個最初用於模擬戰鬥機機翼複雜曲面的設計軟體中，以程序化方式重新生成。",
+        "kw": [
+          {
+            "w": "decrypted with fragments",
+            "zh": "憑藉碎片解密"
+          },
+          {
+            "w": "procedurally regenerated",
+            "zh": "以程序化方式重新生成"
+          },
+          {
+            "w": "complex curved surfaces",
+            "zh": "複雜曲面"
+          },
+          {
+            "w": "fighter jet wings",
+            "zh": "戰鬥機機翼"
+          }
+        ],
+        "start": 128.8,
+        "end": 141.8
+      },
+      {
+        "idx": 2,
+        "text": "With the mastermind behind the complex project gone, completing it became a Herculean task, made even more difficult by the outbreak of the Spanish Civil War in 1936.",
+        "zh": "隨著這項複雜專案的策劃者離世，完成它成了一項艱鉅的任務，又因1936年西班牙內戰的爆發而變得更加困難。",
+        "kw": [
+          {
+            "w": "mastermind behind",
+            "zh": "幕後策劃者；專案主導者"
+          },
+          {
+            "w": "Herculean task",
+            "zh": "艱鉅的任務（意指像赫拉克勒斯般需付出巨大努力的任務）"
+          },
+          {
+            "w": "outbreak of",
+            "zh": "（戰爭、疾病等）爆發"
+          }
+        ],
+        "start": 536.3,
+        "end": 546.2
+      },
+      {
+        "idx": 3,
+        "text": "Vila-Grau took that logic and painted with it, giving the east cool blues and aquamarines and the west warm reds and ambers so that the mood of the whole interior shifts with the sun.",
+        "zh": "維拉-格勞（Vila-Grau）承襲了這套邏輯並以此作畫，為東邊賦予了冷藍色和海水綠，為西邊賦予了暖紅色和琥珀色，讓整個內部的氛圍隨太陽而變。",
+        "kw": [
+          {
+            "w": "took that logic and painted with it",
+            "zh": "承襲了這套邏輯並以此作畫"
+          },
+          {
+            "w": "cool blues and aquamarines",
+            "zh": "冷藍色和海水綠"
+          },
+          {
+            "w": "warm reds and ambers",
+            "zh": "暖紅色和琥珀色"
+          },
+          {
+            "w": "shifts with the sun",
+            "zh": "隨太陽而變（指氛圍、光線等）"
+          }
+        ],
+        "start": 1072.3,
+        "end": 1082.9
+      }
+    ]
+  },
+  "2026-08-03": {
+    "video_id": "jxGJT1weu4w",
+    "title": "Did Anthropic just kill the indie hacker...?",
+    "channel": "Fireship",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "A few days ago, Anthropic released Claude Opus 5, its fourth frontier model in eight weeks, which means Anthropic now slops out new models faster than JavaScript developers slop out new frameworks.",
+        "zh": "幾天前，Anthropic 發布了 Claude Opus 5，這是它八週內發布的第四個前沿模型，這意味著 Anthropic 現在推出新模型的速度比 JavaScript 開發者推出新框架還要快。",
+        "kw": [
+          {
+            "w": "frontier model",
+            "zh": "前沿模型（指在AI領域中處於最領先、最先進水平的模型）"
+          },
+          {
+            "w": "slops out",
+            "zh": "粗製濫造地生產/推出（帶有貶義，形容快速而馬虎的生產）"
+          }
+        ],
+        "start": 0.0,
+        "end": 10.6
+      },
+      {
+        "idx": 2,
+        "text": "When it comes to coding, Opus 5 crushes the trust-me-bro benchmarks, but the scariest thing is that Anthropic says it also verifies its own work and recovers from its own mistakes without human intervention.",
+        "zh": "談到編碼，Opus 5 碾壓了那些「信我哥就好」的基準測試，但最可怕的是 Anthropic 表示它還能驗證自己的工作，並在沒有人類干預的情況下從自身錯誤中恢復。",
+        "kw": [
+          {
+            "w": "When it comes to",
+            "zh": "談到/說到…"
+          },
+          {
+            "w": "crushes the benchmarks",
+            "zh": "超越/擊敗基準（表現遠超預期）"
+          },
+          {
+            "w": "trust-me-bro benchmarks",
+            "zh": "「信我哥就好」的基準（指缺乏嚴謹驗證、基於個人聲稱或非官方測試的基準）"
+          },
+          {
+            "w": "without human intervention",
+            "zh": "無需人工干預"
+          }
+        ],
+        "start": 118.1,
+        "end": 128.6
+      },
+      {
+        "idx": 3,
+        "text": "But the trade-off is that the floor has never been more crowded and that trend will only continue as AI becomes cheaper and smarter while more normies realize that they can just vibe code software instead of paying someone else for it.",
+        "zh": "但權衡之下，底層競爭從未如此激烈，而且這個趨勢只會持續下去，因為 AI 變得更便宜、更智慧，同時越來越多普通人意識到他們可以輕鬆地自己寫軟體，而不是付錢給別人。",
+        "kw": [
+          {
+            "w": "trade-off",
+            "zh": "權衡/取捨"
+          },
+          {
+            "w": "the floor has never been more crowded",
+            "zh": "底層競爭從未如此激烈/基礎門檻從未如此擁擠"
+          },
+          {
+            "w": "vibe code software",
+            "zh": "輕鬆/隨性地寫程式（此處'vibe code'是一種非正式說法，意指以輕鬆、直觀的方式編寫程式碼）"
+          },
+          {
+            "w": "instead of",
+            "zh": "而不是"
+          }
+        ],
+        "start": 206.1,
+        "end": 217.1
+      }
+    ]
+  },
+  "2026-08-04": {
+    "video_id": "dzmoALgtB1Q",
+    "title": "Why Texas Wins",
+    "channel": "Wendover Productions",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "For decades, following their national team, the traveling fans have dawned their orange, assembled by the thousands, and walked city streets behind the famed orange bus to the hosting stadium.",
+        "zh": "幾十年來，荷蘭球迷追隨國家隊，穿上橙色球衣，成千上萬地聚集，步行穿過城市街道，跟隨著名的橙色巴士前往主辦體育場。",
+        "kw": [
+          {
+            "w": "dawned their orange",
+            "zh": "穿上橙色（代表性的服裝/顏色）"
+          },
+          {
+            "w": "assembled by the thousands",
+            "zh": "成千上萬地聚集"
+          },
+          {
+            "w": "famed orange bus",
+            "zh": "著名的橙色巴士"
+          }
+        ],
+        "start": 6.1,
+        "end": 16.4
+      },
+      {
+        "idx": 2,
+        "text": "But more importantly, and more transformatively, this unique lack of zoning on account of just not wanting ordinances unintentionally opened a lane for the city to become an unrelenting growth machine.",
+        "zh": "但更重要的是，也更具變革性的是，由於不希望有任何條例，這種獨特的缺乏分區規劃無意中為這座城市成為一台不懈的成長機器開闢了一條道路。",
+        "kw": [
+          {
+            "w": "on account of",
+            "zh": "因為、由於"
+          },
+          {
+            "w": "unintentionally opened a lane for",
+            "zh": "無意中為…開闢了一條道路"
+          },
+          {
+            "w": "unrelenting growth machine",
+            "zh": "不懈的成長機器"
+          }
+        ],
+        "start": 312.7,
+        "end": 324.0
+      },
+      {
+        "idx": 3,
+        "text": "The Texas triangle, the growth machine that fuels and is fueled by the dream of an easy commute, a cheap house, a friendly business environment, and a hopping economy, is changing in shape.",
+        "zh": "德州三角區，這個由輕鬆通勤、便宜房價、友善的商業環境和活躍的經濟等夢想所推動並被其推動的成長機器，正在改變其形態。",
+        "kw": [
+          {
+            "w": "growth machine",
+            "zh": "成長機器"
+          },
+          {
+            "w": "fuels and is fueled by",
+            "zh": "推動並被…所推動"
+          },
+          {
+            "w": "hopping economy",
+            "zh": "活躍的經濟"
+          },
+          {
+            "w": "changing in shape",
+            "zh": "正在改變形態"
+          }
+        ],
+        "start": 955.4,
+        "end": 965.2
+      }
+    ]
+  },
+  "2026-08-05": {
+    "video_id": "Zr8KE7c5iKI",
+    "title": "Why does China trust AI more than America | The Economist",
+    "channel": "The Economist",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "But I think when you talk to the ones in robotics, they're super optimistic about just how this is going to reshape society, liberate people from repetitive, dangerous work.",
+        "zh": "但我認為當你和機器人領域的人交談時，他們對這將如何重塑社會，將人們從重複、危險的工作中解放出來，感到超級樂觀。",
+        "kw": [
+          {
+            "w": "talk to the ones in",
+            "zh": "與在...領域的人交談"
+          },
+          {
+            "w": "super optimistic about",
+            "zh": "對…超級樂觀"
+          },
+          {
+            "w": "reshape society",
+            "zh": "重塑社會"
+          },
+          {
+            "w": "liberate people from",
+            "zh": "將人們從…中解放出來"
+          }
+        ],
+        "start": 29.8,
+        "end": 39.7
+      },
+      {
+        "idx": 2,
+        "text": "including a young woman who had applied for jobs, either filling the coffee for the robo-barista or folding clothes to collect training data for the humanoid robots, and I think speaking to them, they do feel like China’s very much on two tracks.",
+        "zh": "包括一位申請工作（可能是為機器人咖啡師裝咖啡，或是摺疊衣物以收集人形機器人的訓練數據）的年輕女性，我認為和他們交談後，他們確實感覺中國正朝著兩個方向發展。",
+        "kw": [
+          {
+            "w": "applied for jobs",
+            "zh": "申請工作"
+          },
+          {
+            "w": "robo-barista",
+            "zh": "機器人咖啡師"
+          },
+          {
+            "w": "collect training data",
+            "zh": "收集訓練數據"
+          },
+          {
+            "w": "humanoid robots",
+            "zh": "人形機器人"
+          },
+          {
+            "w": "on two tracks",
+            "zh": "雙軌進行；朝著兩個方向發展"
+          }
+        ],
+        "start": 43.6,
+        "end": 61.7
+      },
+      {
+        "idx": 3,
+        "text": "If any of that moves towards China and collides with a political system that has a very low tolerance for dissent, as we saw during the zero-covid protest, that could be quite explosive too.",
+        "zh": "如果其中任何情況轉向中國，並與一個對異議容忍度極低的政治體制發生衝突，就像我們在清零抗議期間所看到的那樣，那也可能會非常具有爆炸性。",
+        "kw": [
+          {
+            "w": "moves towards",
+            "zh": "轉向；朝向"
+          },
+          {
+            "w": "collides with",
+            "zh": "與…發生衝突"
+          },
+          {
+            "w": "political system",
+            "zh": "政治體制"
+          },
+          {
+            "w": "low tolerance for dissent",
+            "zh": "對異議容忍度低"
+          },
+          {
+            "w": "quite explosive",
+            "zh": "相當具有爆炸性（指情況不穩定、易引發衝突）"
+          }
+        ],
+        "start": 110.8,
+        "end": 118.8
+      }
+    ]
+  },
+  "2026-08-06": {
+    "video_id": "SzM1hpnXux4",
+    "title": "I'm so glad this hidden monorail broke down.",
+    "channel": "Tom Scott",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "I really wanted a closer look at that, thinking that I was missing half the story here, and there were expansion joints. And over kilometres of concrete bridge, that’s such a big gap; that’s massive.",
+        "zh": "我真的很想仔細看看那裡，覺得我錯過了這裡一半的故事，而且那裡還有伸縮縫。在長達數公里的混凝土橋上，那是一個巨大的間隙；真是巨大無比。",
+        "kw": [
+          {
+            "w": "closer look at",
+            "zh": "仔細看看"
+          },
+          {
+            "w": "missing half the story",
+            "zh": "錯過了一半的故事"
+          },
+          {
+            "w": "expansion joints",
+            "zh": "伸縮縫"
+          },
+          {
+            "w": "over kilometres of",
+            "zh": "長達數公里的"
+          }
+        ],
+        "start": 383.2,
+        "end": 397.2
+      },
+      {
+        "idx": 2,
+        "text": "We were talking about rescue procedures, because breakdowns happen, but they can deal with this. Plan A... and we didn’t end up using Plan D. This is folks who can abseil?",
+        "zh": "我們在討論救援程序，因為故障會發生，但他們可以處理這個。A計畫... 我們最終沒有用到D計畫。這些是會垂降的人嗎？",
+        "kw": [
+          {
+            "w": "rescue procedures",
+            "zh": "救援程序"
+          },
+          {
+            "w": "breakdowns happen",
+            "zh": "故障發生"
+          },
+          {
+            "w": "deal with this",
+            "zh": "處理這個"
+          },
+          {
+            "w": "end up using",
+            "zh": "最終使用"
+          },
+          {
+            "w": "abseil",
+            "zh": "垂降"
+          }
+        ],
+        "start": 642.3,
+        "end": 654.7
+      },
+      {
+        "idx": 3,
+        "text": "Let’s walk inside a bridge, which is anchored into the structure at both ends, under permanent compression. And down is the River Severn, and backwards is the bridge, and that is the expansion joint.",
+        "zh": "我們走進橋內，它兩端都錨定在結構中，承受著永久壓縮。而下方是塞文河，後面是橋樑，那就是伸縮縫。",
+        "kw": [
+          {
+            "w": "walk inside a bridge",
+            "zh": "走進橋內"
+          },
+          {
+            "w": "anchored into the structure",
+            "zh": "錨定在結構中"
+          },
+          {
+            "w": "at both ends",
+            "zh": "兩端"
+          },
+          {
+            "w": "under permanent compression",
+            "zh": "承受永久壓縮"
+          },
+          {
+            "w": "expansion joint",
+            "zh": "伸縮縫"
+          }
+        ],
+        "start": 947.7,
+        "end": 961.3
+      }
+    ]
+  },
+  "2026-08-07": {
+    "video_id": "ppQh4Tc9BmM",
+    "title": "The Billion Dollar AI Race Just Broke",
+    "channel": "Two Minute Papers",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "1 million token context window, and it is great for agentic workflows. This is actually one of the key points. They demonstrated it working independently while you get out there and live an active scholarly life.",
+        "zh": "100 萬個 token 的上下文視窗，這對代理工作流程來說非常棒，這其實是關鍵點之一。他們展示了它能夠獨立運作，同時你可以出門過著活躍的學術生活。",
+        "kw": [
+          {
+            "w": "context window",
+            "zh": "上下文視窗（指AI模型能處理的文本長度）"
+          },
+          {
+            "w": "agentic workflows",
+            "zh": "代理工作流程（指AI作為代理自主完成任務的流程）"
+          },
+          {
+            "w": "key points",
+            "zh": "關鍵點"
+          },
+          {
+            "w": "working independently",
+            "zh": "獨立運作"
+          },
+          {
+            "w": "get out there",
+            "zh": "出門、去外面"
+          },
+          {
+            "w": "scholarly life",
+            "zh": "學術生活"
+          }
+        ],
+        "start": 31.2,
+        "end": 46.2
+      },
+      {
+        "idx": 2,
+        "text": "And if you think one day of independent work is impressive, well, try 16. Yes, it sat there thinking for 16 days, starting from an empty folder, writing, testing, and repairing its own code.",
+        "zh": "如果你認為一天獨立工作令人印象深刻，那就試試 16 天吧。是的，它在那裡思考了 16 天，從一個空資料夾開始，編寫、測試並修復自己的程式碼。",
+        "kw": [
+          {
+            "w": "independent work",
+            "zh": "獨立工作"
+          },
+          {
+            "w": "impressive",
+            "zh": "令人印象深刻的"
+          },
+          {
+            "w": "sat there thinking",
+            "zh": "坐在那裡思考（強調長時間且專注的思考）"
+          },
+          {
+            "w": "starting from an empty folder",
+            "zh": "從一個空資料夾開始（比喻從零開始）"
+          },
+          {
+            "w": "repairing its own code",
+            "zh": "修復自己的程式碼"
+          }
+        ],
+        "start": 66.4,
+        "end": 82.6
+      },
+      {
+        "idx": 3,
+        "text": "The earlier smaller models, Qwen 3.6, 27, and 35 billion have legend status, and despite being several months old by now, many of you fellow scholars still consider them the best in their categories.",
+        "zh": "較早推出的小型模型，Qwen 3.6、27 和 35 億參數版本都享有傳奇地位，儘管至今已數月，但許多同儕學者仍然認為它們是各自類別中最好的。",
+        "kw": [
+          {
+            "w": "legend status",
+            "zh": "傳奇地位"
+          },
+          {
+            "w": "despite being",
+            "zh": "儘管是..."
+          },
+          {
+            "w": "several months old by now",
+            "zh": "至今已數月"
+          },
+          {
+            "w": "consider them the best in their categories",
+            "zh": "認為它們是各自類別中最好的"
+          },
+          {
+            "w": "fellow scholars",
+            "zh": "同儕學者"
+          }
+        ],
+        "start": 132.2,
+        "end": 147.0
+      }
+    ]
+  },
+  "2026-08-08": {
+    "video_id": "h2wnaBny4Ig",
+    "title": "Where Is Love Stored in the Body?",
+    "channel": "SciShow",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "You know that love can feel physical and leave your whole body buzzing. But expressions like these aren’t just poetic; they’re also a bit scientific, showing where the brain lights up when we experience it and even how it manifests between two people.",
+        "zh": "你知道愛可以讓人感到身體上的真實存在，讓你的全身都充滿活力。但像這樣的表達不只是詩意的，它們也帶有一些科學性，顯示出當我們體驗到愛時，大腦的哪些區域會被點亮，甚至愛如何在兩個人之間展現出來。",
+        "kw": [
+          {
+            "w": "feel physical",
+            "zh": "感覺到身體上的真實存在"
+          },
+          {
+            "w": "body buzzing",
+            "zh": "全身充滿活力/酥麻感"
+          },
+          {
+            "w": "expressions like these",
+            "zh": "像這樣的表達"
+          },
+          {
+            "w": "aren’t just poetic",
+            "zh": "不只是詩意的"
+          },
+          {
+            "w": "a bit scientific",
+            "zh": "帶有一些科學性"
+          },
+          {
+            "w": "lights up",
+            "zh": "被點亮/活躍起來"
+          },
+          {
+            "w": "manifests",
+            "zh": "展現/表現出來"
+          }
+        ],
+        "start": 4.2,
+        "end": 23.8
+      },
+      {
+        "idx": 2,
+        "text": "This allowed them to see not only if the body maps were different for different kinds of love, but also whether, across cultures, the more widespread it became.",
+        "zh": "這使他們能夠看到身體地圖是否因不同種類的愛而異，而且還能了解愛在不同文化中是否變得更為普遍。",
+        "kw": [
+          {
+            "w": "allowed them to see",
+            "zh": "使他們能夠看到"
+          },
+          {
+            "w": "body maps",
+            "zh": "身體地圖 (指感知身體部位與情感的連結)"
+          },
+          {
+            "w": "different kinds of love",
+            "zh": "不同種類的愛"
+          },
+          {
+            "w": "across cultures",
+            "zh": "跨文化地"
+          },
+          {
+            "w": "widespread it became",
+            "zh": "它變得多麼普遍"
+          }
+        ],
+        "start": 470.8,
+        "end": 481.1
+      },
+      {
+        "idx": 3,
+        "text": "It doesn’t really exist in just one place, not in a single organ, a single brain region, or even squarely within an individual person; it’s less like a specific point on a map, and more like a whole landscape of feelings and connections.",
+        "zh": "它並非只存在於一個地方，不在單一器官、單一大腦區域，甚至不在單一個人身上；它更不像地圖上的一個特定點，而更像是一個由情感和連結組成的完整風景。",
+        "kw": [
+          {
+            "w": "exist in just one place",
+            "zh": "只存在於一個地方"
+          },
+          {
+            "w": "single organ",
+            "zh": "單一器官"
+          },
+          {
+            "w": "brain region",
+            "zh": "大腦區域"
+          },
+          {
+            "w": "squarely within",
+            "zh": "確切地存在於…之中"
+          },
+          {
+            "w": "individual person",
+            "zh": "個人"
+          },
+          {
+            "w": "less like... and more like...",
+            "zh": "不像...而更像..."
+          },
+          {
+            "w": "specific point on a map",
+            "zh": "地圖上的一個特定點"
+          },
+          {
+            "w": "whole landscape",
+            "zh": "完整風景"
+          },
+          {
+            "w": "feelings and connections",
+            "zh": "情感和連結"
+          }
+        ],
+        "start": 433.8,
+        "end": 466.7
+      }
+    ]
+  },
+  "2026-08-09": {
+    "video_id": "YP73B9D20V4",
+    "title": "Open-weight AI just hit 2.8 trillion parameters…",
+    "channel": "Fireship",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "And not just that, it has OpenAI and Anthropic terrified because its trust-me-bro benchmark performance is on par with, and in some cases beating, Claude Fable and GPT-5.6 Soul.",
+        "zh": "不僅如此，它還讓 OpenAI 和 Anthropic 感到恐懼，因為其靠口頭保證的基準測試表現與 Claude Fable 和 GPT-5.6 Soul 媲美，甚至在某些情況下還超越它們。",
+        "kw": [
+          {
+            "w": "not just that",
+            "zh": "不僅如此"
+          },
+          {
+            "w": "terrified",
+            "zh": "感到恐懼的；嚇壞了的"
+          },
+          {
+            "w": "trust-me-bro benchmark performance",
+            "zh": "(口語) 靠口頭保證的基準測試表現（此處帶有諷刺意味，但指其表現驚人）"
+          },
+          {
+            "w": "on par with",
+            "zh": "與...不相上下；媲美"
+          },
+          {
+            "w": "beating",
+            "zh": "超越；擊敗"
+          }
+        ],
+        "start": 9.3,
+        "end": 19.5
+      },
+      {
+        "idx": 2,
+        "text": "In addition, it lands in the top three on the artificial analysis intelligence index, and if we look at every other coding benchmark, it's at least very competitive with the other frontier models.",
+        "zh": "此外，它在人工分析智能指數上名列前三，而且如果我們查看所有其他編碼基準測試，它至少與其他領先模型（frontier models）非常有競爭力。",
+        "kw": [
+          {
+            "w": "in addition",
+            "zh": "此外"
+          },
+          {
+            "w": "lands in the top three",
+            "zh": "位居前三名"
+          },
+          {
+            "w": "coding benchmark",
+            "zh": "編碼基準測試"
+          },
+          {
+            "w": "competitive with",
+            "zh": "與...有競爭力"
+          },
+          {
+            "w": "frontier models",
+            "zh": "領先模型；尖端模型"
+          }
+        ],
+        "start": 126.0,
+        "end": 135.1
+      },
+      {
+        "idx": 3,
+        "text": "This gives your agent real-world references, so it can design high-quality UIs for your specific use case, instead of just spitting out generic purple gradient vibes law.",
+        "zh": "這為您的代理提供了真實世界的參考資料，因此它可以為您的特定使用情境設計高品質的使用者介面，而不是只會吐出泛泛的紫色漸層風格。",
+        "kw": [
+          {
+            "w": "real-world references",
+            "zh": "真實世界的參考資料"
+          },
+          {
+            "w": "high-quality UIs",
+            "zh": "高品質使用者介面（UI是User Interface的縮寫）"
+          },
+          {
+            "w": "specific use case",
+            "zh": "特定使用情境"
+          },
+          {
+            "w": "spitting out",
+            "zh": "(口語) 吐出；產生"
+          },
+          {
+            "w": "generic ... vibes",
+            "zh": "泛泛的...風格/感覺（此處帶有貶義）"
+          }
+        ],
+        "start": 272.7,
+        "end": 281.8
+      }
+    ]
+  },
+  "2026-08-10": {
+    "video_id": "sfe0mExhnEg",
+    "title": "The key to better conversations | Charles Duhigg",
+    "channel": "Big Think",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "We've all been in those conversations where it feels like it's like two ships passing in the night, right? I'm talking about one thing, you're talking about a different thing, and like even though we're talking to each other, it doesn't",
+        "zh": "我們都曾有過這樣的對話，感覺就像兩艘船在黑夜中交錯而過，對吧？我說的是一件事，你說的是另一件事，即使我們彼此交談，卻沒有",
+        "kw": [
+          {
+            "w": "two ships passing in the night",
+            "zh": "兩艘船在黑夜中交錯而過（比喻兩人擦肩而過、沒有交集或心意相通）"
+          },
+          {
+            "w": "talking about one thing",
+            "zh": "談論一件事"
+          },
+          {
+            "w": "talking to each other",
+            "zh": "彼此交談"
+          }
+        ],
+        "start": 0.3,
+        "end": 10.6
+      },
+      {
+        "idx": 2,
+        "text": "And so, what researchers have found is that we have to ask another kind of question. And it's the asking of the question that is the skill that helps us figure out what this conversation is about.",
+        "zh": "因此，研究人員發現我們必須問另一種問題。而正是提出這個問題的技巧，幫助我們弄清楚這次對話的重點是什麼。",
+        "kw": [
+          {
+            "w": "have found",
+            "zh": "已經發現"
+          },
+          {
+            "w": "another kind of question",
+            "zh": "另一種問題"
+          },
+          {
+            "w": "figure out",
+            "zh": "弄清楚，理解"
+          },
+          {
+            "w": "what this conversation is about",
+            "zh": "這次對話的重點是什麼"
+          }
+        ],
+        "start": 70.5,
+        "end": 82.4
+      },
+      {
+        "idx": 3,
+        "text": "And so, one of the most critical skills for the practical conversation, for the what are we really talking about conversation to become a consistent supercommunicator is to ask deep questions.",
+        "zh": "因此，對於實用對話、對於我們真正在談論什麼的對話，要成為一個持續性的超級溝通者，其中一個最關鍵的技能就是提出深度問題。",
+        "kw": [
+          {
+            "w": "critical skills",
+            "zh": "關鍵技能"
+          },
+          {
+            "w": "practical conversation",
+            "zh": "實用對話"
+          },
+          {
+            "w": "talking about",
+            "zh": "談論"
+          },
+          {
+            "w": "consistent supercommunicator",
+            "zh": "持續的超級溝通者"
+          },
+          {
+            "w": "deep questions",
+            "zh": "深度問題"
+          }
+        ],
+        "start": 120.8,
+        "end": 133.2
+      }
+    ]
+  },
+  "2026-08-11": {
+    "video_id": "gExsfWU76-Y",
+    "title": "The Tests to Determine If AI Is Smarter Than a Person",
+    "channel": "Half as Interesting",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "years passed, and now that same robot is in charge of the military. Needless to say, this AI stuff has been changing pretty quickly, but the big question on everyone's mind is still the same.",
+        "zh": "五年過去了，現在那個機器人負責軍事。不用說，人工智慧發展得很快，但大家心裡最大的疑問還是那個。",
+        "kw": [
+          {
+            "w": "in charge of",
+            "zh": "負責"
+          },
+          {
+            "w": "Needless to say",
+            "zh": "不用說，顯而易見地"
+          },
+          {
+            "w": "on everyone's mind",
+            "zh": "大家都在想的問題"
+          }
+        ],
+        "start": 18.4,
+        "end": 28.0
+      },
+      {
+        "idx": 2,
+        "text": "It's 2,500 grad-school-level questions ranging from math to biology to social sciences to dozens of other subjects, each submitted and verified by experts at the top of their respective fields.",
+        "zh": "這是2500道研究生級別的問題，涵蓋數學、生物學、社會科學和數十種其他學科，每道題都由各自領域的頂尖專家提交並驗證。",
+        "kw": [
+          {
+            "w": "grad-school-level",
+            "zh": "研究生級別的"
+          },
+          {
+            "w": "ranging from...to",
+            "zh": "範圍從...到..."
+          },
+          {
+            "w": "submitted and verified by",
+            "zh": "由...提交和驗證"
+          },
+          {
+            "w": "at the top of their respective fields",
+            "zh": "在各自領域的頂尖專家"
+          }
+        ],
+        "start": 94.0,
+        "end": 105.0
+      },
+      {
+        "idx": 3,
+        "text": "Figuring out that this orange square is a helpful guy or that this pink stuff flows like a liquid might come easily to a person, but not to an AI.",
+        "zh": "弄清楚這個橙色方塊是一個樂於助人的人，或者這種粉紅色物質像液體一樣流動，對人類來說可能很容易，但對人工智慧來說卻不是。",
+        "kw": [
+          {
+            "w": "Figuring out",
+            "zh": "弄清楚，理解"
+          },
+          {
+            "w": "flows like a liquid",
+            "zh": "像液體一樣流動"
+          },
+          {
+            "w": "come easily to",
+            "zh": "對...來說很容易"
+          }
+        ],
+        "start": 361.0,
+        "end": 368.7
+      }
+    ]
+  },
+  "2026-08-12": {
+    "video_id": "HZwK_wmQEZA",
+    "title": "What if we wiped out all the mosquitoes in the world?",
+    "channel": "BBC Ideas",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "If you could push a button, it's tempting, right? Mosquitoes aren't just annoying; they kill more of us. Still want to press the button? Well, we've kind of already tried.",
+        "zh": "如果你能按一個按鈕，很誘人吧？蚊子不只是煩人；牠們殺死更多的人。你還想按那個按鈕嗎？嗯，我們其實已經嘗試過了。",
+        "kw": [
+          {
+            "w": "push a button",
+            "zh": "按一個按鈕"
+          },
+          {
+            "w": "tempting, right?",
+            "zh": "很誘人，對吧？"
+          },
+          {
+            "w": "aren't just annoying",
+            "zh": "不只是煩人"
+          },
+          {
+            "w": "kill more of us",
+            "zh": "殺死更多的人"
+          },
+          {
+            "w": "kind of already tried",
+            "zh": "某種程度上已經嘗試過了"
+          }
+        ],
+        "start": 1.2,
+        "end": 13.2
+      },
+      {
+        "idx": 2,
+        "text": "This makes it very expensive for this type of mosquito. Here's how it works: some argue this would be messing; they're also pollinators, and others fear the worst for the ecosystem.",
+        "zh": "這讓針對這種類型的蚊子防治變得非常昂貴。運作方式如下：有些人認為這是在干預（生態），因為牠們也是授粉者，而其他人則擔心生態系統會因此遭受最壞的結果。",
+        "kw": [
+          {
+            "w": "makes it very expensive",
+            "zh": "使其非常昂貴"
+          },
+          {
+            "w": "Here's how it works",
+            "zh": "這是它的運作方式"
+          },
+          {
+            "w": "argue this would be messing",
+            "zh": "認為這是在干預"
+          },
+          {
+            "w": "also pollinators",
+            "zh": "也是授粉者"
+          },
+          {
+            "w": "fear the worst",
+            "zh": "擔心最壞的結果"
+          },
+          {
+            "w": "for the ecosystem",
+            "zh": "對於生態系統"
+          }
+        ],
+        "start": 161.2,
+        "end": 173.6
+      },
+      {
+        "idx": 3,
+        "text": "Others fear the worst for the ecosystem. As well as the high-tech science, are working too. This is one of those challenges the responsible use of science.",
+        "zh": "其他人擔心生態系統會遭受最壞的結果。除了高科技科學之外，（其他方法）也正在發揮作用。這是關於科學的負責任使用所面臨的挑戰之一。",
+        "kw": [
+          {
+            "w": "fear the worst",
+            "zh": "擔心最壞的結果"
+          },
+          {
+            "w": "for the ecosystem",
+            "zh": "對於生態系統"
+          },
+          {
+            "w": "As well as",
+            "zh": "以及"
+          },
+          {
+            "w": "high-tech science",
+            "zh": "高科技科學"
+          },
+          {
+            "w": "one of those challenges",
+            "zh": "這些挑戰之一"
+          },
+          {
+            "w": "responsible use of science",
+            "zh": "科學的負責任使用"
+          }
+        ],
+        "start": 238.6,
+        "end": 249.8
+      }
+    ]
+  },
+  "2026-08-13": {
+    "video_id": "bm1BjOjS7sQ",
+    "title": "Another DeepSeek Moment Has Arrived",
+    "channel": "Two Minute Papers",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "Look, it not only beats the previous flash version, but also beats the pro version that is about five times larger. We often say that benchmarks are not everything, and these are not even all of them.",
+        "zh": "看，它不僅擊敗了以前的 Flash 版本，甚至還擊敗了體積約為五倍大的專業版。我們常說基準測試並非一切，而這些甚至還不是所有的測試。",
+        "kw": [
+          {
+            "w": "not only... but also",
+            "zh": "不僅...而且"
+          },
+          {
+            "w": "beats the previous/pro version",
+            "zh": "超越/擊敗了先前的/專業版"
+          },
+          {
+            "w": "five times larger",
+            "zh": "大五倍"
+          },
+          {
+            "w": "benchmarks are not everything",
+            "zh": "基準測試並非一切"
+          }
+        ],
+        "start": 34.4,
+        "end": 50.3
+      },
+      {
+        "idx": 2,
+        "text": "And that is why post-training can create a huge leap in performance even when the underlying model stays very similar. Remember this one because you are seeing one of the finest examples of it ever.",
+        "zh": "這就是為什麼後訓練即使在底層模型非常相似的情況下，也能在性能上實現巨大飛躍。請記住這一點，因為你正在看到它有史以來最好的範例之一。",
+        "kw": [
+          {
+            "w": "huge leap in performance",
+            "zh": "性能上的巨大飛躍"
+          },
+          {
+            "w": "underlying model",
+            "zh": "底層模型"
+          },
+          {
+            "w": "stays very similar",
+            "zh": "保持非常相似"
+          },
+          {
+            "w": "finest examples of it ever",
+            "zh": "有史以來最好的範例之一"
+          }
+        ],
+        "start": 131.4,
+        "end": 145.8
+      },
+      {
+        "idx": 3,
+        "text": "Now, hold on to your papers, fellow scholars, because if this pace continues, in less than a year, we might have a free open model close to what is now the billion-dollar feeble-level intelligence.",
+        "zh": "現在，各位學者，請抓穩你的研究成果，因為如果這種速度持續下去，不到一年，我們可能會擁有一個接近目前數十億美元級弱人工智慧的免費開源模型。",
+        "kw": [
+          {
+            "w": "hold on to your papers",
+            "zh": "（比喻）抓穩你的研究成果/看好你的東西"
+          },
+          {
+            "w": "pace continues",
+            "zh": "速度持續下去"
+          },
+          {
+            "w": "in less than a year",
+            "zh": "不到一年"
+          },
+          {
+            "w": "billion-dollar feeble-level intelligence",
+            "zh": "數十億美元級的弱人工智慧"
+          }
+        ],
+        "start": 184.5,
+        "end": 202.1
+      }
+    ]
+  },
+  "2026-08-14": {
+    "video_id": "VuliaG_-uao",
+    "title": "Why American Houses Are So Flimsy",
+    "channel": "Wendover Productions",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "The vast majority of new housing in the US is single-family homes, and the vast majority of those start in the same cheap, compromised way: an at-grade slab foundation.",
+        "zh": "美國絕大多數的新建住宅是獨立式住宅，而其中絕大多數都以同樣廉價、妥協的方式開始：採用平地平板地基。",
+        "kw": [
+          {
+            "w": "vast majority",
+            "zh": "絕大多數"
+          },
+          {
+            "w": "single-family homes",
+            "zh": "獨立式住宅（獨棟房）"
+          },
+          {
+            "w": "compromised way",
+            "zh": "妥協的方式"
+          },
+          {
+            "w": "at-grade slab foundation",
+            "zh": "平地平板地基"
+          }
+        ],
+        "start": 3.2,
+        "end": 12.8
+      },
+      {
+        "idx": 2,
+        "text": "While American framing crews are typically led by career carpenters, much of each crew is often made up of relatively entry-level laborers since many of the tasks in framing can be done by those without a tremendous amount of experience.",
+        "zh": "雖然美國的木結構組裝團隊通常由資深木匠帶領，但每個團隊中很大一部分成員往往是相對初級的勞工，因為許多木結構組裝的任務可以由那些沒有大量經驗的人來完成。",
+        "kw": [
+          {
+            "w": "framing crews",
+            "zh": "木結構組裝團隊"
+          },
+          {
+            "w": "career carpenters",
+            "zh": "資深木匠"
+          },
+          {
+            "w": "entry-level laborers",
+            "zh": "初級勞工"
+          },
+          {
+            "w": "tremendous amount of experience",
+            "zh": "大量經驗"
+          }
+        ],
+        "start": 156.0,
+        "end": 167.5
+      },
+      {
+        "idx": 3,
+        "text": "By and large, though, American homes are not necessarily worse than their international equivalents when you consider their price. They just optimize for low upfront construction costs rather than low long-term maintenance and energy costs.",
+        "zh": "然而，總體而言，考慮到價格，美國住宅不一定比其國際同類產品差。它們只是優化了低前期建築成本，而不是低的長期維護和能源成本。",
+        "kw": [
+          {
+            "w": "by and large",
+            "zh": "總體而言，大體上"
+          },
+          {
+            "w": "not necessarily worse than",
+            "zh": "不一定比...差"
+          },
+          {
+            "w": "optimize for",
+            "zh": "優化以求"
+          },
+          {
+            "w": "upfront construction costs",
+            "zh": "前期建築成本"
+          },
+          {
+            "w": "long-term maintenance and energy costs",
+            "zh": "長期維護和能源成本"
+          }
+        ],
+        "start": 651.6,
+        "end": 668.9
+      }
+    ]
+  },
+  "2026-08-15": {
+    "video_id": "TugPBKBXIHc",
+    "title": "Why China and America see AI differently | The Economist",
+    "channel": "The Economist",
+    "sentences": [
+      {
+        "idx": 1,
+        "text": "And so what we really see is that China is right out there on the right hand side of the chart, you know, upwards of 80% of the Chinese population surveyed are very excited about the prospect of AI and they show much lower levels of nervousness.",
+        "zh": "我們看到中國在圖表的右側，你知道，超過80%的中國受訪人口對AI的前景感到非常興奮，並且表現出更低的緊張程度。",
+        "kw": [
+          {
+            "w": "right out there",
+            "zh": "就在那裡，明顯地"
+          },
+          {
+            "w": "upwards of",
+            "zh": "超過，多於"
+          },
+          {
+            "w": "prospect of",
+            "zh": "…的前景"
+          },
+          {
+            "w": "lower levels of nervousness",
+            "zh": "較低的緊張程度"
+          }
+        ],
+        "start": 22.8,
+        "end": 35.5
+      },
+      {
+        "idx": 2,
+        "text": "When I was in Shenzhen, which is often at the forefront of technology, the tech workers I spoke to are nervous; they're seeing their jobs transformed, and their roles are expanding to take on a lot more responsibilities, possibly due to AI's influence.",
+        "zh": "當我在深圳時，那裡通常處於科技的最前沿，我與之交談的科技工作者感到緊張；他們看到自己的工作被轉型，且角色正在擴展以承擔更多職責，這可能歸因於AI的影響。",
+        "kw": [
+          {
+            "w": "at the forefront of",
+            "zh": "處於…的最前沿"
+          },
+          {
+            "w": "transformed",
+            "zh": "轉變，變革"
+          },
+          {
+            "w": "roles are expanding",
+            "zh": "角色正在擴展"
+          },
+          {
+            "w": "take on a lot more responsibilities",
+            "zh": "承擔更多職責"
+          }
+        ],
+        "start": 136.9,
+        "end": 159.9
+      },
+      {
+        "idx": 3,
+        "text": "But speaking to government advisers, they are really thinking this through and they're struggling because they're caught between wanting to assuage these anxious workers and the public, but also they don't want to stifle innovation.",
+        "zh": "但與政府顧問們交流後，他們正在認真思考這件事，而且他們左右為難，因為他們一方面想安撫這些焦慮的工人和大眾，另一方面又不想扼殺創新。",
+        "kw": [
+          {
+            "w": "thinking this through",
+            "zh": "仔細思考"
+          },
+          {
+            "w": "struggling",
+            "zh": "掙扎，處境艱難"
+          },
+          {
+            "w": "caught between",
+            "zh": "夾在…之間，左右為難"
+          },
+          {
+            "w": "assuage anxious workers",
+            "zh": "安撫焦慮的工人"
+          },
+          {
+            "w": "stifle innovation",
+            "zh": "扼殺創新"
+          }
+        ],
+        "start": 329.4,
+        "end": 345.6
+      }
+    ]
+  }
+}
